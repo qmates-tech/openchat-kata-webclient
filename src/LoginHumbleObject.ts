@@ -1,10 +1,17 @@
+type LoginResult = string
 export default function () {
   return {
     tryLogin: async (username: string, password: string) => {
-      return new Promise<void>((resolve) => {
+      return new Promise<LoginResult>((resolve, reject) => {
         setTimeout(() => {
           console.log("try login with:", username, password)
-          resolve()
+
+          if(username === "error") {
+            reject("Invalid credentials")
+            return
+          }
+
+          resolve("success")
         }, 1000)
       })
     }

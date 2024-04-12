@@ -54,6 +54,13 @@ button:focus-visible {
   outline: 4px auto -webkit-focus-ring-color;
 }
 
+.error {
+  color: rgb(130, 0, 0);
+  background-color: rgb(255, 217, 217);
+  padding: 5px;
+  margin: 10px 0;
+}
+
 @media (prefers-color-scheme: light) {
   :root {
     color: #213547;
