@@ -8,12 +8,15 @@ function Login() {
   const [error, setError] = useState<string | null>("")
 
   const tryLogin = async () => {
+    setError(null)
     const username = usernameRef.current!!.value
     const password = passwordRef.current!!.value
 
-    await humbleObject.tryLogin(username, password)
-      .then(() => setError(null))
-      .catch(setError)
+    try {
+      await humbleObject.tryLogin(username, password)
+    } catch(errorMessage: any) {
+      setError(errorMessage)
+    }
   }
 
   return (
