@@ -14,8 +14,8 @@ function Login() {
 
     try {
       await humbleObject.tryLogin(username, password)
-    } catch(errorMessage: any) {
-      setError(errorMessage)
+    } catch {
+      setError("Invalid credentials")
     }
   }
 
