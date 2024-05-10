@@ -26,5 +26,15 @@
     "ts-node": "^10.9.2",
     "typescript": "^5.4.5",
     "vite": "^5.2.0"
+  },
+  "jest": {
+    "preset": "ts-jest",
+    "testEnvironment": "jest-environment-jsdom",
+    "transform": {
+      "^.+\\.tsx?$": "ts-jest"
+    },
+    "moduleNameMapper": {
+      "\\.(css|less|sass|scss)$": "<rootDir>/tests/emptyModule.js"
+    }
   }
 }
