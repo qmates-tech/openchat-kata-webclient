@@ -5,7 +5,7 @@ function Login() {
   const humbleObject = createHumbleObject()
   const usernameRef = useRef<HTMLInputElement>(null)
   const passwordRef = useRef<HTMLInputElement>(null)
-  const [error, setError] = useState<string | null>("")
+  const [error, setError] = useState<string | null>(null)
 
   const tryLogin = async () => {
     setError(null)

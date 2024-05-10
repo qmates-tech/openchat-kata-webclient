@@ -6,7 +6,7 @@ type LoggedUser = {
 
 export default function () {
   return {
-    tryLogin: async (username: string, password: string) => {
+    tryLogin: async (username: string, password: string): Promise<LoggedUser> => {
       return new Promise<LoggedUser>((resolve, reject) => {
         setTimeout(() => {
           console.log("try login with:", username, password)
