@@ -8,12 +8,12 @@ It consumes API specification in `APIs.yaml`:
 
 ![](APIs.png)
 
--> [see API specification online](https://editor.swagger.io/?url=https://raw.githubusercontent.com/qmates-tech/openchat-kata-webclient/main/APIs.yaml)
+-> [browse API specification online](https://editor.swagger.io/?url=https://raw.githubusercontent.com/qmates-tech/openchat-kata-webclient/main/APIs.yaml)
 
 
 ## About this Kata
 
-This is part of a backend + frontend kata, check here the backend part: [github.com/qmates-tech/openchat-kata](https://github.com/qmates-tech/openchat-kata)
+This is part of a backend + frontend kata, check here the backend part: [qmates-tech/openchat-kata](https://github.com/qmates-tech/openchat-kata)
 
 The original idea of the kata is from Robert C. Martin and Sandro Mancuso in "London vs. Chicago" cleancoders serie:
 
