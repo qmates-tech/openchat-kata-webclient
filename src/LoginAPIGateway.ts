@@ -7,11 +7,11 @@ type User = {
   readonly about: string
 }
 
-export function createLoginAPIGateway() {
+export function createLoginAPIGateway(baseUrl: string) {
 
   return {
     async login(username: string, password: string): Promise<User> {
-      const response = await fetch('http://msw.mockapi.local/login', {
+      const response = await fetch(baseUrl + '/login', {
         method: 'POST',
         body: JSON.stringify({
           username: username,
@@ -22,7 +22,7 @@ export function createLoginAPIGateway() {
       if (!response.ok) {
         throw new Error("INVALID_CREDENTIALS");
       }
-      
+
       const responseBody = await response.json()
       return {
         id: responseBody.id,
