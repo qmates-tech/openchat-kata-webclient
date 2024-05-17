@@ -11,26 +11,24 @@ export function createLoginAPIGateway() {
 
   return {
     async login(username: string, password: string): Promise<User> {
-      try {
-        const response = await fetch('http://msw.mockapi.local/login', {
-          method: 'POST',
-          body: JSON.stringify({
-            username: username,
-            password: password
-          })
+      const response = await fetch('http://msw.mockapi.local/login', {
+        method: 'POST',
+        body: JSON.stringify({
+          username: username,
+          password: password
         })
-      } catch {
-      }
+      })
 
-      if (username == 'alessio89') {
-        return {
-          "id": "599dd5eb-fdea-4472-8baf-81ef7c18a2f1",
-          "username": "alessio89",
-          "about": "About Alessio user."
-        }
+      if (!response.ok) {
+        throw new Error("INVALID_CREDENTIALS");
       }
-
-      throw new Error("INVALID_CREDENTIALS");
+      
+      const responseBody = await response.json()
+      return {
+        id: responseBody.id,
+        username: responseBody.username,
+        about: responseBody.about
+      }
     }
   }
 }

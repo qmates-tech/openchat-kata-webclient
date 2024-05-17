@@ -48,7 +48,11 @@ describe('Login API Gateway', () => {
     let sentJsonBody: any;
     mockServer.use(http.post('http://msw.mockapi.local/login', async (request) => {
       sentJsonBody = await request.request.json()
-      return HttpResponse.json()
+      return HttpResponse.json({
+        "id": "599dd5eb-fdea-4472-8baf-81ef7c18a2f1",
+        "username": "alessio89",
+        "about": "About Alessio user."
+      })
     }))
 
     const gateway = createLoginAPIGateway()
