@@ -11,16 +11,13 @@ export function createLoginAPIGateway(baseUrl: string) {
 
   return {
     async login(username: string, password: string): Promise<User> {
-      const response = await fetch(baseUrl + '/login', {
-        method: 'POST',
-        body: JSON.stringify({
-          username: username,
-          password: password
-        })
+      let response = await post('/login', {
+        username: username,
+        password: password
       })
 
       if (!response.ok) {
-        throw new Error("INVALID_CREDENTIALS");
+        throw new Error("INVALID_CREDENTIALS")
       }
 
       const responseBody = await response.json()
@@ -31,4 +28,16 @@ export function createLoginAPIGateway(baseUrl: string) {
       }
     }
   }
+
+  async function post(route: string, jsonBody: any) {
+    try {
+      return await fetch(baseUrl + route, {
+        method: 'POST',
+        body: JSON.stringify(jsonBody)
+      })
+    } catch (e) {
+      throw new Error("NETWORK_ERROR")
+    }
+  }
+
 }

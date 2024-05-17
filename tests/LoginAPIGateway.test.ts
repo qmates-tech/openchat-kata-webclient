@@ -1,6 +1,6 @@
 import { afterEach, describe, expect, it } from 'vitest'
 import { createLoginAPIGateway } from '../src/LoginAPIGateway'
-import { http, HttpResponse, JsonBodyType, StrictResponse } from 'msw'
+import { http, HttpResponse } from 'msw'
 import { setupServer } from 'msw/node'
 
 describe('Login API Gateway', () => {
@@ -46,6 +46,14 @@ describe('Login API Gateway', () => {
     await expect(async () => {
       await gateway.login('wrong', 'wrong')
     }).rejects.toThrow(new Error("INVALID_CREDENTIALS"))
+  })
+
+  it('throws network error on server not reachable', async () => {
+    mockServer.interceptPost('/login', HttpResponse.error())
+
+    await expect(async () => {
+      await gateway.login('any', 'any')
+    }).rejects.toThrow(new Error("NETWORK_ERROR"))
   })
 
   function loginOkResponse() {
