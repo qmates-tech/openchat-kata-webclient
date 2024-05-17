@@ -10,13 +10,25 @@ type User = {
 export function createLoginAPIGateway() {
 
   return {
-    login(username: string, password: string): User {
-      if(username == 'alessio89')
+    async login(username: string, password: string): Promise<User> {
+      try {
+        const response = await fetch('http://msw.mockapi.local/login', {
+          method: 'POST',
+          body: JSON.stringify({
+            username: username,
+            password: password
+          })
+        })
+      } catch {
+      }
+
+      if (username == 'alessio89') {
         return {
           "id": "599dd5eb-fdea-4472-8baf-81ef7c18a2f1",
           "username": "alessio89",
           "about": "About Alessio user."
         }
+      }
 
       throw new Error("INVALID_CREDENTIALS");
     }
