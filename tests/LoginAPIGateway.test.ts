@@ -4,6 +4,7 @@ import { http, HttpResponse, JsonBodyType, StrictResponse } from 'msw'
 import { setupServer } from 'msw/node'
 
 describe('Login API Gateway', () => {
+  const gateway = createLoginAPIGateway()
   const mockServer = setupServer()
   mockServer.listen({ onUnhandledRequest: 'error' })
 
@@ -18,9 +19,7 @@ describe('Login API Gateway', () => {
       "about": "About Alessio user."
     }))
 
-    const gateway = createLoginAPIGateway()
-
-    const loggedUser = await gateway.login('alessio89', 'correctPa$$word')
+    const loggedUser = await gateway.login('any', 'any')
 
     expect(loggedUser).toStrictEqual({
       id: '599dd5eb-fdea-4472-8baf-81ef7c18a2f1',
@@ -30,13 +29,7 @@ describe('Login API Gateway', () => {
   })
 
   it('send properly request data to the API', async () => {
-    const interceptor = interceptPost('/login', HttpResponse.json({
-      "id": "0c85dc2f-6c7d-430d-a827-0e8aa30437d3",
-      "username": "dani90",
-      "about": "About Dani user."
-    }))
-
-    const gateway = createLoginAPIGateway()
+    const interceptor = interceptPost('/login', loginOkResponse())
 
     await gateway.login('alessio89', 'thePassword')
 
@@ -47,14 +40,7 @@ describe('Login API Gateway', () => {
   })
 
   it('throws invalid credentials error on wrong credentials', async () => {
-    interceptPost('/login',
-      new HttpResponse('Invalid credentials.', {
-        status: 404,
-        headers: { 'Content-Type': 'text/plain' },
-      })
-    )
-
-    const gateway = createLoginAPIGateway()
+    interceptPost('/login', invalidCredentialsResponse())
 
     await expect(async () => {
       await gateway.login('wrong', 'wrong')
@@ -73,5 +59,20 @@ describe('Login API Gateway', () => {
         return receivedJsonBody
       }
     }
+  }
+
+  function loginOkResponse() {
+    return HttpResponse.json({
+      "id": "0c85dc2f-6c7d-430d-a827-0e8aa30437d3",
+      "username": "dani90",
+      "about": "About Dani user."
+    })
+  }
+
+  function invalidCredentialsResponse() {
+    return new HttpResponse('Invalid credentials.', {
+      status: 404,
+      headers: { 'Content-Type': 'text/plain' },
+    })
   }
 })
