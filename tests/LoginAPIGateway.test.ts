@@ -45,7 +45,7 @@ describe('Login API Gateway', () => {
 
     await expect(async () => {
       await gateway.login('wrong', 'wrong')
-    }).rejects.toThrow(new Error("INVALID_CREDENTIALS"))
+    }).rejects.toThrow("INVALID_CREDENTIALS")
   })
 
   it('throws network error on server not reachable', async () => {
@@ -53,7 +53,7 @@ describe('Login API Gateway', () => {
 
     await expect(async () => {
       await gateway.login('any', 'any')
-    }).rejects.toThrow(new Error("NETWORK_ERROR"))
+    }).rejects.toThrow("NETWORK_ERROR")
   })
 
   function loginOkResponse() {

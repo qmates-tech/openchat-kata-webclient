@@ -1,6 +1,8 @@
 import { User } from "./User"
 
-type LoginError = "INVALID_CREDENTIALS" | "NETWORK_ERROR"
+// could be an enum ?
+export const INVALID_CREDENTIALS_ERRORVALUE = "INVALID_CREDENTIALS"
+export const NETWORK_ERROR_ERRORVALUE = "NETWORK_ERROR"
 
 export function createLoginAPIGateway(baseUrl: string) {
 
@@ -11,9 +13,8 @@ export function createLoginAPIGateway(baseUrl: string) {
         password: password
       })
 
-      if (!response.ok) {
-        throw new Error("INVALID_CREDENTIALS")
-      }
+      if (!response.ok)
+        throw INVALID_CREDENTIALS_ERRORVALUE
 
       const responseBody = await response.json()
       return {
@@ -31,7 +32,7 @@ export function createLoginAPIGateway(baseUrl: string) {
         body: JSON.stringify(jsonBody)
       })
     } catch (e) {
-      throw new Error("NETWORK_ERROR")
+      throw NETWORK_ERROR_ERRORVALUE
     }
   }
 
