@@ -1,11 +1,6 @@
-type LoginError = "INVALID_CREDENTIALS" | "NETWORK_ERROR"
-type UUID = string
+import { User } from "./User"
 
-type User = {
-  readonly id: UUID,
-  readonly username: string,
-  readonly about: string
-}
+type LoginError = "INVALID_CREDENTIALS" | "NETWORK_ERROR"
 
 export function createLoginAPIGateway(baseUrl: string) {
 
