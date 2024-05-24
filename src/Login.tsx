@@ -1,4 +1,5 @@
 import { useRef, useState } from "react"
+import { INVALID_CREDENTIALS_ERRORVALUE, NETWORK_ERROR_ERRORVALUE } from "./LoginAPIGateway"
 import createHumbleObject from "./LoginHumbleObject"
 
 function Login() {
@@ -12,10 +13,21 @@ function Login() {
     const username = usernameRef.current!!.value
     const password = passwordRef.current!!.value
 
+    // to much logic maybe here in the component ...
+    // ... could we move in the huble object the presenter responsability?
     try {
-      await humbleObject.tryLogin(username, password)
-    } catch {
-      setError("Invalid credentials")
+      const loggedUser = await humbleObject.tryLogin(username, password)
+      alert("Login success as " + loggedUser.username)
+    } catch (e: unknown) {
+      if (e === INVALID_CREDENTIALS_ERRORVALUE) {
+        setError("Invalid credentials")
+        return
+      }
+      if (e === NETWORK_ERROR_ERRORVALUE) {
+        setError("Network error")
+        return
+      }
+      setError("Generic error")
     }
   }
 

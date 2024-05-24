@@ -1,29 +1,14 @@
-type LoggedUser = {
-  id: string,
-  username: string,
-  about: string,
-}
+import { createLoginAPIGateway } from "./LoginAPIGateway"
+import { User } from "./User"
 
 export default function () {
+
+  const loginAPIGateway = createLoginAPIGateway('http://localhost:4321')
+
   return {
-    tryLogin: async (username: string, password: string): Promise<LoggedUser> => {
-      return new Promise<LoggedUser>((resolve, reject) => {
-        setTimeout(() => {
-          console.log("try login with:", username, password)
-
-          if(username === "wrong") {
-            reject()
-            return
-          }
-
-          const loggedUser = {
-            id: "45cd408b-9546-4fea-a49a-47a1e230892b",
-            username: username,
-            about: "This is the about of the user."
-          }
-          resolve(loggedUser)
-        }, 1000)
-      })
+    tryLogin: async (username: string, password: string): Promise<User> => {
+      // should the humble object convert errors from api gateway?
+      return await loginAPIGateway.login(username, password)
     }
   }
 }
