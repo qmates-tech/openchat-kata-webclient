@@ -1,11 +1,11 @@
-import { User } from "./User"
+import { User } from "../User"
 
-// could be an enum ?
-export const INVALID_CREDENTIALS_ERRORVALUE = "INVALID_CREDENTIALS"
-export const NETWORK_ERROR_ERRORVALUE = "NETWORK_ERROR"
+export type LoginAPIException = "INVALID_CREDENTIALS" | "NETWORK_ERROR"
+export type LoginAPI = {
+  login(username: string, password: string): Promise<User>
+}
 
-export function createLoginAPIGateway(baseUrl: string) {
-
+export function createLoginAPI(baseUrl: string): LoginAPI {
   return {
     async login(username: string, password: string): Promise<User> {
       let response = await post('/login', {
@@ -14,7 +14,7 @@ export function createLoginAPIGateway(baseUrl: string) {
       })
 
       if (!response.ok)
-        throw INVALID_CREDENTIALS_ERRORVALUE
+        throw "INVALID_CREDENTIALS"
 
       const responseBody = await response.json()
       return {
@@ -32,8 +32,7 @@ export function createLoginAPIGateway(baseUrl: string) {
         body: JSON.stringify(jsonBody)
       })
     } catch (e) {
-      throw NETWORK_ERROR_ERRORVALUE
+      throw "NETWORK_ERROR"
     }
   }
-
 }

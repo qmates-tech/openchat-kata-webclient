@@ -7,6 +7,7 @@
     "dev": "vite",
     "build": "tsc && vite build",
     "test": "tsc && vitest run",
+    "coverage": "tsc && vitest run --coverage",
     "preview": "vite preview"
   },
   "dependencies": {
@@ -19,6 +20,7 @@
     "@types/react": "^18.2.66",
     "@types/react-dom": "^18.2.22",
     "@vitejs/plugin-react": "^4.2.1",
+    "@vitest/coverage-v8": "^1.6.0",
     "msw": "^2.3.0",
     "typescript": "^5.4.5",
     "vite": "^5.2.0",

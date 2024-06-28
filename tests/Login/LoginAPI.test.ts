@@ -1,12 +1,12 @@
+import { HttpResponse } from 'msw'
 import { afterEach, describe, expect, it } from 'vitest'
-import { createLoginAPIGateway } from '../src/LoginAPIGateway'
-import { http, HttpResponse } from 'msw'
-import { setupServer } from 'msw/node'
+import { createLoginAPI } from '../../src/Login/LoginAPI'
+import { createMockServer } from '../utils/MockServer'
 
-describe('Login API Gateway', () => {
+describe('Login API', () => {
   const BASE_URL = 'http://msw.mockapi.local'
 
-  const gateway = createLoginAPIGateway(BASE_URL)
+  const loginAPI = createLoginAPI(BASE_URL)
   const mockServer = createMockServer(BASE_URL)
 
   afterEach(() => {
@@ -20,7 +20,7 @@ describe('Login API Gateway', () => {
       "about": "About Alessio user."
     }))
 
-    const loggedUser = await gateway.login('any', 'any')
+    const loggedUser = await loginAPI.login('any', 'any')
 
     expect(loggedUser).toStrictEqual({
       id: '599dd5eb-fdea-4472-8baf-81ef7c18a2f1',
@@ -32,7 +32,7 @@ describe('Login API Gateway', () => {
   it('send properly request data to the API', async () => {
     const interceptor = mockServer.interceptPost('/login', loginOkResponse())
 
-    await gateway.login('alessio89', 'thePassword')
+    await loginAPI.login('alessio89', 'thePassword')
 
     expect(interceptor.receivedJsonBody()).toStrictEqual({
       username: 'alessio89',
@@ -44,7 +44,7 @@ describe('Login API Gateway', () => {
     mockServer.interceptPost('/login', invalidCredentialsResponse())
 
     await expect(async () => {
-      await gateway.login('wrong', 'wrong')
+      await loginAPI.login('wrong', 'wrong')
     }).rejects.toThrow("INVALID_CREDENTIALS")
   })
 
@@ -52,7 +52,7 @@ describe('Login API Gateway', () => {
     mockServer.interceptPost('/login', HttpResponse.error())
 
     await expect(async () => {
-      await gateway.login('any', 'any')
+      await loginAPI.login('any', 'any')
     }).rejects.toThrow("NETWORK_ERROR")
   })
 
@@ -71,27 +71,3 @@ describe('Login API Gateway', () => {
     })
   }
 })
-
-function createMockServer(baseUrl: string) {
-  const mockServer = setupServer()
-  mockServer.listen({ onUnhandledRequest: 'error' })
-
-  return {
-    interceptPost(path: string, response: HttpResponse) {
-      let receivedJsonBody: any;
-      mockServer.use(http.post(baseUrl + path, async (request) => {
-        receivedJsonBody = await request.request.json()
-        return response
-      }))
-
-      return {
-        receivedJsonBody() {
-          return receivedJsonBody
-        }
-      }
-    },
-    resetHandlers() {
-      mockServer.resetHandlers()
-    }
-  }
-}
