@@ -62,6 +62,7 @@ describe('Login State', () => {
 
     await waitFor(() => {
       expect(result.current.loginError).toBe("Invalid credentials");
+      expect(result.current.isLoggingIn).toBe(false);
     });
   });
 

@@ -28,12 +28,12 @@ export function useLoginState(): LoginState {
     loginError: error,
     login(username: string | undefined, password: string | undefined): void {
       if(isLoading || user) return
-      setIsLoading(true)
       if (!username || !password) {
         setError("Invalid credentials")
         return
       }
       setError(undefined)
+      setIsLoading(true)
 
       login(username, password)
         .then((user) => {
