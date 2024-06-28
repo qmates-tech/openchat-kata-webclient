@@ -1,4 +1,4 @@
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { Env } from "../Env";
 import { User } from "../User";
 import { LoginAPIException, createLoginAPI } from "./LoginAPI";
@@ -16,6 +16,11 @@ export function useLoginState(): LoginState {
   const [error, setError] = useState<LoginError | undefined>()
   const [user, setUser] = useState<User | undefined>()
 
+  useEffect(() => {
+    const session = localStorage.getItem("openChatSession") as string
+    session && setUser(JSON.parse(session))
+  }, [])
+
   return {
     isLoggingIn: isLoading,
     loggedUser: user,
@@ -30,7 +35,10 @@ export function useLoginState(): LoginState {
       setError(undefined)
 
       login(username, password)
-        .then(setUser)
+        .then((user) => {
+          setUser(user)
+          localStorage.setItem("openChatSession", JSON.stringify(user))
+        })
         .catch(e => setError(errorMessageFrom(e)))
         .finally(() => setIsLoading(false))
     }

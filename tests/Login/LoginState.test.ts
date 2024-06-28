@@ -11,6 +11,7 @@ describe('Login State', () => {
   afterEach(() => {
     vi.clearAllMocks();
     cleanup();
+    localStorage.clear();
   });
 
   it('by default is not logged in', () => {
@@ -136,5 +137,23 @@ describe('Login State', () => {
     result.current.login("any another", "any");
 
     expect(loginAPI.login).toHaveBeenCalledTimes(1);
+  });
+
+  it('be already logged in when a session is already present', async () => {
+    localStorage.setItem("openChatSession", JSON.stringify(anUser));
+    const { result } = renderHook(() => useLoginState());
+
+    expect(result.current.loggedUser).toStrictEqual(anUser);
+  });
+
+  it('save to the localstorage on login', async () => {
+    mockCreateLoginAPI({ login: succeedWith(anUser) })
+    const { result } = renderHook(() => useLoginState());
+
+    result.current.login("right_user", "right_password");
+
+    await waitFor(() => {
+      expect(localStorage.getItem("openChatSession")).toStrictEqual(JSON.stringify(anUser));
+    });
   });
 });
