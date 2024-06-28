@@ -156,4 +156,16 @@ describe('Login State', () => {
       expect(localStorage.getItem("openChatSession")).toStrictEqual(JSON.stringify(anUser));
     });
   });
+
+  it('clear the user state and the localstorage on logout', async () => {
+    localStorage.setItem("openChatSession", JSON.stringify(anUser));
+    const { result } = renderHook(() => useLoginState());
+
+    result.current.logout();
+
+    await waitFor(() => {
+      expect(localStorage.getItem("openChatSession")).toBeNull();
+      expect(result.current.loggedUser).toStrictEqual(undefined);
+    });
+  });
 });

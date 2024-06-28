@@ -8,6 +8,7 @@ export type LoginState = {
   isLoggingIn: boolean;
   loggedUser: User | undefined;
   loginError: LoginError | undefined;
+  logout(): void;
   login(username: string | undefined, password: string | undefined): void;
 };
 export function useLoginState(): LoginState {
@@ -41,6 +42,10 @@ export function useLoginState(): LoginState {
         })
         .catch(e => setError(errorMessageFrom(e)))
         .finally(() => setIsLoading(false))
+    },
+    logout() {
+      setUser(undefined)
+      localStorage.removeItem("openChatSession")
     }
   }
 }

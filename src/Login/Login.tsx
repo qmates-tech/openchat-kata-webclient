@@ -2,9 +2,18 @@ import { useRef } from "react";
 import { useLoginState } from "./LoginState";
 
 export function Login() {
-  const { login, isLoggingIn, loggedUser, loginError } = useLoginState()
+  const { login, logout, isLoggingIn, loggedUser, loginError } = useLoginState()
   const usernameRef = useRef<HTMLInputElement>(null)
   const passwordRef = useRef<HTMLInputElement>(null)
+
+  if (loggedUser) {
+    return (
+      <div>
+        <h2>Hi {loggedUser.username}!</h2>
+        <button type="button" onClick={logout}>Logout</button>
+      </div>
+    );
+  }
 
   return (
     <div>
@@ -17,7 +26,6 @@ export function Login() {
       </div>
       <button type="button" onClick={clickLogin}>Login</button> {isLoggingIn && <span>Logging in...</span>}
       {loginError && <div className="error">An error occurred: {loginError}</div>}
-      {loggedUser && <div className="success">Logged in as {loggedUser.username}</div>}
     </div>
   );
 
