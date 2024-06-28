@@ -17,7 +17,7 @@ describe('Login Component', () => {
 
     render(<Login />)
 
-    expect(screen.getByText('Logging in...')).toBeInTheDocument();
+    expect(screen.getByRole('button')).toHaveAttribute('aria-busy', 'true');
   })
 
   it('shows the error message', async () => {
@@ -25,7 +25,7 @@ describe('Login Component', () => {
 
     render(<Login />)
 
-    expect(screen.getByText('An error occurred: Generic error')).toBeInTheDocument();
+    expect(screen.getByText('Generic error')).toBeInTheDocument();
   })
 
   it('shows the user name when logged in', async () => {

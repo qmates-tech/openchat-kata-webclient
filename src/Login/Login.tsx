@@ -8,25 +8,29 @@ export function Login() {
 
   if (loggedUser) {
     return (
-      <div>
+      <article>
         <h2>Hi {loggedUser.username}!</h2>
-        <button type="button" onClick={logout}>Logout</button>
-      </div>
+        <footer>
+          <button type="button" onClick={logout}>Logout</button>
+        </footer>
+      </article>
     );
   }
 
   return (
-    <div>
+    <article className="login">
       <h2>Welcome to OpenChat</h2>
       <div>
-        <input ref={usernameRef} placeholder="username" />
+        <input ref={usernameRef} disabled={isLoggingIn} placeholder="username" />
       </div>
       <div>
-        <input ref={passwordRef} placeholder="password" type="password" />
+        <input ref={passwordRef} disabled={isLoggingIn} placeholder="password" type="password" />
       </div>
-      <button type="button" onClick={clickLogin}>Login</button> {isLoggingIn && <span>Logging in...</span>}
-      {loginError && <div className="error">An error occurred: {loginError}</div>}
-    </div>
+      <footer>
+        <button type="button" aria-busy={isLoggingIn} disabled={isLoggingIn} onClick={clickLogin}>Login</button>
+        {loginError && <div className="error">{loginError}</div>}
+      </footer>
+    </article>
   );
 
   function clickLogin() {

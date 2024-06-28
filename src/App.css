@@ -1,0 +1,20 @@
+#root {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+}
+
+footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+[type=button] {
+  margin-bottom: 0;
+}
+
+.error {
+  color: var(--pico-color-red-550);
+}
