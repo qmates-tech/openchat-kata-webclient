@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import { LoginError, useLoginState } from "./LoginState";
+import { Logout } from "../Logout/Logout";
 
 
 export function Login() {
@@ -8,19 +9,11 @@ export function Login() {
   const usernameRef = useRef<HTMLInputElement>(null)
   const passwordRef = useRef<HTMLInputElement>(null)
 
-  if (loggedUser) {
-    return (
-      <article>
-        <h2>Hi {loggedUser.username}!</h2>
-        <footer>
-          <button type="button" onClick={logout}>Logout</button>
-        </footer>
-      </article>
-    );
-  }
-
   useEffect(() => loginError && setErrorToShow(loginError), [loginError])
-  const hideError = () => setErrorToShow(undefined)
+
+  if (loggedUser) {
+    return <Logout user={loggedUser} onLogoutClick={logout} />
+  }
 
   return (
     <article className="login">
@@ -32,13 +25,17 @@ export function Login() {
         <input ref={passwordRef} disabled={isLoggingIn} placeholder="password" type="password" onFocus={hideError} />
       </div>
       <footer>
-        <button type="button" aria-busy={isLoggingIn} disabled={isLoggingIn} onClick={clickLogin}>Login</button>
+        <button type="button" disabled={isLoggingIn} aria-busy={isLoggingIn} onClick={performLogin}>Login</button>
         {errorToShow && <div className="error">{errorToShow}</div>}
       </footer>
     </article>
   );
 
-  function clickLogin() {
+  function hideError() {
+    setErrorToShow(undefined)
+  }
+
+  function performLogin() {
     login(usernameRef.current?.value, passwordRef.current?.value)
   }
 }
