@@ -1,4 +1,4 @@
-import { User } from "../User"
+import { User } from "../User/User"
 
 export type LoginAPIException = "INVALID_CREDENTIALS" | "NETWORK_ERROR"
 export type LoginAPI = {

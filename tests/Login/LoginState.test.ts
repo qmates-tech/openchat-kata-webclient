@@ -1,9 +1,9 @@
 import { cleanup, renderHook, waitFor } from '@testing-library/react';
+import { delay } from 'msw';
 import { afterEach, describe, expect, it, vi } from 'vitest';
 import { useLoginState } from '../../src/Login/LoginState';
-import { User } from '../../src/User';
+import { User } from '../../src/User/User';
 import { failsWith, mockCreateLoginAPI, succeedWith } from '../utils/MockLoginAPI';
-import { delay } from 'msw';
 
 describe('Login State', () => {
   const anUser: User = { id: "123", username: "alessio", about: "About Alessio" }
