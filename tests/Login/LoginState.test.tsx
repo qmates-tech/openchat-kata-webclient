@@ -1,8 +1,10 @@
 import { cleanup, renderHook, waitFor } from '@testing-library/react';
 import { delay } from 'msw';
+import React from 'react';
 import { afterEach, describe, expect, it, vi } from 'vitest';
 import { useLoginState } from '../../src/Login/LoginState';
 import { User } from '../../src/User/User';
+import { UserSessionProvider } from '../../src/User/UserSession';
 import { failsWith, mockCreateLoginAPI, succeedWith } from '../utils/MockLoginAPI';
 
 describe('Login State', () => {
@@ -16,7 +18,7 @@ describe('Login State', () => {
 
   it('by default is not logged in', () => {
     mockCreateLoginAPI({ login: succeedWith(anUser) })
-    const { result } = renderHook(() => useLoginState());
+    const { result } = renderHook(() => useLoginState(), { wrapper });
 
     expect(result.current.loggedUser).toBeUndefined();
     expect(result.current.loginError).toBeUndefined();
@@ -25,7 +27,7 @@ describe('Login State', () => {
 
   it('should be able to login', async () => {
     mockCreateLoginAPI({ login: succeedWith(anUser) })
-    const { result } = renderHook(() => useLoginState());
+    const { result } = renderHook(() => useLoginState(), { wrapper });
 
     result.current.login("right_user", "right_password");
 
@@ -36,7 +38,7 @@ describe('Login State', () => {
 
   it('should set loading status to false when API succeeded', async () => {
     mockCreateLoginAPI({ login: succeedWith(anUser, 100) })
-    const { result } = renderHook(() => useLoginState());
+    const { result } = renderHook(() => useLoginState(), { wrapper });
 
     result.current.login("right_user", "right_password");
 
@@ -46,7 +48,7 @@ describe('Login State', () => {
 
   it('should set loading status to false when API fails', async () => {
     mockCreateLoginAPI({ login: failsWith("any error", 100) })
-    const { result } = renderHook(() => useLoginState());
+    const { result } = renderHook(() => useLoginState(), { wrapper });
 
     result.current.login("right_user", "right_password");
 
@@ -56,7 +58,7 @@ describe('Login State', () => {
 
   it('should handle no user and password as INVALID_CREDENTIAL error', async () => {
     mockCreateLoginAPI({ login: succeedWith(anUser) })
-    const { result } = renderHook(() => useLoginState());
+    const { result } = renderHook(() => useLoginState(), { wrapper });
 
     result.current.login(undefined, undefined);
 
@@ -68,7 +70,7 @@ describe('Login State', () => {
 
   it('should not perform the api call when user is blank', async () => {
     const loginAPI = mockCreateLoginAPI({ login: succeedWith(anUser) })
-    const { result } = renderHook(() => useLoginState());
+    const { result } = renderHook(() => useLoginState(), { wrapper });
 
     result.current.login("", "pwd");
 
@@ -77,7 +79,7 @@ describe('Login State', () => {
 
   it('should not perform the api call when password is blank', async () => {
     const loginAPI = mockCreateLoginAPI({ login: succeedWith(anUser) })
-    const { result } = renderHook(() => useLoginState());
+    const { result } = renderHook(() => useLoginState(), { wrapper });
 
     result.current.login("usr", "");
 
@@ -86,7 +88,7 @@ describe('Login State', () => {
 
   it('should handle INVALID_CREDENTIAL from the API', async () => {
     mockCreateLoginAPI({ login: failsWith("INVALID_CREDENTIALS") })
-    const { result } = renderHook(() => useLoginState());
+    const { result } = renderHook(() => useLoginState(), { wrapper });
 
     result.current.login("wrongUser", "wrongPassword");
 
@@ -97,7 +99,7 @@ describe('Login State', () => {
 
   it('should handle NETWORK_ERROR from the api', async () => {
     mockCreateLoginAPI({ login: failsWith("NETWORK_ERROR") })
-    const { result } = renderHook(() => useLoginState());
+    const { result } = renderHook(() => useLoginState(), { wrapper });
 
     result.current.login("anyUser", "anyPassword");
 
@@ -108,7 +110,7 @@ describe('Login State', () => {
 
   it('should handle any other error from the api as Generic Error', async () => {
     mockCreateLoginAPI({ login: failsWith("ANY_OTHER_ERROR") })
-    const { result } = renderHook(() => useLoginState());
+    const { result } = renderHook(() => useLoginState(), { wrapper });
 
     result.current.login("anyUser", "anyPassword");
 
@@ -119,7 +121,7 @@ describe('Login State', () => {
 
   it('should ignore the login attempt while a previous one is still in progress', async () => {
     const loginAPI = mockCreateLoginAPI({ login: succeedWith(anUser, 50) })
-    const { result } = renderHook(() => useLoginState());
+    const { result } = renderHook(() => useLoginState(), { wrapper });
 
     result.current.login("usr", "pwd");
     await delay(10);
@@ -131,7 +133,7 @@ describe('Login State', () => {
 
   it('should ignore the login attempt if already authenticated', async () => {
     const loginAPI = mockCreateLoginAPI({ login: succeedWith(anUser) })
-    const { result } = renderHook(() => useLoginState());
+    const { result } = renderHook(() => useLoginState(), { wrapper });
 
     result.current.login("any", "any");
     await delay(10);
@@ -142,14 +144,14 @@ describe('Login State', () => {
 
   it('be already logged in when a session is already present', async () => {
     localStorage.setItem("openChatSession", JSON.stringify(anUser));
-    const { result } = renderHook(() => useLoginState());
+    const { result } = renderHook(() => useLoginState(), { wrapper });
 
     expect(result.current.loggedUser).toStrictEqual(anUser);
   });
 
   it('save to the localstorage on login', async () => {
     mockCreateLoginAPI({ login: succeedWith(anUser) })
-    const { result } = renderHook(() => useLoginState());
+    const { result } = renderHook(() => useLoginState(), { wrapper });
 
     result.current.login("right_user", "right_password");
 
@@ -160,7 +162,7 @@ describe('Login State', () => {
 
   it('clear the user state and the localstorage on logout', async () => {
     localStorage.setItem("openChatSession", JSON.stringify(anUser));
-    const { result } = renderHook(() => useLoginState());
+    const { result } = renderHook(() => useLoginState(), { wrapper });
 
     result.current.logout();
 
@@ -170,3 +172,7 @@ describe('Login State', () => {
     });
   });
 });
+
+const wrapper = ({ children }) => (
+  <UserSessionProvider>{children}</UserSessionProvider>
+);
