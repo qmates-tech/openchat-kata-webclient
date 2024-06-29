@@ -65,5 +65,24 @@ describe('Login Component', () => {
 
     expect(useLoginState.logout).toHaveBeenCalled()
   })
+
+  it('hide the error message on username focus', async () => {
+    mockUseLoginState({ loginError: "Generic error" })
+    render(<Login />)
+
+    fireEvent.focus(screen.getByPlaceholderText('username'))
+
+    expect(screen.queryByText('Generic error')).not.toBeInTheDocument();
+  })
+
+  it('hide the error message on password focus', async () => {
+    mockUseLoginState({ loginError: "Generic error" })
+    render(<Login />)
+
+    fireEvent.focus(screen.getByPlaceholderText('password'))
+
+    expect(screen.queryByText('Generic error')).not.toBeInTheDocument();
+  })
+
 })
 

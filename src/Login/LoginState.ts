@@ -4,7 +4,7 @@ import { LoginAPIException, createLoginAPI } from "./LoginAPI";
 import { User } from "../User/User";
 import { useUserSession } from "../User/UserSession";
 
-type LoginError = 'Invalid credentials' | 'Network error' | 'Generic error'
+export type LoginError = 'Invalid credentials' | 'Network error' | 'Generic error'
 export type LoginState = {
   isLoggingIn: boolean;
   loggedUser: User | undefined;

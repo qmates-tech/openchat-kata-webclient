@@ -1,8 +1,10 @@
-import { useRef } from "react";
-import { useLoginState } from "./LoginState";
+import { useEffect, useRef, useState } from "react";
+import { LoginError, useLoginState } from "./LoginState";
+
 
 export function Login() {
   const { login, logout, isLoggingIn, loggedUser, loginError } = useLoginState()
+  const [errorToShow, setErrorToShow] = useState<LoginError | undefined>(undefined)
   const usernameRef = useRef<HTMLInputElement>(null)
   const passwordRef = useRef<HTMLInputElement>(null)
 
@@ -17,18 +19,21 @@ export function Login() {
     );
   }
 
+  useEffect(() => loginError && setErrorToShow(loginError), [loginError])
+  const hideError = () => setErrorToShow(undefined)
+
   return (
     <article className="login">
       <h2>Welcome to OpenChat</h2>
       <div>
-        <input ref={usernameRef} disabled={isLoggingIn} placeholder="username" />
+        <input ref={usernameRef} disabled={isLoggingIn} placeholder="username" onFocus={hideError} />
       </div>
       <div>
-        <input ref={passwordRef} disabled={isLoggingIn} placeholder="password" type="password" />
+        <input ref={passwordRef} disabled={isLoggingIn} placeholder="password" type="password" onFocus={hideError} />
       </div>
       <footer>
         <button type="button" aria-busy={isLoggingIn} disabled={isLoggingIn} onClick={clickLogin}>Login</button>
-        {loginError && <div className="error">{loginError}</div>}
+        {errorToShow && <div className="error">{errorToShow}</div>}
       </footer>
     </article>
   );
