@@ -9,13 +9,8 @@ export function Login() {
   const usernameRef = useRef<HTMLInputElement>(null)
   const passwordRef = useRef<HTMLInputElement>(null)
 
-  useEffect(() => { !loggedUser && usernameRef.current?.focus() }, [loggedUser])
-  useEffect(() => {
-    if (loginError) {
-      setErrorToShow(loginError)
-      usernameRef.current?.focus()
-    }
-  }, [loginError])
+  useEffect(watchLoggedUser, [loggedUser])
+  useEffect(watchLoginError, [loginError])
 
   if (loggedUser) {
     return <Logout user={loggedUser} onLogoutClick={logout} />
@@ -38,6 +33,17 @@ export function Login() {
       </footer>
     </article>
   );
+
+  function watchLoggedUser() {
+    !loggedUser && usernameRef.current?.focus()
+  }
+
+  function watchLoginError() {
+    if (loginError) {
+      setErrorToShow(loginError)
+      usernameRef.current?.focus()
+    }
+  }
 
   function hideError() {
     setErrorToShow(undefined)
