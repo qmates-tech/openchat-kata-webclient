@@ -1,5 +1,6 @@
 import '@testing-library/jest-dom/vitest';
-import { cleanup, fireEvent, render, screen } from '@testing-library/react';
+import { cleanup, render, screen } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
 import React from 'react';
 import { afterEach, describe, expect, it, vi } from 'vitest';
 import { Login } from '../../src/Login/Login';
@@ -50,9 +51,9 @@ describe('Login Component', () => {
     const useLoginState = mockUseLoginState({ login: vi.fn() })
     render(<Login />)
 
-    fireEvent.input(screen.getByPlaceholderText('username'), { target: { value: 'theUser' } })
-    fireEvent.input(screen.getByPlaceholderText('password'), { target: { value: 'thePassword' } })
-    screen.getByRole('button').click()
+    await userEvent.type(usernameInput(), 'theUser')
+    await userEvent.type(passwordInput(), 'thePassword')
+    await userEvent.click(screen.getByRole('button'))
 
     expect(useLoginState.login).toHaveBeenCalledWith('theUser', 'thePassword')
   })
@@ -61,28 +62,76 @@ describe('Login Component', () => {
     const useLoginState = mockUseLoginState({ loggedUser: { id: "123", username: "Alessio", about: 'my bio' } })
     render(<Login />)
 
-    screen.getByRole('button').click()
+    await userEvent.click(screen.getByRole('button'))
 
     expect(useLoginState.logout).toHaveBeenCalled()
   })
 
-  it('hide the error message on username focus', async () => {
+  it('hide the error message on username change', async () => {
     mockUseLoginState({ loginError: "Generic error" })
     render(<Login />)
 
-    fireEvent.focus(screen.getByPlaceholderText('username'))
+    await userEvent.type(usernameInput(), "usr")
 
     expect(screen.queryByText('Generic error')).not.toBeInTheDocument();
   })
 
-  it('hide the error message on password focus', async () => {
+  it('hide the error message on password change', async () => {
     mockUseLoginState({ loginError: "Generic error" })
     render(<Login />)
 
-    fireEvent.focus(screen.getByPlaceholderText('password'))
+    await userEvent.type(passwordInput(), "psw")
 
     expect(screen.queryByText('Generic error')).not.toBeInTheDocument();
   })
 
+  it('focus the username input on page load', async () => {
+    render(<Login />)
+
+    expect(usernameInput()).toHaveFocus();
+  })
+
+  it('focus the password input when enter is pressed in the username field', async () => {
+    render(<Login />)
+
+    await userEvent.type(usernameInput(), 'user[enter]')
+
+    expect(passwordInput()).toHaveFocus();
+  })
+
+  it('perform the login when enter is pressed in the password field', async () => {
+    const useLoginState = mockUseLoginState({ login: vi.fn() })
+    render(<Login />)
+
+    await userEvent.type(passwordInput(), 'psw[enter]')
+
+    expect(useLoginState.login).toHaveBeenCalled();
+  })
+
+  it('focus the username input when the login throws an error', async () => {
+    const { rerender } = render(<Login />)
+
+    mockUseLoginState({ loginError: "Generic error" })
+    rerender(<Login />)
+
+    expect(usernameInput()).toHaveFocus();
+  })
+
+  it('focus the username input when the user is cleaned up due to a logout', async () => {
+    mockUseLoginState({ loggedUser: { id: "1", username: "name", about: "me" } })
+    const { rerender } = render(<Login />)
+
+    mockUseLoginState({ loggedUser: undefined })
+    rerender(<Login />)
+
+    expect(usernameInput()).toHaveFocus();
+  })
 })
 
+function usernameInput() {
+  return screen.getByPlaceholderText('username');
+}
+
+function passwordInput() {
+  return screen.getByPlaceholderText('password');
+}

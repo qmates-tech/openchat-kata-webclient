@@ -1,6 +1,6 @@
-import { useEffect, useRef, useState } from "react";
-import { LoginError, useLoginState } from "./LoginState";
+import { KeyboardEvent, useEffect, useRef, useState } from "react";
 import { Logout } from "../Logout/Logout";
+import { LoginError, useLoginState } from "./LoginState";
 
 
 export function Login() {
@@ -9,23 +9,31 @@ export function Login() {
   const usernameRef = useRef<HTMLInputElement>(null)
   const passwordRef = useRef<HTMLInputElement>(null)
 
-  useEffect(() => loginError && setErrorToShow(loginError), [loginError])
+  useEffect(() => { !loggedUser && usernameRef.current?.focus() }, [loggedUser])
+  useEffect(() => {
+    if (loginError) {
+      setErrorToShow(loginError)
+      usernameRef.current?.focus()
+    }
+  }, [loginError])
 
   if (loggedUser) {
     return <Logout user={loggedUser} onLogoutClick={logout} />
   }
-
   return (
     <article className="login">
       <h2>Welcome to OpenChat</h2>
       <div>
-        <input ref={usernameRef} disabled={isLoggingIn} placeholder="username" onFocus={hideError} />
+        <input ref={usernameRef} placeholder="username" disabled={isLoggingIn}
+          onKeyDown={focusPasswordOnEnter} onChange={hideError} />
       </div>
       <div>
-        <input ref={passwordRef} disabled={isLoggingIn} placeholder="password" type="password" onFocus={hideError} />
+        <input ref={passwordRef} type="password" placeholder="password" disabled={isLoggingIn}
+          onKeyDown={performLoginOnEnter} onChange={hideError} />
       </div>
       <footer>
-        <button type="button" disabled={isLoggingIn} aria-busy={isLoggingIn} onClick={performLogin}>Login</button>
+        <button type="button" aria-busy={isLoggingIn} disabled={isLoggingIn}
+          onClick={performLogin}>Login</button>
         {errorToShow && <div className="error">{errorToShow}</div>}
       </footer>
     </article>
@@ -37,5 +45,19 @@ export function Login() {
 
   function performLogin() {
     login(usernameRef.current?.value, passwordRef.current?.value)
+  }
+
+  function focusPasswordOnEnter(e: KeyboardEvent<HTMLInputElement>): void {
+    if (e.key === 'Enter') {
+      e.preventDefault()
+      passwordRef.current?.focus()
+    }
+  }
+
+  function performLoginOnEnter(e: KeyboardEvent<HTMLInputElement>): void {
+    if (e.key === 'Enter') {
+      e.preventDefault()
+      performLogin()
+    }
   }
 }
