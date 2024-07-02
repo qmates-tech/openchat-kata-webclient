@@ -1,7 +1,7 @@
 import { KeyboardEvent, useEffect, useRef, useState } from "react";
 import { Logout } from "../Logout/Logout";
+import './Login.css';
 import { LoginError, useLoginState } from "./LoginState";
-
 
 export function Login() {
   const { login, logout, isLoggingIn, loggedUser, loginError } = useLoginState()
@@ -17,7 +17,7 @@ export function Login() {
   }
   return (
     <article className="login">
-      <h2>Welcome to OpenChat</h2>
+      <header><h3>Welcome to OpenChat</h3></header>
       <div>
         <input ref={usernameRef} placeholder="username" disabled={isLoggingIn}
           onKeyDown={focusPasswordOnEnter} onChange={hideError} />

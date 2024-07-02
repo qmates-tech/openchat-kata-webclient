@@ -3,18 +3,24 @@
   justify-content: center;
   align-items: center;
   min-height: 100vh;
+  flex-direction: column;
 }
 
-footer {
+.page {
+  flex: 1;
+}
+
+article footer {
   display: flex;
   justify-content: space-between;
   align-items: center;
 }
 
-[type=button] {
+article footer [type=button] {
   margin-bottom: 0;
 }
 
-.error {
-  color: var(--pico-color-red-550);
+article header > h3 {
+  margin-top: var(--pico-typography-spacing-vertical);
+  margin-bottom: var(--pico-typography-spacing-vertical);
 }
