@@ -1,3 +1,8 @@
 .login .error {
   color: var(--pico-color-red-550);
 }
+
+button[type="submit"] {
+  width: auto;
+  margin-bottom: 0;
+}
