@@ -1,17 +1,20 @@
 import { cleanup, renderHook, waitFor } from '@testing-library/react';
 import { delay } from 'msw';
-import { afterEach, describe, expect, it, vi } from 'vitest';
+import { beforeEach, describe, expect, it, vi } from 'vitest';
 import { useLoginState } from '../../src/Login/LoginState';
 import { User } from '../../src/User/User';
 import { failsWith, mockCreateLoginAPI, succeedWith } from '../utils/MockLoginAPI';
+import { mockUseNavigationState } from '../utils/MockNavigationState';
 
 describe('Login State', () => {
   const anUser: User = { id: "123", username: "alessio", about: "About Alessio" }
+  let mockNavigator = mockUseNavigationState();
 
-  afterEach(() => {
+  beforeEach(() => {
     vi.clearAllMocks();
     cleanup();
     localStorage.clear();
+    mockNavigator = mockUseNavigationState();
   });
 
   it('by default is not logged in', () => {

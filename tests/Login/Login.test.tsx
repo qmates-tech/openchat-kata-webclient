@@ -2,13 +2,12 @@ import '@testing-library/jest-dom/vitest';
 import { cleanup, render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import React from 'react';
-import { afterEach, describe, expect, it, vi } from 'vitest';
+import { beforeEach, describe, expect, it, vi } from 'vitest';
 import { Login } from '../../src/Login/Login';
 import { mockUseLoginState } from '../utils/MockLoginState';
 
 describe('Login Component', () => {
-
-  afterEach(() => {
+  beforeEach(() => {
     vi.clearAllMocks();
     cleanup();
   });
@@ -29,24 +28,6 @@ describe('Login Component', () => {
     expect(screen.getByText('Generic error')).toBeInTheDocument();
   })
 
-  it('shows the user name when logged in', async () => {
-    mockUseLoginState({ loggedUser: { id: "123", username: "Alessio", about: 'my bio' } })
-
-    render(<Login />)
-
-    expect(screen.getByText('Hi Alessio!')).toBeInTheDocument();
-    expect(screen.getByText('Logout')).toBeInTheDocument();
-  })
-
-  it('do not show the login form when logged in', async () => {
-    mockUseLoginState({ loggedUser: { id: "123", username: "user name", about: 'my bio' } })
-
-    render(<Login />)
-
-    expect(screen.queryByPlaceholderText('username')).not.toBeInTheDocument();
-    expect(screen.queryByPlaceholderText('password')).not.toBeInTheDocument();
-  })
-
   it('trigger the login function with the correct data on button click', async () => {
     const useLoginState = mockUseLoginState({ login: vi.fn() })
     render(<Login />)
@@ -56,15 +37,6 @@ describe('Login Component', () => {
     await userEvent.click(screen.getByRole('button'))
 
     expect(useLoginState.login).toHaveBeenCalledWith('theUser', 'thePassword')
-  })
-
-  it('shows the user name when logged in', async () => {
-    const useLoginState = mockUseLoginState({ loggedUser: { id: "123", username: "Alessio", about: 'my bio' } })
-    render(<Login />)
-
-    await userEvent.click(screen.getByRole('button'))
-
-    expect(useLoginState.logout).toHaveBeenCalled()
   })
 
   it('hide the error message on username change', async () => {
@@ -112,16 +84,6 @@ describe('Login Component', () => {
     const { rerender } = render(<Login />)
 
     mockUseLoginState({ loginError: "Generic error" })
-    rerender(<Login />)
-
-    expect(usernameInput()).toHaveFocus();
-  })
-
-  it('focus the username input when the user is cleaned up due to a logout', async () => {
-    mockUseLoginState({ loggedUser: { id: "1", username: "name", about: "me" } })
-    const { rerender } = render(<Login />)
-
-    mockUseLoginState({ loggedUser: undefined })
     rerender(<Login />)
 
     expect(usernameInput()).toHaveFocus();

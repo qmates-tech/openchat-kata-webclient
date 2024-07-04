@@ -1,8 +1,9 @@
-import { useEffect, useMemo, useState } from "react";
+import { useMemo, useState } from "react";
 import { Env } from "../Env";
-import { LoginAPIException, createLoginAPI } from "./LoginAPI";
+import { useNavigationState } from "../Navigation/NavigationState";
 import { User } from "../User/User";
 import { useUserSession } from "../User/UserSession";
+import { LoginAPIException, createLoginAPI } from "./LoginAPI";
 
 export type LoginError = 'Invalid credentials' | 'Network error' | 'Generic error'
 export type LoginState = {
@@ -16,14 +17,15 @@ export function useLoginState(): LoginState {
   const { login } = useMemo(() => createLoginAPI(Env.loginUrl), [])
   const [isLoading, setIsLoading] = useState<boolean>(false)
   const [error, setError] = useState<LoginError | undefined>()
-  const { currentUser, setUserSession } = useUserSession()
+  const { currentUser, retrieving, setUserSession } = useUserSession()
+  const isLoadingOrRetrieving = isLoading || retrieving
 
   return {
-    isLoggingIn: isLoading,
+    isLoggingIn: isLoadingOrRetrieving,
     loggedUser: currentUser,
     loginError: error,
     login(username: string | undefined, password: string | undefined): void {
-      if (isLoading || currentUser) return
+      if (isLoadingOrRetrieving || currentUser) return
       if (!username || !password) {
         setError("Invalid credentials")
         return

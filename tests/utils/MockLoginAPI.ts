@@ -1,9 +1,9 @@
+import { delay } from 'msw';
 import { vi } from 'vitest';
 import * as toMock from '../../src/Login/LoginAPI';
-import { User } from '../../src/User';
-import { delay } from 'msw';
+import { User } from '../../src/User/User';
 
-export function mockCreateLoginAPI(obj: Partial<toMock.LoginAPI>): toMock.LoginAPI {
+export function mockCreateLoginAPI(obj: Partial<toMock.LoginAPI> = {}): toMock.LoginAPI {
   const mocked = {
     login: vi.fn(),
     ...obj

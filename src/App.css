@@ -6,6 +6,13 @@
   flex-direction: column;
 }
 
+.top-bar {
+  display: flex;
+  width: 100%;
+  box-shadow: var(--pico-card-box-shadow);
+  margin-bottom: calc(var(--pico-typography-spacing-vertical) * 3);
+}
+
 .page {
   flex: 1;
 }

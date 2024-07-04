@@ -1,10 +1,10 @@
 import { KeyboardEvent, useEffect, useRef, useState } from "react"
-import { Logout } from "../Logout/Logout"
+import { NavigateTo } from "../Navigation/NavigateTo"
 import './Login.css'
 import { LoginError, useLoginState } from "./LoginState"
 
 export function Login() {
-  const { login, logout, isLoggingIn, loggedUser, loginError } = useLoginState()
+  const { login, isLoggingIn, loggedUser, loginError } = useLoginState()
   const [errorToShow, setErrorToShow] = useState<LoginError | undefined>(undefined)
   const formRef = useRef<HTMLFormElement>(null)
   const usernameRef = useRef<HTMLInputElement>(null)
@@ -14,8 +14,9 @@ export function Login() {
   useEffect(watchLoginError, [loginError])
 
   if (loggedUser) {
-    return <Logout user={loggedUser} onLogoutClick={logout} />
+    return <NavigateTo to="wall" />
   }
+
   return (
     <article className="login">
       <form ref={formRef} autoComplete="on" onSubmit={submitLogin}>
