@@ -9,7 +9,7 @@ export default defineConfig({
       provider: 'v8',
       reporter: ['text', 'json', 'html'],
       include: ['src/**/*.ts', 'src/**/*.tsx'],
-      exclude: ['**/node_modules/**'],
+      exclude: ['**/node_modules/**', "src/main.tsx"],
     },
   },
   plugins: [react()],

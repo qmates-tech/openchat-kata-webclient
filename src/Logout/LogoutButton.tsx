@@ -1,14 +1,16 @@
 import { NavigateTo } from "../Navigation/NavigateTo";
+import { useNavigationState } from "../Navigation/NavigationState";
 import { useLogoutState } from "./LogoutState";
 
 export function LogoutButton() {
   const { retrieving, currentUser, logout } = useLogoutState();
+  const { isLoginRoute } = useNavigationState();
 
-  if (!currentUser && !retrieving) {
+  if (!currentUser && !retrieving && !isLoginRoute) {
     return <NavigateTo to="login" />
   }
 
-  if (retrieving) {
+  if (retrieving || isLoginRoute) {
     return <></>
   }
 

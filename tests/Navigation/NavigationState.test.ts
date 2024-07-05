@@ -1,4 +1,4 @@
-import { cleanup, renderHook, waitFor } from '@testing-library/react';
+import { cleanup, renderHook } from '@testing-library/react';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 import { useNavigationState } from '../../src/Navigation/NavigationState';
 import { RouteLocation, wrapWithRouter } from '../utils/renderHelpers';

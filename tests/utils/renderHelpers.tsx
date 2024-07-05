@@ -9,7 +9,7 @@ export function wrapWithRouter(location: RouteLocation, routes?: string[]) {
     wrapper: ({ children }): JSX.Element => (<>
       <MemoryRouter initialEntries={[fromRouteLocation(location)]} >
         {routes && <Routes>
-          {routes.map((route, index) => <Route key={index} path={route} element={<div>{route}</div>} />)}
+          {routes.map((route, index) => <Route key={index} path={route} element={<div>ROUTE: {route}</div>} />)}
         </Routes>}
         {children}
       </MemoryRouter>
