@@ -13,6 +13,11 @@ describe('User Session', () => {
     localStorage.clear();
   });
 
+  it('throw error if it is used outside its Provider', async () => {
+    expect(() => renderHook(useUserSession))
+      .toThrowError('useUserSession must be used within a UserSessionProvider');
+  });
+
   it('save to the localstorage on login', async () => {
     const { result } = renderHook(() => useUserSession(), wrapWithUserSession());
 

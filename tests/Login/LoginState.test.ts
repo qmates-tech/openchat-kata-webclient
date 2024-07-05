@@ -15,12 +15,6 @@ describe('Login State', () => {
     localStorage.clear();
   });
 
-  it('throw error if it is used outside its Provider', async () => {
-    expect(() => {
-      renderHook(() => useLoginState());
-    }).toThrowError('useUserSession must be used within a UserSessionProvider');
-  });
-
   it('by default is not logged in', () => {
     mockCreateLoginAPI({ login: succeedWith(anUser) });
     const { result } = renderHook(() => useLoginState(), wrapWithUserSession());
