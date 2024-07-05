@@ -1,7 +1,7 @@
 import { useMemo, useState } from "react";
 import { Env } from "../Env";
 import { User } from "../User/User";
-import { useUserSession } from "../User/UserSession";
+import { useUserSession } from "../User/UserSessionState";
 import { LoginAPIException, createLoginAPI } from "./LoginAPI";
 
 export type LoginError = 'Invalid credentials' | 'Network error' | 'Generic error'

@@ -1,8 +1,10 @@
 import { useLocation } from "react-router-dom";
+import { pathOf } from "../routes";
 
 export type NavigationState = {
   currentPath: string;
   previousPath?: string;
+  isLoginRoute: boolean;
 };
 export function useNavigationState(): NavigationState {
   const location = useLocation();
@@ -12,6 +14,7 @@ export function useNavigationState(): NavigationState {
 
   return {
     currentPath,
-    previousPath: from
+    previousPath: from,
+    isLoginRoute: currentPath === pathOf("login")
   }
 }

@@ -1,5 +1,5 @@
 import { NavigateTo } from "../Navigation/NavigateTo"
-import { useUserSession } from "../User/UserSession"
+import { useUserSession } from "../User/UserSessionState"
 
 type PrivateRouteProps = {
   children: React.ReactNode

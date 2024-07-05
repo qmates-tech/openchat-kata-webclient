@@ -1,6 +1,7 @@
 import { InitialEntry } from '@remix-run/router';
 import React from "react";
 import { MemoryRouter, Route, Routes } from "react-router-dom";
+import { UserSessionProvider } from '../../src/User/UserSessionState';
 
 export type RouteLocation = { path: string; from?: string; }
 export function wrapWithRouter(location: RouteLocation, routes?: string[]) {
@@ -13,6 +14,12 @@ export function wrapWithRouter(location: RouteLocation, routes?: string[]) {
         {children}
       </MemoryRouter>
     </>)
+  }
+}
+
+export function wrapWithUserSession() {
+  return {
+    wrapper: ({ children }): JSX.Element => (<UserSessionProvider>{children}</UserSessionProvider>)
   }
 }
 

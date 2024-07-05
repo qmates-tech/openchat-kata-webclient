@@ -8,6 +8,10 @@ export function LogoutButton() {
     return <NavigateTo to="login" />
   }
 
+  if (retrieving) {
+    return <></>
+  }
+
   return (
     <button type="button" onClick={logout}>Logout</button>
   );

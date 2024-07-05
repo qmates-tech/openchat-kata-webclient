@@ -1,5 +1,5 @@
 import { User } from "../User/User";
-import { useUserSession } from "../User/UserSession";
+import { useUserSession } from "../User/UserSessionState";
 
 export type LogoutState = {
   retrieving: boolean;

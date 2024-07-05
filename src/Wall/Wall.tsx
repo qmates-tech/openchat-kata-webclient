@@ -1,5 +1,4 @@
-import { LogoutButton } from '../Logout/LogoutButton';
-import { useUserSession } from '../User/UserSession';
+import { useUserSession } from '../User/UserSessionState';
 
 export function Wall() {
   const { currentUser } = useUserSession()
@@ -7,7 +6,6 @@ export function Wall() {
   return (
     <article className="wall">
       <header><h3>{currentUser?.username}'s wall</h3></header>
-      <LogoutButton />
     </article>
   );
 }

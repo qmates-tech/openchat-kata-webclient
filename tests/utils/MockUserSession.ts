@@ -1,5 +1,5 @@
 import { vi } from 'vitest';
-import * as toMock from '../../src/User/UserSession';
+import * as toMock from '../../src/User/UserSessionState';
 
 export function mockUserSession(obj: Partial<toMock.UserSession> = {}): toMock.UserSession {
   const mocked = {

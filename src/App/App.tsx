@@ -2,11 +2,12 @@ import '@picocss/pico/css/pico.colors.min.css';
 import '@picocss/pico/css/pico.min.css';
 import { Route, Routes } from 'react-router-dom';
 import { Navigation } from '../Navigation/Navigation';
+import { UserSessionProvider } from '../User/UserSessionState';
 import { routes } from '../routes';
 import './App.css';
 
 export function App() {
-  return (<>
+  return (<UserSessionProvider>
     <header className='top-bar'>
       <Navigation />
     </header>
@@ -17,5 +18,5 @@ export function App() {
         ))}
       </Routes>
     </div>
-  </>)
+  </UserSessionProvider>)
 }
