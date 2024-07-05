@@ -12,43 +12,50 @@ describe("App", () => {
     cleanup();
   });
 
-  it("renders the Wall as home page when logged in", () => {
-    mockUserSession({ currentUser: { id: "1", username: "Pippo", about: "Pippo description" } });
+  describe("Wall Page", () => {
+    it("renders the Wall when already logged in", () => {
+      mockUserSession({ currentUser: { id: "1", username: "Pippo", about: "Pippo description" } });
 
-    render(<App />, wrapWithRouter({ path: "/" }));
+      render(<App />, wrapWithRouter({ path: "/" }));
 
-    expect(screen.getByText("Pippo's wall")).toBeInTheDocument();
+      expect(screen.getByText("Pippo's wall")).toBeInTheDocument();
+    });
+
+    it("redirects to the Login Page when not logged in", () => {
+      mockUserSession({ currentUser: undefined });
+
+      render(<App />, wrapWithRouter({ path: "/" }));
+
+      expect(screen.getByText("Welcome to OpenChat")).toBeInTheDocument();
+    });
+
+    it("do not render any page while retrieving the user", () => {
+      mockUserSession({ retrieving: true });
+
+      render(<App />, wrapWithRouter({ path: "/" }));
+
+      expect(screen.queryByText("Pippo's wall")).not.toBeInTheDocument();
+      expect(screen.queryByText("Welcome to OpenChat")).not.toBeInTheDocument();
+    });
   });
 
-  it("renders the Login Page instead the wall when not logged in", () => {
-    mockUserSession({ currentUser: undefined });
+  describe("Login Page", () => {
+    it("renders the login page when not logged in", () => {
+      mockUserSession({ currentUser: undefined });
 
-    render(<App />, wrapWithRouter({ path: "/" }));
+      render(<App />, wrapWithRouter({ path: "/login" }));
 
-    expect(screen.getByText("Welcome to OpenChat")).toBeInTheDocument();
-  });
+      expect(screen.getByText("Welcome to OpenChat")).toBeInTheDocument();
+      expect(screen.getByRole("button")).toHaveTextContent("Login");
+    });
 
-  it("do not render any page while retrieving the user", () => {
-    mockUserSession({ retrieving: true });
+    it("redirects to the Wall page when already logged in", () => {
+      mockUserSession({ currentUser: { id: "1", username: "Pippo", about: "Pippo description" } });
 
-    render(<App />, wrapWithRouter({ path: "/" }));
+      render(<App />, wrapWithRouter({ path: "/login" }));
 
-    expect(screen.queryByText("Pippo's wall")).not.toBeInTheDocument();
-    expect(screen.queryByText("Welcome to OpenChat")).not.toBeInTheDocument();
-  });
-
-  it("renders the login page", () => {
-    render(<App />, wrapWithRouter({ path: "/login" }));
-
-    expect(screen.getByText("Welcome to OpenChat")).toBeInTheDocument();
-    expect(screen.getByRole("button")).toHaveTextContent("Login");
-  });
-
-  it("renders the wall page when already logged in", () => {
-    mockUserSession({ currentUser: { id: "1", username: "Pippo", about: "Pippo description" } });
-    render(<App />, wrapWithRouter({ path: "/login" }));
-
-    expect(screen.getByText("Pippo's wall")).toBeInTheDocument();
+      expect(screen.getByText("Pippo's wall")).toBeInTheDocument();
+    });
   });
 
   it("renders the not found page", () => {
