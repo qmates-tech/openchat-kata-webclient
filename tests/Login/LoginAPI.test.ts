@@ -56,6 +56,18 @@ describe('Login API', () => {
     }).rejects.toThrow("NETWORK_ERROR");
   });
 
+  it('sample fake data for a test username: correct', async () => {
+    mockServer.interceptPost('/login', HttpResponse.json({
+      "id": "599dd5eb-fdea-4472-8baf-81ef7c18a2f1",
+      "username": "alessio89",
+      "about": "About Alessio user."
+    }));
+
+    const loggedUser = await loginAPI.login('correct', 'right');
+
+    expect(loggedUser.username).toStrictEqual("John Doe");
+  });
+
   function loginOkResponse() {
     return HttpResponse.json({
       "id": "0c85dc2f-6c7d-430d-a827-0e8aa30437d3",
