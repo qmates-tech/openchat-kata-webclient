@@ -3,7 +3,7 @@ import React from "react";
 import { MemoryRouter, Route, Routes } from "react-router-dom";
 import { UserSessionProvider } from '../../src/User/UserSessionState';
 
-export type RouteLocation = { path: string; from?: string; }
+export type RouteLocation = { path: string; from?: string; };
 export function wrapWithRouter(location: RouteLocation, routes?: string[]) {
   return {
     wrapper: ({ children }): JSX.Element => (<>
@@ -25,7 +25,7 @@ export function wrapWithUserSession() {
 
 function fromRouteLocation(location: RouteLocation): InitialEntry {
   if (location.from) {
-    return { pathname: location.path, state: { from: { pathname: location.from } } }
+    return { pathname: location.path, state: { from: { pathname: location.from } } };
   }
-  return { pathname: location.path }
+  return { pathname: location.path };
 }

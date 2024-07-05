@@ -7,9 +7,10 @@ export function mockUseNavigationState(
   const mocked = {
     currentPath: "/",
     previousPath: undefined,
+    isLoginRoute: false,
     ...obj
-  }
-  vi.spyOn(toMock, "useNavigationState").mockImplementation(() => mocked)
+  };
+  vi.spyOn(toMock, "useNavigationState").mockImplementation(() => mocked);
   return mocked;
 }
 

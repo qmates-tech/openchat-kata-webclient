@@ -7,7 +7,7 @@ export function mockUserSession(obj: Partial<toMock.UserSession> = {}): toMock.U
     retrieving: false,
     setUserSession: vi.fn(),
     ...obj
-  }
-  vi.spyOn(toMock, "useUserSession").mockImplementation(() => mocked)
+  };
+  vi.spyOn(toMock, "useUserSession").mockImplementation(() => mocked);
   return mocked;
 }

@@ -11,7 +11,7 @@ export function Navigation() {
         <li>OpenChat</li>
       </ul>
       <ul>
-        <li><Link to="/login" className="contrast">Login</Link></li>
+        <li><Link to="/" className="contrast">Wall</Link></li>
         {!isLoginRoute && <li><LogoutButton /></li>}
       </ul>
     </nav>

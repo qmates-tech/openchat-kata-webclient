@@ -1,7 +1,7 @@
 import { useUserSession } from '../User/UserSessionState';
 
 export function Wall() {
-  const { currentUser } = useUserSession()
+  const { currentUser } = useUserSession();
 
   return (
     <article className="wall">

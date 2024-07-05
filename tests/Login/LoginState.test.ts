@@ -7,7 +7,7 @@ import { failsWith, mockCreateLoginAPI, succeedWith } from '../utils/MockLoginAP
 import { wrapWithUserSession } from '../utils/renderHelpers';
 
 describe('Login State', () => {
-  const anUser: User = { id: "123", username: "alessio", about: "About Alessio" }
+  const anUser: User = { id: "123", username: "alessio", about: "About Alessio" };
 
   beforeEach(() => {
     vi.clearAllMocks();
@@ -22,7 +22,7 @@ describe('Login State', () => {
   });
 
   it('by default is not logged in', () => {
-    mockCreateLoginAPI({ login: succeedWith(anUser) })
+    mockCreateLoginAPI({ login: succeedWith(anUser) });
     const { result } = renderHook(() => useLoginState(), wrapWithUserSession());
 
     expect(result.current.loggedUser).toBeUndefined();
@@ -31,7 +31,7 @@ describe('Login State', () => {
   });
 
   it('should be able to login', async () => {
-    mockCreateLoginAPI({ login: succeedWith(anUser) })
+    mockCreateLoginAPI({ login: succeedWith(anUser) });
     const { result } = renderHook(() => useLoginState(), wrapWithUserSession());
 
     result.current.login("right_user", "right_password");
@@ -42,7 +42,7 @@ describe('Login State', () => {
   });
 
   it('should set loading status to false when API succeeded', async () => {
-    mockCreateLoginAPI({ login: succeedWith(anUser, 100) })
+    mockCreateLoginAPI({ login: succeedWith(anUser, 100) });
     const { result } = renderHook(() => useLoginState(), wrapWithUserSession());
 
     result.current.login("right_user", "right_password");
@@ -52,7 +52,7 @@ describe('Login State', () => {
   });
 
   it('should set loading status to false when API fails', async () => {
-    mockCreateLoginAPI({ login: failsWith("any error", 100) })
+    mockCreateLoginAPI({ login: failsWith("any error", 100) });
     const { result } = renderHook(() => useLoginState(), wrapWithUserSession());
 
     result.current.login("right_user", "right_password");
@@ -62,7 +62,7 @@ describe('Login State', () => {
   });
 
   it('should handle no user and password as INVALID_CREDENTIAL error', async () => {
-    mockCreateLoginAPI({ login: succeedWith(anUser) })
+    mockCreateLoginAPI({ login: succeedWith(anUser) });
     const { result } = renderHook(() => useLoginState(), wrapWithUserSession());
 
     result.current.login(undefined, undefined);
@@ -74,7 +74,7 @@ describe('Login State', () => {
   });
 
   it('should not perform the api call when user is blank', async () => {
-    const loginAPI = mockCreateLoginAPI({ login: succeedWith(anUser) })
+    const loginAPI = mockCreateLoginAPI({ login: succeedWith(anUser) });
     const { result } = renderHook(() => useLoginState(), wrapWithUserSession());
 
     result.current.login("", "pwd");
@@ -83,7 +83,7 @@ describe('Login State', () => {
   });
 
   it('should not perform the api call when password is blank', async () => {
-    const loginAPI = mockCreateLoginAPI({ login: succeedWith(anUser) })
+    const loginAPI = mockCreateLoginAPI({ login: succeedWith(anUser) });
     const { result } = renderHook(() => useLoginState(), wrapWithUserSession());
 
     result.current.login("usr", "");
@@ -92,7 +92,7 @@ describe('Login State', () => {
   });
 
   it('should handle INVALID_CREDENTIAL from the API', async () => {
-    mockCreateLoginAPI({ login: failsWith("INVALID_CREDENTIALS") })
+    mockCreateLoginAPI({ login: failsWith("INVALID_CREDENTIALS") });
     const { result } = renderHook(() => useLoginState(), wrapWithUserSession());
 
     result.current.login("wrongUser", "wrongPassword");
@@ -103,7 +103,7 @@ describe('Login State', () => {
   });
 
   it('should handle NETWORK_ERROR from the api', async () => {
-    mockCreateLoginAPI({ login: failsWith("NETWORK_ERROR") })
+    mockCreateLoginAPI({ login: failsWith("NETWORK_ERROR") });
     const { result } = renderHook(() => useLoginState(), wrapWithUserSession());
 
     result.current.login("anyUser", "anyPassword");
@@ -114,7 +114,7 @@ describe('Login State', () => {
   });
 
   it('should handle any other error from the api as Generic Error', async () => {
-    mockCreateLoginAPI({ login: failsWith("ANY_OTHER_ERROR") })
+    mockCreateLoginAPI({ login: failsWith("ANY_OTHER_ERROR") });
     const { result } = renderHook(() => useLoginState(), wrapWithUserSession());
 
     result.current.login("anyUser", "anyPassword");
@@ -125,7 +125,7 @@ describe('Login State', () => {
   });
 
   it('should ignore the login attempt while a previous one is still in progress', async () => {
-    const loginAPI = mockCreateLoginAPI({ login: succeedWith(anUser, 50) })
+    const loginAPI = mockCreateLoginAPI({ login: succeedWith(anUser, 50) });
     const { result } = renderHook(() => useLoginState(), wrapWithUserSession());
 
     result.current.login("usr", "pwd");
@@ -137,7 +137,7 @@ describe('Login State', () => {
   });
 
   it('should ignore the login attempt if already authenticated', async () => {
-    const loginAPI = mockCreateLoginAPI({ login: succeedWith(anUser) })
+    const loginAPI = mockCreateLoginAPI({ login: succeedWith(anUser) });
     const { result } = renderHook(() => useLoginState(), wrapWithUserSession());
 
     result.current.login("any", "any");

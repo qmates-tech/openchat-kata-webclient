@@ -18,5 +18,5 @@ export function App() {
         ))}
       </Routes>
     </div>
-  </UserSessionProvider>)
+  </UserSessionProvider>);
 }

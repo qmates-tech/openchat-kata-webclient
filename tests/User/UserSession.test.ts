@@ -5,7 +5,7 @@ import { useUserSession } from '../../src/User/UserSessionState';
 import { wrapWithUserSession } from '../utils/renderHelpers';
 
 describe('User Session', () => {
-  const anUser: User = { id: "123", username: "alessio", about: "About Alessio" }
+  const anUser: User = { id: "123", username: "alessio", about: "About Alessio" };
 
   beforeEach(() => {
     vi.clearAllMocks();

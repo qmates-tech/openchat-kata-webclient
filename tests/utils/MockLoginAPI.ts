@@ -7,21 +7,21 @@ export function mockCreateLoginAPI(obj: Partial<toMock.LoginAPI> = {}): toMock.L
   const mocked = {
     login: vi.fn(),
     ...obj
-  }
-  vi.spyOn(toMock, "createLoginAPI").mockImplementation(() => mocked)
+  };
+  vi.spyOn(toMock, "createLoginAPI").mockImplementation(() => mocked);
   return mocked;
 }
 
 export function succeedWith(user: User, delayMs: number = 0) {
   return vi.fn().mockImplementation(async () => {
-    await delay(delayMs)
+    await delay(delayMs);
     return user;
-  })
+  });
 }
 
 export function failsWith(exception: toMock.LoginAPIException | string, delayMs: number = 0) {
   return vi.fn().mockImplementation(async () => {
-    await delay(delayMs)
+    await delay(delayMs);
     throw exception;
-  })
+  });
 }

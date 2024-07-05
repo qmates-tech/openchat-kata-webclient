@@ -1,17 +1,17 @@
-import { KeyboardEvent, useEffect, useRef, useState } from "react"
-import { NavigateTo } from "../Navigation/NavigateTo"
-import './Login.css'
-import { LoginError, useLoginState } from "./LoginState"
+import { KeyboardEvent, useEffect, useRef, useState } from "react";
+import { NavigateTo } from "../Navigation/NavigateTo";
+import './Login.css';
+import { LoginError, useLoginState } from "./LoginState";
 
 export function Login() {
-  const { login, isLoggingIn, loggedUser, loginError } = useLoginState()
-  const [errorToShow, setErrorToShow] = useState<LoginError | undefined>(undefined)
-  const formRef = useRef<HTMLFormElement>(null)
-  const usernameRef = useRef<HTMLInputElement>(null)
-  const passwordRef = useRef<HTMLInputElement>(null)
+  const { login, isLoggingIn, loggedUser, loginError } = useLoginState();
+  const [errorToShow, setErrorToShow] = useState<LoginError | undefined>(undefined);
+  const formRef = useRef<HTMLFormElement>(null);
+  const usernameRef = useRef<HTMLInputElement>(null);
+  const passwordRef = useRef<HTMLInputElement>(null);
 
-  useEffect(watchLoggedUser, [loggedUser])
-  useEffect(watchLoginError, [loginError])
+  useEffect(watchLoggedUser, [loggedUser]);
+  useEffect(watchLoginError, [loginError]);
 
   if (loggedUser) {
     return <NavigateTo to="wall" />
@@ -35,43 +35,43 @@ export function Login() {
         </footer>
       </form>
     </article>
-  )
+  );
 
   function watchLoggedUser() {
-    !loggedUser && usernameRef.current?.focus()
+    !loggedUser && usernameRef.current?.focus();
   }
 
   function watchLoginError() {
     if (loginError) {
-      setErrorToShow(loginError)
-      usernameRef.current?.focus()
+      setErrorToShow(loginError);
+      usernameRef.current?.focus();
     }
   }
 
   function hideError() {
-    setErrorToShow(undefined)
+    setErrorToShow(undefined);
   }
 
   function focusPasswordOnEnter(e: KeyboardEvent<HTMLInputElement>): void {
     if (e.key === 'Enter') {
-      e.preventDefault()
-      passwordRef.current?.focus()
+      e.preventDefault();
+      passwordRef.current?.focus();
     }
   }
 
   function performLoginOnEnter(e: KeyboardEvent<HTMLInputElement>): void {
     if (e.key === 'Enter') {
-      e.preventDefault()
-      performLogin()
+      e.preventDefault();
+      performLogin();
     }
   }
 
   function submitLogin(e: React.FormEvent<HTMLFormElement>) {
-    e.preventDefault()
-    performLogin()
+    e.preventDefault();
+    performLogin();
   }
 
   function performLogin() {
-    login(usernameRef.current?.value, passwordRef.current?.value)
+    login(usernameRef.current?.value, passwordRef.current?.value);
   }
 }

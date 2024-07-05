@@ -9,7 +9,7 @@ export function mockUseLoginState(obj: Partial<toMock.LoginState> = {}): toMock.
     loggedUser: undefined,
     loginError: undefined,
     ...obj
-  }
-  vi.spyOn(toMock, "useLoginState").mockImplementation(() => mocked)
+  };
+  vi.spyOn(toMock, "useLoginState").mockImplementation(() => mocked);
   return mocked;
 }

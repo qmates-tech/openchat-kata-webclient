@@ -7,13 +7,13 @@ export type LogoutState = {
   logout: () => void;
 };
 export function useLogoutState(): LogoutState {
-  const { retrieving, currentUser, setUserSession } = useUserSession()
+  const { retrieving, currentUser, setUserSession } = useUserSession();
 
   return {
     retrieving,
     currentUser,
     logout() {
-      setUserSession(undefined)
-    },
+      setUserSession(undefined);
+    }
   }
 }

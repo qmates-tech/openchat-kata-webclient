@@ -6,5 +6,5 @@ export function PageNotFound() {
       <i></i>
       <h2>Page not found</h2>
     </article>
-  )
+  );
 }
