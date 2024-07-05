@@ -1,10 +1,10 @@
-import { useLoginState } from "../Login/LoginState";
 import { NavigateTo } from "../Navigation/NavigateTo";
+import { useLogoutState } from "./LogoutState";
 
 export function LogoutButton() {
-  const { loggedUser, isLoggingIn, logout } = useLoginState();
+  const { retrieving, currentUser, logout } = useLogoutState();
 
-  if (!loggedUser && !isLoggingIn) {
+  if (!currentUser && !retrieving) {
     return <NavigateTo to="login" />
   }
 

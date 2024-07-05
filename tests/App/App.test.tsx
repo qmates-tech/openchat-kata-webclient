@@ -1,10 +1,10 @@
 import '@testing-library/jest-dom/vitest';
-import { cleanup, render, screen, waitFor } from "@testing-library/react";
+import { cleanup, render, screen } from "@testing-library/react";
 import React from 'react';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
-import { App } from "../src/App";
-import { mockUserSession } from './utils/MockUserSession';
-import { wrapWithRouter } from './utils/renderHelpers';
+import { App } from "../../src/App/App";
+import { mockUserSession } from '../utils/MockUserSession';
+import { wrapWithRouter } from '../utils/renderHelpers';
 
 describe("App", () => {
   beforeEach(() => {

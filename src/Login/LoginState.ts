@@ -1,6 +1,5 @@
 import { useMemo, useState } from "react";
 import { Env } from "../Env";
-import { useNavigationState } from "../Navigation/NavigationState";
 import { User } from "../User/User";
 import { useUserSession } from "../User/UserSession";
 import { LoginAPIException, createLoginAPI } from "./LoginAPI";
@@ -10,7 +9,6 @@ export type LoginState = {
   isLoggingIn: boolean;
   loggedUser: User | undefined;
   loginError: LoginError | undefined;
-  logout(): void;
   login(username: string | undefined, password: string | undefined): void;
 };
 export function useLoginState(): LoginState {
@@ -37,9 +35,6 @@ export function useLoginState(): LoginState {
         .then(setUserSession)
         .catch(e => setError(errorMessageFrom(e)))
         .finally(() => setIsLoading(false))
-    },
-    logout() {
-      setUserSession(undefined)
     }
   }
 }

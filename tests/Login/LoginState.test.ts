@@ -4,17 +4,14 @@ import { beforeEach, describe, expect, it, vi } from 'vitest';
 import { useLoginState } from '../../src/Login/LoginState';
 import { User } from '../../src/User/User';
 import { failsWith, mockCreateLoginAPI, succeedWith } from '../utils/MockLoginAPI';
-import { mockUseNavigationState } from '../utils/MockNavigationState';
 
 describe('Login State', () => {
   const anUser: User = { id: "123", username: "alessio", about: "About Alessio" }
-  let mockNavigator = mockUseNavigationState();
 
   beforeEach(() => {
     vi.clearAllMocks();
     cleanup();
     localStorage.clear();
-    mockNavigator = mockUseNavigationState();
   });
 
   it('by default is not logged in', () => {
@@ -148,28 +145,5 @@ describe('Login State', () => {
     const { result } = renderHook(() => useLoginState());
 
     expect(result.current.loggedUser).toStrictEqual(anUser);
-  });
-
-  it('save to the localstorage on login', async () => {
-    mockCreateLoginAPI({ login: succeedWith(anUser) })
-    const { result } = renderHook(() => useLoginState());
-
-    result.current.login("right_user", "right_password");
-
-    await waitFor(() => {
-      expect(localStorage.getItem("openChatSession")).toStrictEqual(JSON.stringify(anUser));
-    });
-  });
-
-  it('clear the user state and the localstorage on logout', async () => {
-    localStorage.setItem("openChatSession", JSON.stringify(anUser));
-    const { result } = renderHook(() => useLoginState());
-
-    result.current.logout();
-
-    await waitFor(() => {
-      expect(localStorage.getItem("openChatSession")).toBeNull();
-      expect(result.current.loggedUser).toStrictEqual(undefined);
-    });
   });
 });
