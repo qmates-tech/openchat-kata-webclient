@@ -1,3 +1,4 @@
+import { Env } from "../Env";
 import { User } from "../User/User";
 
 export type LoginAPIException = "INVALID_CREDENTIALS" | "NETWORK_ERROR";
@@ -5,7 +6,7 @@ export type LoginAPI = {
   login(username: string, password: string): Promise<User>;
 }
 
-export function createLoginAPI(baseUrl: string): LoginAPI {
+export function createLoginAPI(baseUrl: string = Env.loginUrl): LoginAPI {
   return {
     async login(username: string, password: string): Promise<User> {
       const response = await post('/login', {

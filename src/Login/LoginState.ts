@@ -1,5 +1,4 @@
 import { useMemo, useState } from "react";
-import { Env } from "../Env";
 import { User } from "../User/User";
 import { useUserSession } from "../User/UserSessionState";
 import { LoginAPIException, createLoginAPI } from "./LoginAPI";
@@ -12,7 +11,7 @@ export type LoginState = {
   login(username: string | undefined, password: string | undefined): void;
 };
 export function useLoginState(): LoginState {
-  const { login } = useMemo(() => createLoginAPI(Env.loginUrl), []);
+  const { login } = useMemo(() => createLoginAPI(), []);
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [error, setError] = useState<LoginError | undefined>();
   const { currentUser, retrieving, setUserSession } = useUserSession();
