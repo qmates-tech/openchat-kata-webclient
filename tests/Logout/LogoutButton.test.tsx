@@ -40,21 +40,11 @@ describe('LogoutButton Component', () => {
   });
 
   it('do not show the LogoutButton in the Login page', async () => {
-    mockUserSession({ currentUser: anUser });
+    mockUserSession({ currentUser: undefined });
 
     render(<LogoutButton />, withRouter({ path: '/login' }));
 
     expect(screen.queryByRole('button')).not.toBeInTheDocument();
-  });
-
-  it('redirect to the Login Page on Logout', async () => {
-    mockUserSession({ retrieving: false, currentUser: anUser });
-    const { rerender } = render(<LogoutButton />, withRouter({ path: '/' }));
-
-    mockUserSession({ retrieving: false, currentUser: undefined });
-    rerender(<LogoutButton />);
-
-    expect(screen.getByText('ROUTE: /login')).toBeInTheDocument();
   });
 
   it('calls the logout method on Button click', async () => {

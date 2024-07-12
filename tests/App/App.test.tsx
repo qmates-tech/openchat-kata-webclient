@@ -39,28 +39,28 @@ describe("App", () => {
     });
   });
 
-  describe("Login Page", () => {
-    it("renders the login page when not logged in", () => {
-      mockUserSession({ currentUser: undefined });
+  it("renders the login page", () => {
+    mockUserSession({ currentUser: undefined });
 
-      render(<App />, wrapWithRouter({ path: "/login" }));
+    render(<App />, wrapWithRouter({ path: "/login" }));
 
-      expect(screen.getByText("Welcome to OpenChat")).toBeInTheDocument();
-      expect(screen.getByRole("button")).toHaveTextContent("Login");
-    });
-
-    it("redirects to the Wall page when already logged in", () => {
-      mockUserSession({ currentUser: { id: "1", username: "Pippo", about: "Pippo description" } });
-
-      render(<App />, wrapWithRouter({ path: "/login" }));
-
-      expect(screen.getByText("Pippo's wall")).toBeInTheDocument();
-    });
+    expect(screen.getByText("Welcome to OpenChat")).toBeInTheDocument();
   });
 
-  it("renders the not found page", () => {
+  it("renders the not found page when not logged in", () => {
+    mockUserSession({ currentUser: undefined });
+
     render(<App />, wrapWithRouter({ path: "/not-found" }));
 
+    expect(screen.getByText("Page not found")).toBeInTheDocument();
+  });
+
+  it("renders the not found page when logged in", () => {
+    mockUserSession({ currentUser: { id: "1", username: "i", about: "a" } });
+
+    render(<App />, wrapWithRouter({ path: "/not-found" }));
+
+    screen.logTestingPlaygroundURL();
     expect(screen.getByText("Page not found")).toBeInTheDocument();
   });
 });

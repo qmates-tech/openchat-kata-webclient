@@ -1,5 +1,4 @@
 import { KeyboardEvent, useEffect, useRef, useState } from "react";
-import { NavigateTo } from "../Navigation/NavigateTo";
 import { LoginError, LoginState } from "./LoginState";
 
 
@@ -11,10 +10,6 @@ export function LoginForm({ login, isLoggingIn, loggedUser, loginError }: LoginS
 
   useEffect(watchLoggedUser, [loggedUser]);
   useEffect(watchLoginError, [loginError]);
-
-  if (loggedUser) {
-    return <NavigateTo to="wall" />;
-  }
 
   return (
     <form ref={formRef} autoComplete="on" onSubmit={submitLogin}>
