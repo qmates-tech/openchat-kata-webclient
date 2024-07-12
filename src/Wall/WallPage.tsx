@@ -1,6 +1,6 @@
 import { useUserSession } from '../User/UserSessionState';
 
-export function Wall() {
+export function WallPage() {
   const { currentUser } = useUserSession();
 
   return (
