@@ -61,7 +61,6 @@ describe("App", () => {
 
       render(<App />, wrapWithRouter({ path: "/not-found" }));
 
-      screen.logTestingPlaygroundURL();
       expect(screen.getByText("Page not found")).toBeInTheDocument();
     });
   });

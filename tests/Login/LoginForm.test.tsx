@@ -4,7 +4,6 @@ import userEvent from '@testing-library/user-event';
 import React from 'react';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 import { LoginForm } from '../../src/Login/LoginForm';
-import { LoginState } from '../../src/Login/LoginState';
 
 describe('LoginForm Component', () => {
   const defaultProps =
