@@ -1,7 +1,7 @@
 import { cleanup, renderHook } from '@testing-library/react';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 import { useNavigationState } from '../../src/Navigation/NavigationState';
-import { RouteLocation, wrapWithRouter } from '../utils/renderHelpers';
+import { RouteLocation, wrapWithCustomRoutes } from '../utils/renderHelpers';
 
 describe('Navigator State', () => {
   beforeEach(() => {
@@ -30,5 +30,5 @@ describe('Navigator State', () => {
 });
 
 function withRouter(location: RouteLocation) {
-  return wrapWithRouter(location, ['/', '/first', '/second', '/third', '/current']);
+  return wrapWithCustomRoutes(location, ['/', '/first', '/second', '/third', '/current']);
 }

@@ -4,7 +4,7 @@ import React from 'react';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 import { LogoutButton } from '../../src/Logout/LogoutButton';
 import { mockUserSession } from '../utils/MockUserSession';
-import { RouteLocation, wrapWithRouter } from '../utils/renderHelpers';
+import { RouteLocation, wrapWithCustomRoutes } from '../utils/renderHelpers';
 import userEvent from '@testing-library/user-event';
 
 describe('LogoutButton Component', () => {
@@ -68,5 +68,5 @@ describe('LogoutButton Component', () => {
 });
 
 function withRouter(location: RouteLocation) {
-  return wrapWithRouter(location, ['/', '/login']);
+  return wrapWithCustomRoutes(location, ['/', '/login']);
 }
