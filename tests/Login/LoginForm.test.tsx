@@ -7,25 +7,28 @@ import { LoginForm } from '../../src/Login/LoginForm';
 import { LoginState } from '../../src/Login/LoginState';
 
 describe('LoginForm Component', () => {
+  const defaultProps =
+    { login: vi.fn, isLoggingIn: false, loggedUser: undefined, loginError: undefined };
+
   beforeEach(() => {
     cleanup();
   });
 
   it('shows the loading message', async () => {
-    render(<LoginForm {...defaults()} isLoggingIn />);
+    render(<LoginForm {...defaultProps} isLoggingIn />);
 
     expect(screen.getByRole('button')).toHaveAttribute('aria-busy', 'true');
   })
 
   it('shows the error message', async () => {
-    render(<LoginForm {...defaults()} loginError="Generic error" />);
+    render(<LoginForm {...defaultProps} loginError="Generic error" />);
 
     expect(screen.getByText('Generic error')).toBeInTheDocument();
   })
 
   it('trigger the login function with the correct data on button click', async () => {
     const loginSpy = vi.fn();
-    render(<LoginForm {...defaults()} login={loginSpy} />);
+    render(<LoginForm {...defaultProps} login={loginSpy} />);
 
     await userEvent.type(usernameInput(), 'theUser');
     await userEvent.type(passwordInput(), 'thePassword');
@@ -35,7 +38,7 @@ describe('LoginForm Component', () => {
   })
 
   it('hide the error message on username change', async () => {
-    render(<LoginForm {...defaults()} loginError="Generic error" />);
+    render(<LoginForm {...defaultProps} loginError="Generic error" />);
 
     await userEvent.type(usernameInput(), "usr");
 
@@ -43,7 +46,7 @@ describe('LoginForm Component', () => {
   })
 
   it('hide the error message on password change', async () => {
-    render(<LoginForm {...defaults()} loginError="Generic error" />);
+    render(<LoginForm {...defaultProps} loginError="Generic error" />);
 
     await userEvent.type(passwordInput(), "psw");
 
@@ -51,13 +54,13 @@ describe('LoginForm Component', () => {
   })
 
   it('focus the username input on page load', async () => {
-    render(<LoginForm {...defaults()} />);
+    render(<LoginForm {...defaultProps} />);
 
     expect(usernameInput()).toHaveFocus();
   })
 
   it('focus the password input when enter is pressed in the username field', async () => {
-    render(<LoginForm {...defaults()} />);
+    render(<LoginForm {...defaultProps} />);
 
     await userEvent.type(usernameInput(), 'user[enter]');
 
@@ -66,7 +69,7 @@ describe('LoginForm Component', () => {
 
   it('perform the login when enter is pressed in the password field', async () => {
     const loginSpy = vi.fn();
-    render(<LoginForm {...defaults()} login={loginSpy} />);
+    render(<LoginForm {...defaultProps} login={loginSpy} />);
 
     await userEvent.type(passwordInput(), 'psw[enter]');
 
@@ -74,9 +77,9 @@ describe('LoginForm Component', () => {
   })
 
   it('focus the username input when the login throws an error', async () => {
-    const { rerender } = render(<LoginForm {...defaults()} />);
+    const { rerender } = render(<LoginForm {...defaultProps} />);
 
-    rerender(<LoginForm {...defaults()} loginError="Generic error" />);
+    rerender(<LoginForm {...defaultProps} loginError="Generic error" />);
 
     expect(usernameInput()).toHaveFocus();
   })
@@ -88,13 +91,4 @@ function usernameInput() {
 
 function passwordInput() {
   return screen.getByPlaceholderText('password');
-}
-
-function defaults(): LoginState {
-  return {
-    login: vi.fn,
-    isLoggingIn: false,
-    loggedUser: undefined,
-    loginError: undefined
-  }
 }

@@ -1,7 +1,6 @@
 import { KeyboardEvent, useEffect, useRef, useState } from "react";
 import { LoginError, LoginState } from "./LoginState";
 
-
 export function LoginForm({ login, isLoggingIn, loggedUser, loginError }: LoginState) {
   const [errorToShow, setErrorToShow] = useState<LoginError | undefined>(undefined);
   const formRef = useRef<HTMLFormElement>(null);
