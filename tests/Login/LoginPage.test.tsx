@@ -6,7 +6,7 @@ import { LoginPage } from '../../src/Login/LoginPage';
 import { mockUserSession } from '../utils/MockUserSession';
 import { wrapWithCustomRoutes } from '../utils/renderHelpers';
 
-describe("Login Page", () => {
+describe("LoginPage Component", () => {
   const anUser = { id: "1", username: "Pippo", about: "Pippo description" }
 
   beforeEach(() => {

@@ -1,5 +1,5 @@
 import { Route, RouteProps, Routes } from "react-router-dom";
-import { PageNotFound } from "./App/PageNotFound";
+import { PageNotFound } from "./NotFound/PageNotFound";
 import { PrivateRoute } from "./App/PrivateRoute";
 import { LoginPage } from "./Login/LoginPage";
 import { WallPage } from "./Wall/WallPage";
