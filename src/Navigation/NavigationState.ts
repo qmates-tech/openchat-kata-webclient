@@ -1,5 +1,5 @@
 import { useLocation } from "react-router-dom";
-import { pathOf } from "../routes";
+import { pathOf } from "../AppRoutes";
 
 export type NavigationState = {
   currentPath: string;

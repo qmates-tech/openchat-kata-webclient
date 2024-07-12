@@ -1,5 +1,5 @@
 import { Navigate } from "react-router-dom";
-import { RouteName, pathOf } from "../routes";
+import { RouteName, pathOf } from "../AppRoutes";
 import { useNavigationState } from "./NavigationState";
 
 export function NavigateTo({ to }: { to: RouteName }) {
