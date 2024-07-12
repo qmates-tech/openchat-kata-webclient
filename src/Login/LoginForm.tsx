@@ -1,10 +1,9 @@
 import { KeyboardEvent, useEffect, useRef, useState } from "react";
 import { NavigateTo } from "../Navigation/NavigateTo";
-import './Login.css';
-import { LoginError, useLoginState } from "./LoginState";
+import { LoginError, LoginState } from "./LoginState";
 
-export function Login() {
-  const { login, isLoggingIn, loggedUser, loginError } = useLoginState();
+
+export function LoginForm({ login, isLoggingIn, loggedUser, loginError }: LoginState) {
   const [errorToShow, setErrorToShow] = useState<LoginError | undefined>(undefined);
   const formRef = useRef<HTMLFormElement>(null);
   const usernameRef = useRef<HTMLInputElement>(null);
@@ -14,27 +13,24 @@ export function Login() {
   useEffect(watchLoginError, [loginError]);
 
   if (loggedUser) {
-    return <NavigateTo to="wall" />
+    return <NavigateTo to="wall" />;
   }
 
   return (
-    <article className="login">
-      <form ref={formRef} autoComplete="on" onSubmit={submitLogin}>
-        <header><h3>Welcome to OpenChat</h3></header>
-        <div>
-          <input ref={usernameRef} autoComplete="on" name="username" placeholder="username" disabled={isLoggingIn}
-            onKeyDown={focusPasswordOnEnter} onChange={hideError} />
-        </div>
-        <div>
-          <input ref={passwordRef} autoComplete="on" name="password" placeholder="password" type="password" disabled={isLoggingIn}
-            onKeyDown={performLoginOnEnter} onChange={hideError} />
-        </div>
-        <footer>
-          <button type="submit" aria-busy={isLoggingIn} disabled={isLoggingIn}>Login</button>
-          {errorToShow && <div className="error">{errorToShow}</div>}
-        </footer>
-      </form>
-    </article>
+    <form ref={formRef} autoComplete="on" onSubmit={submitLogin}>
+      <div>
+        <input ref={usernameRef} autoComplete="on" name="username" placeholder="username" disabled={isLoggingIn}
+          onKeyDown={focusPasswordOnEnter} onChange={hideError} />
+      </div>
+      <div>
+        <input ref={passwordRef} autoComplete="on" name="password" placeholder="password" type="password" disabled={isLoggingIn}
+          onKeyDown={performLoginOnEnter} onChange={hideError} />
+      </div>
+      <footer>
+        <button type="submit" aria-busy={isLoggingIn} disabled={isLoggingIn}>Login</button>
+        {errorToShow && <div className="error">{errorToShow}</div>}
+      </footer>
+    </form>
   );
 
   function watchLoggedUser() {
