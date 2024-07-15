@@ -1,8 +1,6 @@
 import '@testing-library/jest-dom/vitest';
 import { render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import React from 'react';
-import { describe, expect, it } from 'vitest';
 import { LogoutButton } from '../../src/Logout/LogoutButton';
 import { mockUserSession } from '../utils/MockUserSession';
 import { RouteLocation, wrapWithCustomRoutes } from '../utils/renderHelpers';

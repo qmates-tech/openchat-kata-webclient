@@ -1,5 +1,4 @@
 import { HttpResponse } from 'msw';
-import { afterEach, describe, expect, it } from 'vitest';
 import { createLoginAPI } from '../../src/Login/LoginAPI';
 import { createMockServer } from '../utils/MockServer';
 

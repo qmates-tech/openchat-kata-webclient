@@ -1,5 +1,4 @@
 import { act, renderHook, waitFor } from '@testing-library/react';
-import { beforeEach, describe, expect, it, vi } from 'vitest';
 import { User } from '../../src/User/User';
 import { useUserSession } from '../../src/User/UserSessionState';
 import { wrapWithUserSession } from '../utils/renderHelpers';

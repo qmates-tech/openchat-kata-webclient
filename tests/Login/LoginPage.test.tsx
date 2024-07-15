@@ -1,7 +1,5 @@
 import '@testing-library/jest-dom/vitest';
 import { render, screen } from "@testing-library/react";
-import React from 'react';
-import { describe, expect, it } from 'vitest';
 import { LoginPage } from '../../src/Login/LoginPage';
 import { mockUserSession } from '../utils/MockUserSession';
 import { wrapWithCustomRoutes } from '../utils/renderHelpers';
