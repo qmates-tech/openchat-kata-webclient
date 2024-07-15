@@ -1,17 +1,13 @@
 import '@testing-library/jest-dom/vitest';
-import { cleanup, render, screen } from "@testing-library/react";
+import { render, screen } from "@testing-library/react";
 import React from 'react';
-import { beforeEach, describe, expect, it } from 'vitest';
+import { describe, expect, it } from 'vitest';
 import { LoginPage } from '../../src/Login/LoginPage';
 import { mockUserSession } from '../utils/MockUserSession';
 import { wrapWithCustomRoutes } from '../utils/renderHelpers';
 
 describe("LoginPage Component", () => {
   const anUser = { id: "1", username: "Pippo", about: "Pippo description" }
-
-  beforeEach(() => {
-    cleanup();
-  });
 
   it("renders the login page when not logged in", () => {
     mockUserSession({ currentUser: undefined });

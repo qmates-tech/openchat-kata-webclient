@@ -1,18 +1,14 @@
 import '@testing-library/jest-dom/vitest';
-import { cleanup, render, screen, waitFor } from '@testing-library/react';
+import { render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import React from 'react';
-import { beforeEach, describe, expect, it } from 'vitest';
+import { describe, expect, it } from 'vitest';
 import { LogoutButton } from '../../src/Logout/LogoutButton';
 import { mockUserSession } from '../utils/MockUserSession';
 import { RouteLocation, wrapWithCustomRoutes } from '../utils/renderHelpers';
 
 describe('LogoutButton Component', () => {
   const anUser = { id: '123', username: 'alessio', about: 'About Alessio' };
-
-  beforeEach(() => {
-    cleanup();
-  });
 
   it('show the LogoutButton when the user is logged in', async () => {
     mockUserSession({ currentUser: anUser });

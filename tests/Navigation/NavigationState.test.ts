@@ -1,13 +1,9 @@
-import { cleanup, renderHook } from '@testing-library/react';
-import { beforeEach, describe, expect, it } from 'vitest';
+import { renderHook } from '@testing-library/react';
+import { describe, expect, it } from 'vitest';
 import { useNavigationState } from '../../src/Navigation/NavigationState';
 import { RouteLocation, wrapWithCustomRoutes } from '../utils/renderHelpers';
 
 describe('Navigator State', () => {
-  beforeEach(() => {
-    cleanup();
-  });
-
   it('currentPath', async () => {
     const { result } = renderHook(useNavigationState, withRouter({ path: '/current' }));
 

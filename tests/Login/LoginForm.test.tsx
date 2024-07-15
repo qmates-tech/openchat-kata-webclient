@@ -1,17 +1,13 @@
 import '@testing-library/jest-dom/vitest';
-import { cleanup, render, screen } from '@testing-library/react';
+import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import React from 'react';
-import { beforeEach, describe, expect, it, vi } from 'vitest';
+import { describe, expect, it, vi } from 'vitest';
 import { LoginForm } from '../../src/Login/LoginForm';
 
 describe('LoginForm Component', () => {
   const defaultProps =
     { login: vi.fn, isLoggingIn: false, loggedUser: undefined, loginError: undefined };
-
-  beforeEach(() => {
-    cleanup();
-  });
 
   it('shows the loading message', async () => {
     render(<LoginForm {...defaultProps} isLoggingIn />);

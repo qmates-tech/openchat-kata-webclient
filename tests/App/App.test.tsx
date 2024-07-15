@@ -1,16 +1,12 @@
 import '@testing-library/jest-dom/vitest';
-import { cleanup, render, screen } from "@testing-library/react";
+import { render, screen } from "@testing-library/react";
 import React from 'react';
-import { beforeEach, describe, expect, it } from 'vitest';
+import { describe, expect, it } from 'vitest';
 import { App } from "../../src/App/App";
 import { mockUserSession } from '../utils/MockUserSession';
 import { wrapWithRouter } from '../utils/renderHelpers';
 
 describe("App", () => {
-  beforeEach(() => {
-    cleanup();
-  });
-
   it("do not render any private page while retrieving the user", () => {
     mockUserSession({ retrieving: true });
 

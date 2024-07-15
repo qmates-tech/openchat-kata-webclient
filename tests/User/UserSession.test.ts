@@ -1,4 +1,4 @@
-import { cleanup, renderHook, waitFor } from '@testing-library/react';
+import { act, renderHook, waitFor } from '@testing-library/react';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 import { User } from '../../src/User/User';
 import { useUserSession } from '../../src/User/UserSessionState';
@@ -8,12 +8,12 @@ describe('User Session', () => {
   const anUser: User = { id: "123", username: "alessio", about: "About Alessio" };
 
   beforeEach(() => {
-    cleanup();
     localStorage.clear();
   });
 
   it('throw error if it is used outside its Provider', async () => {
     suppressConsoleErrors();
+
     expect(() => renderHook(useUserSession))
       .toThrowError('useUserSession must be used within a UserSessionProvider');
   });
@@ -21,7 +21,7 @@ describe('User Session', () => {
   it('save to the localstorage on login', async () => {
     const { result } = renderHook(() => useUserSession(), wrapWithUserSession());
 
-    result.current.setUserSession(anUser);
+    await act(() => result.current.setUserSession(anUser));
 
     await waitFor(() => {
       expect(localStorage.getItem("openChatSession")).toStrictEqual(JSON.stringify(anUser));
@@ -33,7 +33,7 @@ describe('User Session', () => {
     localStorage.setItem("openChatSession", JSON.stringify(anUser));
     const { result } = renderHook(() => useUserSession(), wrapWithUserSession());
 
-    result.current.setUserSession(undefined);
+    await act(() => result.current.setUserSession(undefined));
 
     await waitFor(() => {
       expect(localStorage.getItem("openChatSession")).toBeNull();

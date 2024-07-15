@@ -1,15 +1,11 @@
 import '@testing-library/jest-dom/vitest';
-import { cleanup, render, screen } from '@testing-library/react';
+import { render, screen } from '@testing-library/react';
 import React from 'react';
-import { beforeEach, describe, expect, it } from 'vitest';
+import { describe, expect, it } from 'vitest';
 import { WallPage } from '../../src/Wall/WallPage';
 import { mockUserSession } from '../utils/MockUserSession';
 
 describe('Login Component', () => {
-  beforeEach(() => {
-    cleanup();
-  });
-
   it('renders the username', async () => {
     mockUserSession({ currentUser: { id: '1', username: 'John Doe', about: '' } });
 
