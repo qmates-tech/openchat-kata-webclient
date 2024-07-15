@@ -1,13 +1,12 @@
 import '@testing-library/jest-dom/vitest';
 import { cleanup, render, screen } from '@testing-library/react';
 import React from 'react';
-import { beforeEach, describe, expect, it, vi } from 'vitest';
+import { beforeEach, describe, expect, it } from 'vitest';
 import { WallPage } from '../../src/Wall/WallPage';
 import { mockUserSession } from '../utils/MockUserSession';
 
 describe('Login Component', () => {
   beforeEach(() => {
-    vi.clearAllMocks();
     cleanup();
   });
 

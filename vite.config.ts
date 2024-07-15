@@ -3,6 +3,7 @@ import react from '@vitejs/plugin-react'
 
 export default defineConfig({
   test: {
+    restoreMocks: true,
     reporters: ['verbose'],
     environment: 'jsdom',
     coverage: {

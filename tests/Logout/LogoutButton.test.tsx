@@ -1,17 +1,16 @@
 import '@testing-library/jest-dom/vitest';
 import { cleanup, render, screen, waitFor } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
 import React from 'react';
-import { beforeEach, describe, expect, it, vi } from 'vitest';
+import { beforeEach, describe, expect, it } from 'vitest';
 import { LogoutButton } from '../../src/Logout/LogoutButton';
 import { mockUserSession } from '../utils/MockUserSession';
 import { RouteLocation, wrapWithCustomRoutes } from '../utils/renderHelpers';
-import userEvent from '@testing-library/user-event';
 
 describe('LogoutButton Component', () => {
   const anUser = { id: '123', username: 'alessio', about: 'About Alessio' };
 
   beforeEach(() => {
-    vi.clearAllMocks();
     cleanup();
   });
 

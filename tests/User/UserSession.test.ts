@@ -8,12 +8,12 @@ describe('User Session', () => {
   const anUser: User = { id: "123", username: "alessio", about: "About Alessio" };
 
   beforeEach(() => {
-    vi.clearAllMocks();
     cleanup();
     localStorage.clear();
   });
 
   it('throw error if it is used outside its Provider', async () => {
+    suppressConsoleErrors();
     expect(() => renderHook(useUserSession))
       .toThrowError('useUserSession must be used within a UserSessionProvider');
   });
@@ -51,3 +51,8 @@ describe('User Session', () => {
     });
   });
 });
+
+function suppressConsoleErrors() {
+  vi.spyOn(console, 'error').mockImplementation(() => { });
+}
+

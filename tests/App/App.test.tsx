@@ -1,14 +1,13 @@
 import '@testing-library/jest-dom/vitest';
 import { cleanup, render, screen } from "@testing-library/react";
 import React from 'react';
-import { beforeEach, describe, expect, it, vi } from 'vitest';
+import { beforeEach, describe, expect, it } from 'vitest';
 import { App } from "../../src/App/App";
 import { mockUserSession } from '../utils/MockUserSession';
 import { wrapWithRouter } from '../utils/renderHelpers';
 
 describe("App", () => {
   beforeEach(() => {
-    vi.clearAllMocks();
     cleanup();
   });
 
