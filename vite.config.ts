@@ -8,6 +8,7 @@ export default defineConfig({
     restoreMocks: true,
     reporters: ['verbose'],
     environment: 'jsdom',
+    setupFiles: ['./tests/setupTests.ts'],
     coverage: {
       provider: 'v8',
       reporter: ['text', 'json', 'html'],

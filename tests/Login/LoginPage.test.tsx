@@ -1,4 +1,3 @@
-import '@testing-library/jest-dom/vitest';
 import { render, screen } from "@testing-library/react";
 import { LoginPage } from '../../src/Login/LoginPage';
 import { mockUserSession } from '../utils/MockUserSession';
