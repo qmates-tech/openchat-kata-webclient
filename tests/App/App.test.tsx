@@ -1,9 +1,12 @@
 import { render, screen } from "@testing-library/react";
 import { App } from "../../src/App/App";
+import { User } from "../../src/User/User";
 import { mockUserSession } from '../utils/MockUserSession';
 import { wrapWithRouter } from '../utils/renderHelpers';
 
 describe("App", () => {
+  const anUser: User = { id: "1", username: "Pippo", about: "Pippo description" }
+
   it("do not render any private page while retrieving the user", () => {
     mockUserSession({ retrieving: true });
 
@@ -13,17 +16,9 @@ describe("App", () => {
     expect(screen.queryByText("Welcome to OpenChat")).not.toBeInTheDocument();
   });
 
-  it("renders the login page", () => {
-    mockUserSession({ currentUser: undefined });
-
-    render(<App />, wrapWithRouter({ path: "/login" }));
-
-    expect(screen.getByText("Welcome to OpenChat")).toBeInTheDocument();
-  });
-
   describe("Wall Page", () => {
     it("renders the Wall when already logged in", () => {
-      mockUserSession({ currentUser: { id: "1", username: "Pippo", about: "Pippo description" } });
+      mockUserSession({ currentUser: anUser });
 
       render(<App />, wrapWithRouter({ path: "/" }));
 
@@ -39,6 +34,24 @@ describe("App", () => {
     });
   });
 
+  describe("Login Page", () => {
+    it("renders the login page when not logged in", () => {
+      mockUserSession({ currentUser: undefined });
+
+      render(<App />, wrapWithRouter({ path: "/login" }));
+
+      expect(screen.getByText("Welcome to OpenChat")).toBeInTheDocument();
+    });
+
+    it("redirects to the wall page when already logged in", () => {
+      mockUserSession({ currentUser: anUser });
+
+      render(<App />, wrapWithRouter({ path: "/login" }));
+
+      expect(screen.getByText("Pippo's wall")).toBeInTheDocument();
+    });
+  });
+
   describe("Not Found Page", () => {
     it("renders the not found page when not logged in", () => {
       mockUserSession({ currentUser: undefined });
@@ -49,7 +62,7 @@ describe("App", () => {
     });
 
     it("renders the not found page when logged in", () => {
-      mockUserSession({ currentUser: { id: "1", username: "i", about: "a" } });
+      mockUserSession({ currentUser: anUser });
 
       render(<App />, wrapWithRouter({ path: "/not-found" }));
 

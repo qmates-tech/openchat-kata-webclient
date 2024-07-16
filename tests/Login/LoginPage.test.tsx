@@ -1,25 +1,23 @@
-import { render, screen } from "@testing-library/react";
+import { render } from "@testing-library/react";
+import * as LoginFormToMock from "../../src/Login/LoginForm";
 import { LoginPage } from '../../src/Login/LoginPage';
-import { mockUserSession } from '../utils/MockUserSession';
-import { wrapWithCustomRoutes } from '../utils/renderHelpers';
+import { LoginState } from "../../src/Login/LoginState";
+import { mockUseLoginState } from "../utils/MockLoginState";
 
 describe("LoginPage Component", () => {
-  const anUser = { id: "1", username: "Pippo", about: "Pippo description" }
+  it("passes the full LoginState to the LoginForm when user is not logged in", async () => {
+    const mockedLoginForm = mockLoginForm();
+    const loginState = { isLoggingIn: false, loggedUser: undefined, loginError: undefined, login: () => "LOGIN" };
+    mockUseLoginState(loginState);
 
-  it("renders the login page when not logged in", () => {
-    mockUserSession({ currentUser: undefined });
+    render(<LoginPage />);
 
-    render(<LoginPage />, wrapWithCustomRoutes({ path: "/login" }, ["/", "/login"]));
-
-    expect(screen.getByText("Welcome to OpenChat")).toBeInTheDocument();
-    expect(screen.getByRole("button")).toHaveTextContent("Login");
-  });
-
-  it("redirects to the home page when already logged in", () => {
-    mockUserSession({ currentUser: anUser });
-
-    render(<LoginPage />, wrapWithCustomRoutes({ path: "/login" }, ["/", "/login"]));
-
-    expect(screen.getByText("ROUTE: /")).toBeInTheDocument();
+    expect(mockedLoginForm).toHaveBeenCalledWith(loginState)
   });
 });
+
+function mockLoginForm() {
+  const spy = vi.fn((_: LoginState) => <></>)
+  vi.spyOn(LoginFormToMock, "LoginForm").mockImplementation((props) => spy(props));
+  return spy;
+}
