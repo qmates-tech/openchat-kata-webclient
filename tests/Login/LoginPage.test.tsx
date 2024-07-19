@@ -18,12 +18,12 @@ describe("LoginPage Component", () => {
     expect(mockedLoginForm).toHaveBeenCalledWith(loginState)
   });
 
-  it("redirect to RegistrationPage when Sign Up link is clicked", async () => {
+  it("redirect to RegistrationPage when Register link is clicked", async () => {
     const mockedLinkTo = mockLinkTo();
     mockUseLoginState({ isLoggingIn: false, loggedUser: undefined });
     render(<LoginPage />, wrapWithRouter({ path: "/login" }));
 
-    userEvent.click(screen.getByText("Sign Up"));
+    userEvent.click(screen.getByText("Register"));
 
     expect(mockedLinkTo).toHaveBeenCalledWith(expect.objectContaining({ to: "registration" }));
   });

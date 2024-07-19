@@ -14,7 +14,7 @@ export function RegistrationPage() {
     <article className="registration">
       <header>
         <h3>Register now</h3>
-        <LinkTo className="link" to="login">Sign In</LinkTo>
+        <LinkTo className="link" to="login">Login</LinkTo>
       </header>
       <RegistrationForm />
     </article>
