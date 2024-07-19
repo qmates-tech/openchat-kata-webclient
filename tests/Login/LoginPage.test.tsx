@@ -23,7 +23,7 @@ describe("LoginPage Component", () => {
     mockUseLoginState({ isLoggingIn: false, loggedUser: undefined });
     render(<LoginPage />, wrapWithRouter({ path: "/login" }));
 
-    userEvent.click(screen.getByText("Register"));
+    await userEvent.click(screen.getByText("Register"));
 
     expect(mockedLinkTo).toHaveBeenCalledWith(expect.objectContaining({ to: "registration" }));
   });

@@ -42,8 +42,8 @@ describe('LogoutButton Component', () => {
     const mock = mockUserSession({ retrieving: false, currentUser: anUser });
     render(<LogoutButton />);
 
-    userEvent.click(screen.getByRole('button'));
+    await userEvent.click(screen.getByRole('button'));
 
-    await waitFor(() => expect(mock.setUserSession).toHaveBeenCalledWith(undefined));
+    expect(mock.setUserSession).toHaveBeenCalledWith(undefined);
   });
 });

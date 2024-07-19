@@ -7,16 +7,16 @@ describe("LinkTo", () => {
   it("redirect to the login route", async () => {
     render(<LinkTo to="login">LINK</LinkTo>, wrapWithCustomRoutes({ path: "/" }, ["/", "/login"]));
 
-    userEvent.click(screen.getByText("LINK"));
+    await userEvent.click(screen.getByText("LINK"));
 
-    expect(await screen.findByText("ROUTE: /login")).toBeInTheDocument();
+    expect(screen.getByText("ROUTE: /login")).toBeInTheDocument();
   });
 
   it("redirect to the home route", async () => {
     render(<LinkTo to="wall">LINK</LinkTo>, wrapWithCustomRoutes({ path: "/login" }, ["/", "/login"]));
 
-    userEvent.click(screen.getByText("LINK"));
+    await userEvent.click(screen.getByText("LINK"));
 
-    expect(await screen.findByText("ROUTE: /")).toBeInTheDocument();
+    expect(screen.getByText("ROUTE: /")).toBeInTheDocument();
   });
 });
