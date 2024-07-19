@@ -9,7 +9,6 @@ export function Navigation() {
         <li>OpenChat</li>
       </ul>
       <ul>
-        <li><Link to="/" className="contrast">Wall</Link></li>
         <li><LogoutButton /></li>
       </ul>
     </nav>
