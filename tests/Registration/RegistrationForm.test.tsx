@@ -51,8 +51,8 @@ describe('RegistrationForm Component', () => {
     expect(state.validate).toHaveBeenCalledTimes(5);
   })
 
-  it('should disable the button when the form is invalid', async () => {
-    const state = mockUseRegistrationState({ validationErrors: { hasErrors: true } });
+  it('should disable the button when the form has a FIELDS_MISSING error', async () => {
+    const state = mockUseRegistrationState({ validationError: "FIELDS_MISSING" });
     render(<RegistrationForm {...state} />);
 
     await userEvent.type(usernameInput(), "only user data");
@@ -61,7 +61,7 @@ describe('RegistrationForm Component', () => {
   })
 
   it('should enable the button when the form is valid', async () => {
-    const state = mockUseRegistrationState({ validationErrors: { hasErrors: false } });
+    const state = mockUseRegistrationState({});
     render(<RegistrationForm {...state} />);
 
     await userEvent.type(usernameInput(), "all the data needed");

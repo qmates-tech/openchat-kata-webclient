@@ -5,22 +5,27 @@ export type RegistrationData = {
   password?: string;
   repeatPassword?: string;
 };
+export type ValidationError = "FIELDS_MISSING" | "PASSWORDS_MISMATCH";
 export type RegistrationState = {
-  validationErrors: { hasErrors: boolean };
+  validationError?: ValidationError;
   validate(data: RegistrationData): void;
 };
 export function useRegistrationState(): RegistrationState {
-  const [validationErrors, setValidationErrors] = useState({ hasErrors: false });
+  const [validationError, setValidationError] = useState<ValidationError | undefined>();
 
   return {
-    validationErrors,
+    validationError,
     validate({ username, password, repeatPassword }: RegistrationData): void {
-      setValidationErrors({
-        hasErrors: !username
-          || !password
-          || !repeatPassword
-          || password !== repeatPassword
-      });
+      if (password !== repeatPassword) {
+        setValidationError("PASSWORDS_MISMATCH");
+        return;
+      }
+
+      if (!username || !password || !repeatPassword) {
+        setValidationError("FIELDS_MISSING");
+        return;
+      }
+      setValidationError(undefined);
     }
   }
 }

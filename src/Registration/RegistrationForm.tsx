@@ -1,7 +1,7 @@
 import { useRef } from "react";
 import { RegistrationData, RegistrationState } from "./RegistrationState";
 
-export function RegistrationForm({ validate, validationErrors }: RegistrationState) {
+export function RegistrationForm({ validate, validationError }: RegistrationState) {
   const formRef = useRef<HTMLFormElement>(null);
 
   return (
@@ -22,7 +22,7 @@ export function RegistrationForm({ validate, validationErrors }: RegistrationSta
         />
       </div>
       <footer>
-        <button type="submit" disabled={validationErrors.hasErrors}>Register</button>
+        <button type="submit" disabled={!!validationError}>Register</button>
       </footer>
     </form>
   );
