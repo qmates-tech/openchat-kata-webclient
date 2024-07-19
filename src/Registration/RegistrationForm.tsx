@@ -1,27 +1,24 @@
 import { useEffect, useRef, useState } from "react";
+import { RegistrationData, RegistrationState } from "./RegistrationState";
 
-export function RegistrationForm() {
-  const usernameRef = useRef<HTMLInputElement>(null);
-  const passwordRef = useRef<HTMLInputElement>(null);
-  const repeatPasswordRef = useRef<HTMLInputElement>(null);
+export function RegistrationForm({ validate }: RegistrationState) {
+  const formRef = useRef<HTMLFormElement>(null);
   const [isFormValid, setIsFormValid] = useState(false);
 
-  useEffect(validateForm, []);
-
   return (
-    <form>
+    <form ref={formRef}>
       <div>
-        <input ref={usernameRef} required autoComplete="username" name="username" placeholder="username"
+        <input required name="username" placeholder="username"
           onChange={validateForm}
         />
       </div>
       <div>
-        <input ref={passwordRef} required name="password" placeholder="password" type="password"
+        <input required name="password" placeholder="password" type="password"
           onChange={validateForm}
         />
       </div>
       <div>
-        <input ref={repeatPasswordRef} required name="password" placeholder="repeat password" type="password"
+        <input required name="repeatPassword" placeholder="repeat password" type="password"
           onChange={validateForm}
         />
       </div>
@@ -32,11 +29,11 @@ export function RegistrationForm() {
   );
 
   function validateForm() {
-    const isValid = !!usernameRef?.current?.value
-      && !!passwordRef?.current?.value
-      && !!repeatPasswordRef?.current?.value
-      && passwordRef?.current?.value === repeatPasswordRef?.current?.value;
+    setIsFormValid(validate(registrationData()));
+  }
 
-    setIsFormValid(isValid);
+  function registrationData(): RegistrationData {
+    const formData = new FormData(formRef.current!);
+    return Object.fromEntries(formData.entries());
   }
 }
