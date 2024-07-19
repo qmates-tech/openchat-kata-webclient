@@ -1,7 +1,9 @@
-import { render } from "@testing-library/react";
+import { render, screen } from "@testing-library/react";
+import userEvent from '@testing-library/user-event';
 import * as LoginFormToMock from "../../src/Login/LoginForm";
 import { LoginPage } from '../../src/Login/LoginPage';
 import { LoginState } from "../../src/Login/LoginState";
+import { mockLinkTo } from "../utils/MockLinkTo";
 import { mockUseLoginState } from "../utils/MockLoginState";
 import { wrapWithRouter } from "../utils/renderHelpers";
 
@@ -14,6 +16,16 @@ describe("LoginPage Component", () => {
     render(<LoginPage />, wrapWithRouter({ path: "/login" }));
 
     expect(mockedLoginForm).toHaveBeenCalledWith(loginState)
+  });
+
+  it("redirect to RegistrationPage when Sign Up link is clicked", async () => {
+    const mockedLinkTo = mockLinkTo();
+    mockUseLoginState({ isLoggingIn: false, loggedUser: undefined });
+    render(<LoginPage />, wrapWithRouter({ path: "/login" }));
+
+    userEvent.click(screen.getByText("Sign Up"));
+
+    expect(mockedLinkTo).toHaveBeenCalledWith(expect.objectContaining({ to: "registration" }));
   });
 });
 

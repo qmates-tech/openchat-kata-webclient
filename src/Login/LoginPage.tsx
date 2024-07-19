@@ -1,4 +1,5 @@
 import { Link } from 'react-router-dom';
+import { LinkTo } from '../Navigation/LinkTo';
 import { NavigateTo } from '../Navigation/NavigateTo';
 import './Login.css';
 import { LoginForm } from "./LoginForm";
@@ -15,7 +16,7 @@ export function LoginPage() {
     <article className="login">
       <header>
         <h3>Welcome to OpenChat</h3>
-        <Link className="registration-link" to="/register">Sign Up</Link>
+        <LinkTo className="registration-link" to="registration">Sign Up</LinkTo>
       </header>
       <LoginForm {...loginState} />
     </article>

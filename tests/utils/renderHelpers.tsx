@@ -18,13 +18,9 @@ export function wrapWithCustomRoutes(location: RouteLocation, routes: string[]) 
   return {
     wrapper: ({ children }: WrapperProps): ReactNode => (<>
       <MemoryRouter initialEntries={[fromRouteLocation(location)]} >
+        {children}
         <Routes>
-          {routes.map((route, index) => {
-            if (location.path === route) {
-              return <Route key={index} path={route} element={children} />
-            }
-            return <Route key={index} path={route} element={<div>ROUTE: {route}</div>} />
-          })}
+          {routes.map((route, index) => <Route key={index} path={route} element={<div>ROUTE: {route}</div>} />)}
         </Routes>
       </MemoryRouter>
     </>)
