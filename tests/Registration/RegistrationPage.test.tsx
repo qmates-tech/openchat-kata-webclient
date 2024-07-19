@@ -12,7 +12,7 @@ describe("RegistrationPage Component", () => {
   it("passes the full RegistrationState to the RegistrationForm", async () => {
     mockUserSession({ currentUser: undefined });
     const mockedRegistrationForm = mockRegistrationForm();
-    const registrationState = { validationErrors: { hasErrors: false }, validate: () => false }
+    const registrationState = { validate: () => undefined }
     mockUseRegistrationState(registrationState);
 
     render(<RegistrationPage />, wrapWithRouter({ path: "/register" }));

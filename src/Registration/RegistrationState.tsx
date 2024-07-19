@@ -1,31 +1,25 @@
-import { useState } from "react";
 
 export type RegistrationData = {
   username?: string;
   password?: string;
   repeatPassword?: string;
 };
-export type ValidationError = "FIELDS_MISSING" | "PASSWORDS_MISMATCH";
+export type ValidationError = "FIELDS_MISSING" | "PASSWORDS_MISMATCH" | undefined;
 export type RegistrationState = {
-  validationError?: ValidationError;
-  validate(data: RegistrationData): void;
+  validate(data: RegistrationData): ValidationError;
 };
 export function useRegistrationState(): RegistrationState {
-  const [validationError, setValidationError] = useState<ValidationError | undefined>();
-
   return {
-    validationError,
-    validate({ username, password, repeatPassword }: RegistrationData): void {
+    validate({ username, password, repeatPassword }: RegistrationData): ValidationError {
       if (password !== repeatPassword) {
-        setValidationError("PASSWORDS_MISMATCH");
-        return;
+        return "PASSWORDS_MISMATCH";
       }
 
       if (!username || !password || !repeatPassword) {
-        setValidationError("FIELDS_MISSING");
-        return;
+        return "FIELDS_MISSING";
       }
-      setValidationError(undefined);
+
+      return undefined;
     }
   }
 }

@@ -3,8 +3,7 @@ import * as toMock from '../../src/Registration/RegistrationState';
 
 export function mockUseRegistrationState(obj: Partial<toMock.RegistrationState> = {}): toMock.RegistrationState {
   const mocked = {
-    validate: vi.fn(),
-    validationError: undefined,
+    validate: vi.fn(() => undefined),
     ...obj
   };
   vi.spyOn(toMock, "useRegistrationState").mockImplementation(() => mocked);

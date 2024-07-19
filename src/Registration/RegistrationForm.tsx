@@ -1,8 +1,10 @@
-import { useRef } from "react";
-import { RegistrationData, RegistrationState } from "./RegistrationState";
+import { useRef, useState } from "react";
+import { RegistrationData, RegistrationState, ValidationError } from "./RegistrationState";
 
-export function RegistrationForm({ validate, validationError }: RegistrationState) {
+export function RegistrationForm({ validate }: RegistrationState) {
   const formRef = useRef<HTMLFormElement>(null);
+  const [validationError, setValidationError] = useState<ValidationError | undefined>();
+
   const hasValidationError = !!validationError;
   const fieldsMissing = validationError === "FIELDS_MISSING";
   const passwordMismatch = validationError === "PASSWORDS_MISMATCH";
@@ -33,7 +35,7 @@ export function RegistrationForm({ validate, validationError }: RegistrationStat
   );
 
   function validateForm() {
-    validate(registrationData());
+    setValidationError(validate(registrationData()));
   }
 
   function registrationData(): RegistrationData {

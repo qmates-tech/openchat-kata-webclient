@@ -52,7 +52,7 @@ describe('RegistrationForm Component', () => {
   })
 
   it('should disable the registration when the form has a FIELDS_MISSING error', async () => {
-    const state = mockUseRegistrationState({ validationError: "FIELDS_MISSING" });
+    const state = mockUseRegistrationState({ validate: () => "FIELDS_MISSING" });
     render(<RegistrationForm {...state} />);
 
     await userEvent.type(usernameInput(), "any");
@@ -64,7 +64,7 @@ describe('RegistrationForm Component', () => {
   })
 
   it('should disable the registration when the form has a PASSWORDS_MISMATCH error', async () => {
-    const state = mockUseRegistrationState({ validationError: "PASSWORDS_MISMATCH" });
+    const state = mockUseRegistrationState({ validate: () => "PASSWORDS_MISMATCH" });
     render(<RegistrationForm {...state} />);
 
     await userEvent.type(usernameInput(), "any");
