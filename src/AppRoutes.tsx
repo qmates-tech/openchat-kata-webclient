@@ -1,15 +1,17 @@
 import { Route, RouteProps, Routes } from "react-router-dom";
-import { PageNotFound } from "./NotFound/PageNotFound";
 import { PrivateRoute } from "./App/PrivateRoute";
 import { LoginPage } from "./Login/LoginPage";
+import { PageNotFound } from "./NotFound/PageNotFound";
+import { RegistrationPage } from "./Registration/RegistrationPage";
 import { WallPage } from "./Wall/WallPage";
 
-export type RouteName = 'login' | 'wall' | 'pageNotFound';
+export type RouteName = 'login' | 'registration' | 'wall' | 'pageNotFound';
 
 const routes: Record<RouteName, RouteProps> = {
   login: { path: '/login', element: <LoginPage /> },
   wall: { path: '/', element: <PrivateRoute><WallPage /></PrivateRoute> },
-  pageNotFound: { path: '*', element: <PageNotFound /> }
+  registration: { path: '/register', element: <RegistrationPage /> },
+  pageNotFound: { path: '*', element: <PageNotFound /> },
 }
 
 export function AppRoutes() {

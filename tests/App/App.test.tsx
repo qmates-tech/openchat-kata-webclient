@@ -52,6 +52,24 @@ describe("App", () => {
     });
   });
 
+  describe("Registration Page", () => {
+    it("renders the registration page when not logged in", () => {
+      mockUserSession({ currentUser: undefined });
+
+      render(<App />, wrapWithRouter({ path: "/register" }));
+
+      expect(screen.getByText("Register now")).toBeInTheDocument();
+    });
+
+    it("redirects to the wall page when already logged in", () => {
+      mockUserSession({ currentUser: anUser });
+
+      render(<App />, wrapWithRouter({ path: "/register" }));
+
+      expect(screen.getByText("Pippo's wall")).toBeInTheDocument();
+    });
+  });
+
   describe("Not Found Page", () => {
     it("renders the not found page when not logged in", () => {
       mockUserSession({ currentUser: undefined });
