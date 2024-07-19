@@ -16,7 +16,7 @@ export function LoginPage() {
     <article className="login">
       <header>
         <h3>Welcome to OpenChat</h3>
-        <LinkTo className="registration-link" to="registration">Sign Up</LinkTo>
+        <LinkTo className="link" to="registration">Sign Up</LinkTo>
       </header>
       <LoginForm {...loginState} />
     </article>

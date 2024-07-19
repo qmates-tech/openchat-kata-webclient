@@ -17,6 +17,17 @@
   flex: 1;
 }
 
+article header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+article header .link {
+  text-wrap: nowrap;
+  display: none;
+}
+
 article footer {
   display: flex;
   justify-content: space-between;

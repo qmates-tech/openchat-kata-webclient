@@ -2,17 +2,6 @@
   color: var(--pico-color-red-550);
 }
 
-.login header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-
-.login .registration-link {
-  text-wrap: nowrap;
-  display: none;
-}
-
 button[type="submit"] {
   width: auto;
   margin-bottom: 0;
