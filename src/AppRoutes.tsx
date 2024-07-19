@@ -5,13 +5,12 @@ import { PageNotFound } from "./NotFound/PageNotFound";
 import { RegistrationPage } from "./Registration/RegistrationPage";
 import { WallPage } from "./Wall/WallPage";
 
-export type RouteName = 'login' | 'registration' | 'wall' | 'pageNotFound';
+export type RouteName = 'login' | 'registration' | 'wall';
 
 const routes: Record<RouteName, RouteProps> = {
   login: { path: '/login', element: <LoginPage /> },
   wall: { path: '/', element: <PrivateRoute><WallPage /></PrivateRoute> },
   registration: { path: '/register', element: <RegistrationPage /> },
-  pageNotFound: { path: '*', element: <PageNotFound /> },
 }
 
 export function AppRoutes() {
@@ -19,6 +18,7 @@ export function AppRoutes() {
     {Object.entries(routes).map(([key, props]) => (
       <Route key={key} {...props} />
     ))}
+    <Route path="*" element={<PageNotFound />} />
   </Routes>
 }
 
