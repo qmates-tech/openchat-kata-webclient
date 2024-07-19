@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { useRef, useState } from "react";
 import { RegistrationData, RegistrationState } from "./RegistrationState";
 
 export function RegistrationForm({ validate }: RegistrationState) {
