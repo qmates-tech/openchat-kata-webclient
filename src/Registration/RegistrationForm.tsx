@@ -1,9 +1,8 @@
-import { useRef, useState } from "react";
+import { useRef } from "react";
 import { RegistrationData, RegistrationState } from "./RegistrationState";
 
-export function RegistrationForm({ validate }: RegistrationState) {
+export function RegistrationForm({ validate, validationErrors }: RegistrationState) {
   const formRef = useRef<HTMLFormElement>(null);
-  const [isFormValid, setIsFormValid] = useState(false);
 
   return (
     <form ref={formRef}>
@@ -23,13 +22,13 @@ export function RegistrationForm({ validate }: RegistrationState) {
         />
       </div>
       <footer>
-        <button type="submit" disabled={!isFormValid}>Register</button>
+        <button type="submit" disabled={validationErrors.hasErrors}>Register</button>
       </footer>
     </form>
   );
 
   function validateForm() {
-    setIsFormValid(validate(registrationData()));
+    validate(registrationData());
   }
 
   function registrationData(): RegistrationData {

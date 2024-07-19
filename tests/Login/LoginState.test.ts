@@ -24,7 +24,7 @@ describe('Login State', () => {
     mockCreateLoginAPI({ login: succeedWith(anUser) });
     const { result } = renderHook(useLoginState, wrapWithUserSession());
 
-    await act(() => result.current.login("right_user", "right_password"));
+    act(() => result.current.login("right_user", "right_password"));
 
     await waitFor(() => {
       expect(result.current.loggedUser).toStrictEqual(anUser);
@@ -35,7 +35,7 @@ describe('Login State', () => {
     mockCreateLoginAPI({ login: succeedWith(anUser, 100) });
     const { result } = renderHook(useLoginState, wrapWithUserSession());
 
-    await act(() => result.current.login("right_user", "right_password"));
+    act(() => result.current.login("right_user", "right_password"));
 
     await waitFor(() => expect(result.current.isLoggingIn).toStrictEqual(true));
     await waitFor(() => expect(result.current.isLoggingIn).toStrictEqual(false));
@@ -45,7 +45,7 @@ describe('Login State', () => {
     mockCreateLoginAPI({ login: failsWith("any error", 100) });
     const { result } = renderHook(useLoginState, wrapWithUserSession());
 
-    await act(() => result.current.login("right_user", "right_password"));
+    act(() => result.current.login("right_user", "right_password"));
 
     await waitFor(() => expect(result.current.isLoggingIn).toStrictEqual(true));
     await waitFor(() => expect(result.current.isLoggingIn).toStrictEqual(false));
@@ -55,7 +55,7 @@ describe('Login State', () => {
     mockCreateLoginAPI({ login: succeedWith(anUser) });
     const { result } = renderHook(useLoginState, wrapWithUserSession());
 
-    await act(() => result.current.login(undefined, undefined));
+    act(() => result.current.login(undefined, undefined));
 
     await waitFor(() => {
       expect(result.current.loginError).toBe("Invalid credentials");
@@ -67,7 +67,7 @@ describe('Login State', () => {
     const loginAPI = mockCreateLoginAPI({ login: succeedWith(anUser) });
     const { result } = renderHook(useLoginState, wrapWithUserSession());
 
-    await act(() => result.current.login("", "pwd"));
+    act(() => result.current.login("", "pwd"));
 
     expect(loginAPI.login).not.toHaveBeenCalled();
   });
@@ -76,7 +76,7 @@ describe('Login State', () => {
     const loginAPI = mockCreateLoginAPI({ login: succeedWith(anUser) });
     const { result } = renderHook(useLoginState, wrapWithUserSession());
 
-    await act(() => result.current.login("usr", ""));
+    act(() => result.current.login("usr", ""));
 
     expect(loginAPI.login).not.toHaveBeenCalled();
   });
@@ -85,7 +85,7 @@ describe('Login State', () => {
     mockCreateLoginAPI({ login: failsWith("INVALID_CREDENTIALS") });
     const { result } = renderHook(useLoginState, wrapWithUserSession());
 
-    await act(() => result.current.login("wrongUser", "wrongPassword"));
+    act(() => result.current.login("wrongUser", "wrongPassword"));
 
     await waitFor(() => {
       expect(result.current.loginError).toBe("Invalid credentials");
@@ -96,7 +96,7 @@ describe('Login State', () => {
     mockCreateLoginAPI({ login: failsWith("NETWORK_ERROR") });
     const { result } = renderHook(useLoginState, wrapWithUserSession());
 
-    await act(() => result.current.login("anyUser", "anyPassword"));
+    act(() => result.current.login("anyUser", "anyPassword"));
 
     await waitFor(() => {
       expect(result.current.loginError).toBe("Network error");
@@ -107,7 +107,7 @@ describe('Login State', () => {
     mockCreateLoginAPI({ login: failsWith("ANY_OTHER_ERROR") });
     const { result } = renderHook(useLoginState, wrapWithUserSession());
 
-    await act(() => result.current.login("anyUser", "anyPassword"));
+    act(() => result.current.login("anyUser", "anyPassword"));
 
     await waitFor(() => {
       expect(result.current.loginError).toBe("Generic error");
@@ -118,9 +118,9 @@ describe('Login State', () => {
     const loginAPI = mockCreateLoginAPI({ login: succeedWith(anUser, 50) });
     const { result } = renderHook(useLoginState, wrapWithUserSession());
 
-    await act(() => result.current.login("usr", "pwd"));
+    act(() => result.current.login("usr", "pwd"));
     await delay(10);
-    await act(() => result.current.login("another", "anotherPwd"));
+    act(() => result.current.login("another", "anotherPwd"));
 
     expect(loginAPI.login).toHaveBeenCalledTimes(1);
     expect(loginAPI.login).toHaveBeenCalledWith("usr", "pwd");
@@ -130,8 +130,8 @@ describe('Login State', () => {
     const loginAPI = mockCreateLoginAPI({ login: succeedWith(anUser) });
     const { result } = renderHook(useLoginState, wrapWithUserSession());
 
-    await act(() => result.current.login("any", "any"));
-    await act(() => result.current.login("any another", "any"));
+    act(() => result.current.login("any", "any"));
+    act(() => result.current.login("any another", "any"));
 
     expect(loginAPI.login).toHaveBeenCalledTimes(1);
   });

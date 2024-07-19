@@ -52,7 +52,7 @@ describe('RegistrationForm Component', () => {
   })
 
   it('should disable the button when the form is invalid', async () => {
-    const state = mockUseRegistrationState({ validate: () => false });
+    const state = mockUseRegistrationState({ validationErrors: { hasErrors: true } });
     render(<RegistrationForm {...state} />);
 
     await userEvent.type(usernameInput(), "only user data");
@@ -61,7 +61,7 @@ describe('RegistrationForm Component', () => {
   })
 
   it('should enable the button when the form is valid', async () => {
-    const state = mockUseRegistrationState({ validate: () => true });
+    const state = mockUseRegistrationState({ validationErrors: { hasErrors: false } });
     render(<RegistrationForm {...state} />);
 
     await userEvent.type(usernameInput(), "all the data needed");

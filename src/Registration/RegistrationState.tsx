@@ -1,18 +1,26 @@
+import { useState } from "react";
+
 export type RegistrationData = {
   username?: string;
   password?: string;
   repeatPassword?: string;
 };
 export type RegistrationState = {
-  validate(data: RegistrationData): boolean;
+  validationErrors: { hasErrors: boolean };
+  validate(data: RegistrationData): void;
 };
 export function useRegistrationState(): RegistrationState {
+  const [validationErrors, setValidationErrors] = useState({ hasErrors: false });
+
   return {
-    validate({ username, password, repeatPassword }: RegistrationData): boolean {
-      return !!username
-        && !!password
-        && !!repeatPassword
-        && password === repeatPassword;
+    validationErrors,
+    validate({ username, password, repeatPassword }: RegistrationData): void {
+      setValidationErrors({
+        hasErrors: !username
+          || !password
+          || !repeatPassword
+          || password !== repeatPassword
+      });
     }
   }
 }

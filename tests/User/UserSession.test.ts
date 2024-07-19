@@ -20,7 +20,7 @@ describe('User Session', () => {
   it('save to the localstorage on login', async () => {
     const { result } = renderHook(() => useUserSession(), wrapWithUserSession());
 
-    await act(() => result.current.setUserSession(anUser));
+    act(() => result.current.setUserSession(anUser));
 
     await waitFor(() => {
       expect(localStorage.getItem("openChatSession")).toStrictEqual(JSON.stringify(anUser));
@@ -32,7 +32,7 @@ describe('User Session', () => {
     localStorage.setItem("openChatSession", JSON.stringify(anUser));
     const { result } = renderHook(() => useUserSession(), wrapWithUserSession());
 
-    await act(() => result.current.setUserSession(undefined));
+    act(() => result.current.setUserSession(undefined));
 
     await waitFor(() => {
       expect(localStorage.getItem("openChatSession")).toBeNull();
