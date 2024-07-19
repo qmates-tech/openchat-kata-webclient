@@ -38,6 +38,10 @@ article footer [type=button] {
   margin-bottom: 0;
 }
 
+article footer .error {
+  color: var(--pico-color-red-550);
+}
+
 article header > h3 {
   margin-top: var(--pico-typography-spacing-vertical);
   margin-bottom: var(--pico-typography-spacing-vertical);
