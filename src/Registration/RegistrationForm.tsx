@@ -11,7 +11,7 @@ export function RegistrationForm() {
         <input name="password" placeholder="repeat the password" type="password" />
       </div>
       <footer>
-        <button type="submit">Register</button>
+        <button type="submit" disabled={true}>Register</button>
       </footer>
     </form>
   );
