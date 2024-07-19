@@ -19,6 +19,16 @@ describe('RegistrationForm Component', () => {
 
     expect(screen.getByRole('button')).not.toHaveAttribute('disabled');
   })
+
+  it('disable the button when the password do not match', async () => {
+    render(<RegistrationForm />);
+
+    await userEvent.type(usernameInput(), "an user");
+    await userEvent.type(passwordInput(), "a password");
+    await userEvent.type(repeatPasswordInput(), "another password");
+
+    expect(screen.getByRole('button')).toHaveAttribute('disabled');
+  })
 })
 
 function usernameInput() {

@@ -34,7 +34,8 @@ export function RegistrationForm() {
   function validateForm() {
     const isValid = !!usernameRef?.current?.value
       && !!passwordRef?.current?.value
-      && !!repeatPasswordRef?.current?.value;
+      && !!repeatPasswordRef?.current?.value
+      && passwordRef?.current?.value === repeatPasswordRef?.current?.value;
 
     setIsFormValid(isValid);
   }
