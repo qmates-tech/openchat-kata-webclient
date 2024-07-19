@@ -51,20 +51,35 @@ describe('RegistrationForm Component', () => {
     expect(state.validate).toHaveBeenCalledTimes(5);
   })
 
-  it('should disable the button when the form has a FIELDS_MISSING error', async () => {
+  it('should disable the registration when the form has a FIELDS_MISSING error', async () => {
     const state = mockUseRegistrationState({ validationError: "FIELDS_MISSING" });
     render(<RegistrationForm {...state} />);
 
-    await userEvent.type(usernameInput(), "only user data");
+    await userEvent.type(usernameInput(), "any");
 
     expect(screen.getByRole('button')).toHaveAttribute('disabled');
+    expect(screen.getByText('Please fill in all fields')).toBeVisible();
+    expect(passwordInput()).not.toHaveAttribute('aria-invalid');
+    expect(repeatPasswordInput()).not.toHaveAttribute('aria-invalid');
+  })
+
+  it('should disable the registration when the form has a PASSWORDS_MISMATCH error', async () => {
+    const state = mockUseRegistrationState({ validationError: "PASSWORDS_MISMATCH" });
+    render(<RegistrationForm {...state} />);
+
+    await userEvent.type(usernameInput(), "any");
+
+    expect(screen.getByRole('button')).toHaveAttribute('disabled');
+    expect(screen.getByText('Passwords do not match')).toBeVisible();
+    expect(passwordInput()).toHaveAttribute('aria-invalid', 'true');
+    expect(repeatPasswordInput()).toHaveAttribute('aria-invalid', 'true');
   })
 
   it('should enable the button when the form is valid', async () => {
     const state = mockUseRegistrationState({});
     render(<RegistrationForm {...state} />);
 
-    await userEvent.type(usernameInput(), "all the data needed");
+    await userEvent.type(usernameInput(), "any");
 
     expect(screen.getByRole('button')).not.toHaveAttribute('disabled');
   })

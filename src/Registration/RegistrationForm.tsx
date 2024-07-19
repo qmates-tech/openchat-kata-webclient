@@ -3,6 +3,9 @@ import { RegistrationData, RegistrationState } from "./RegistrationState";
 
 export function RegistrationForm({ validate, validationError }: RegistrationState) {
   const formRef = useRef<HTMLFormElement>(null);
+  const hasValidationError = !!validationError;
+  const fieldsMissing = validationError === "FIELDS_MISSING";
+  const passwordMismatch = validationError === "PASSWORDS_MISMATCH";
 
   return (
     <form ref={formRef}>
@@ -13,16 +16,18 @@ export function RegistrationForm({ validate, validationError }: RegistrationStat
       </div>
       <div>
         <input required name="password" placeholder="password" type="password"
-          onChange={validateForm}
+          onChange={validateForm} aria-invalid={passwordMismatch || undefined}
         />
       </div>
       <div>
         <input required name="repeatPassword" placeholder="repeat password" type="password"
-          onChange={validateForm}
+          onChange={validateForm} aria-invalid={passwordMismatch || undefined}
         />
       </div>
       <footer>
-        <button type="submit" disabled={!!validationError}>Register</button>
+        <button type="submit" disabled={hasValidationError}>Register</button>
+        {fieldsMissing && <div className="error">Please fill in all fields</div>}
+        {passwordMismatch && <div className="error">Passwords do not match</div>}
       </footer>
     </form>
   );
