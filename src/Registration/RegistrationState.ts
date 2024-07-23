@@ -1,6 +1,5 @@
-import { useMemo } from "react";
-import { createRegistrationAPI } from "./RegistrationAPI";
 import { useUserSession } from "../User/UserSessionState";
+import { createRegistrationAPI } from "./RegistrationAPI";
 
 export type RegistrationData = {
   username?: string;
@@ -14,9 +13,11 @@ export type RegistrationState = {
   validate(data: RegistrationData): ValidationError;
   register(data: RegistrationData): Promise<void>;
 };
-export function useRegistrationState(): RegistrationState {
+
+const registrationAPI = createRegistrationAPI();
+
+export function useRegistrationState({ register } = registrationAPI): RegistrationState {
   const { setUserSession } = useUserSession();
-  const { register } = useMemo(() => createRegistrationAPI(), []);
 
   return {
     async register({ username, password, about }: ValidRegistrationData): Promise<void> {
