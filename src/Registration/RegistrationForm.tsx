@@ -1,9 +1,10 @@
 import { useRef, useState } from "react";
 import { RegistrationData, RegistrationState, ValidationError } from "./RegistrationState";
 
-export function RegistrationForm({ validate }: RegistrationState) {
+export function RegistrationForm({ validate, register }: RegistrationState) {
   const formRef = useRef<HTMLFormElement>(null);
-  const [validationError, setValidationError] = useState<ValidationError | undefined>();
+  const [isRegistering, setIsRegistering] = useState<boolean>(false);
+  const [validationError, setValidationError] = useState<ValidationError | undefined>("FIELDS_MISSING");
 
   const hasValidationError = !!validationError;
   const fieldsMissing = validationError === "FIELDS_MISSING";
@@ -26,13 +27,23 @@ export function RegistrationForm({ validate }: RegistrationState) {
           onChange={validateForm} aria-invalid={passwordMismatch || undefined}
         />
       </div>
+      <div>
+        <textarea name="about" placeholder="Write something about yourself" onChange={validateForm} />
+      </div>
       <footer>
-        <button type="submit" disabled={hasValidationError}>Register</button>
+        <button type="submit" disabled={isRegistering || hasValidationError} aria-busy={isRegistering}
+          onClick={registerUser}>Register</button>
         {fieldsMissing && <div className="error">Please fill in all fields</div>}
         {passwordMismatch && <div className="error">Passwords do not match</div>}
       </footer>
     </form>
   );
+
+  function registerUser() {
+    setIsRegistering(true);
+    register(registrationData())
+      .finally(() => setIsRegistering(false));
+  }
 
   function validateForm() {
     setValidationError(validate(registrationData()));
