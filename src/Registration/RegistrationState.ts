@@ -1,3 +1,5 @@
+import { useMemo } from "react";
+import { createRegistrationAPI } from "./RegistrationAPI";
 
 export type RegistrationData = {
   username?: string;
@@ -5,15 +7,18 @@ export type RegistrationData = {
   repeatPassword?: string;
   about?: string;
 };
+export type ValidRegistrationData = Required<Omit<RegistrationData, 'repeatPassword'>>;
 export type ValidationError = "FIELDS_MISSING" | "PASSWORDS_MISMATCH" | undefined;
 export type RegistrationState = {
   validate(data: RegistrationData): ValidationError;
   register(data: RegistrationData): Promise<void>;
 };
 export function useRegistrationState(): RegistrationState {
+  const { register } = useMemo(() => createRegistrationAPI(), []);
+
   return {
-    async register({ username, password, repeatPassword, about }: RegistrationData): Promise<void> {
-      console.log("TODO: register user", { username, password, repeatPassword, about });
+    async register({ username, password, about }: ValidRegistrationData): Promise<void> {
+      await register(username, password, about);
     },
     validate({ username, password, repeatPassword }: RegistrationData): ValidationError {
       if (password !== repeatPassword) {
