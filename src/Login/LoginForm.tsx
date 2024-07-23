@@ -1,13 +1,14 @@
 import { KeyboardEvent, useEffect, useRef, useState } from "react";
-import { LoginError, LoginState } from "./LoginState";
+import { LoginError, useLoginState } from "./LoginState";
 
-export function LoginForm({ login, isLoggingIn, loggedUser, loginError }: LoginState) {
+export function LoginForm() {
+  const { login, isLoggingIn, loginError } = useLoginState();
   const [errorToShow, setErrorToShow] = useState<LoginError | undefined>(undefined);
   const formRef = useRef<HTMLFormElement>(null);
   const usernameRef = useRef<HTMLInputElement>(null);
   const passwordRef = useRef<HTMLInputElement>(null);
 
-  useEffect(watchLoggedUser, [loggedUser]);
+  useEffect(onFirstRender, []);
   useEffect(watchLoginError, [loginError]);
 
   return (
@@ -27,8 +28,8 @@ export function LoginForm({ login, isLoggingIn, loggedUser, loginError }: LoginS
     </form>
   );
 
-  function watchLoggedUser() {
-    !loggedUser && usernameRef.current?.focus();
+  function onFirstRender() {
+    usernameRef.current?.focus();
   }
 
   function watchLoginError() {

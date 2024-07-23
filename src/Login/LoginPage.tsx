@@ -1,14 +1,13 @@
-import { Link } from 'react-router-dom';
 import { LinkTo } from '../Navigation/LinkTo';
 import { NavigateTo } from '../Navigation/NavigateTo';
+import { useUserSession } from '../User/UserSessionState';
 import './Login.css';
 import { LoginForm } from "./LoginForm";
-import { useLoginState } from "./LoginState";
 
 export function LoginPage() {
-  const loginState = useLoginState();
+  const { currentUser } = useUserSession();
 
-  if (loginState.loggedUser) {
+  if (currentUser) {
     return <NavigateTo to="wall" />;
   }
 
@@ -18,7 +17,7 @@ export function LoginPage() {
         <h3>Welcome to OpenChat</h3>
         <LinkTo className="link" to="registration">Register</LinkTo>
       </header>
-      <LoginForm {...loginState} />
+      <LoginForm />
     </article>
   );
 }

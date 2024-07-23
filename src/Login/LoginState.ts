@@ -1,12 +1,10 @@
 import { useMemo, useState } from "react";
-import { User } from "../User/User";
 import { useUserSession } from "../User/UserSessionState";
 import { LoginAPIException, createLoginAPI } from "./LoginAPI";
 
 export type LoginError = 'Invalid credentials' | 'Network error' | 'Generic error';
 export type LoginState = {
   isLoggingIn: boolean;
-  loggedUser: User | undefined;
   loginError: LoginError | undefined;
   login(username: string | undefined, password: string | undefined): void;
 };
@@ -14,15 +12,14 @@ export function useLoginState(): LoginState {
   const { login } = useMemo(() => createLoginAPI(), []);
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [error, setError] = useState<LoginError | undefined>();
-  const { currentUser, retrieving, setUserSession } = useUserSession();
+  const { retrieving, setUserSession } = useUserSession();
   const isLoadingOrRetrieving = isLoading || retrieving;
 
   return {
     isLoggingIn: isLoadingOrRetrieving,
-    loggedUser: currentUser,
     loginError: error,
     login(username: string | undefined, password: string | undefined): void {
-      if (isLoadingOrRetrieving || currentUser) return;
+      if (isLoadingOrRetrieving) return;
       if (!username || !password) {
         setError("Invalid credentials");
         return;
