@@ -1,10 +1,11 @@
 import { useRef, useState } from "react";
-import { RegistrationData, RegistrationState, ValidationError } from "./RegistrationState";
+import { RegistrationData, RegistrationError, RegistrationState, ValidationError } from "./RegistrationState";
 
 export function RegistrationForm({ validate, register }: RegistrationState) {
   const formRef = useRef<HTMLFormElement>(null);
   const [isRegistering, setIsRegistering] = useState<boolean>(false);
   const [validationError, setValidationError] = useState<ValidationError | undefined>("FIELDS_MISSING");
+  const [registrationError, setRegistrationError] = useState<RegistrationError | undefined>();
 
   const hasValidationError = !!validationError;
   const fieldsMissing = validationError === "FIELDS_MISSING";
@@ -35,6 +36,7 @@ export function RegistrationForm({ validate, register }: RegistrationState) {
           onClick={registerUser}>Register</button>
         {fieldsMissing && <div className="error">Please fill in all fields</div>}
         {passwordMismatch && <div className="error">Passwords do not match</div>}
+        {registrationError && <div className="error">{registrationError}</div>}
       </footer>
     </form>
   );
@@ -42,6 +44,7 @@ export function RegistrationForm({ validate, register }: RegistrationState) {
   function registerUser() {
     setIsRegistering(true);
     register(registrationData())
+      .then(setRegistrationError)
       .finally(() => setIsRegistering(false));
   }
 

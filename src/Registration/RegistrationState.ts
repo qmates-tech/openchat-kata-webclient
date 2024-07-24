@@ -1,5 +1,5 @@
 import { useUserSession } from "../User/UserSessionState";
-import { createRegistrationAPI } from "./RegistrationAPI";
+import { createRegistrationAPI, RegistrationAPIException } from "./RegistrationAPI";
 
 export type RegistrationData = {
   username?: string;
@@ -11,8 +11,9 @@ export type ValidRegistrationData = Required<Omit<RegistrationData, 'repeatPassw
 export type ValidationError = "FIELDS_MISSING" | "PASSWORDS_MISMATCH" | undefined;
 export type RegistrationState = {
   validate(data: RegistrationData): ValidationError;
-  register(data: RegistrationData): Promise<void>;
+  register(data: RegistrationData): Promise<RegistrationError>;
 };
+export type RegistrationError = "Username already in use" | 'Network error' | 'Generic error' | undefined;
 
 const registrationAPI = createRegistrationAPI();
 
@@ -20,8 +21,12 @@ export function useRegistrationState({ register } = registrationAPI): Registrati
   const { setUserSession } = useUserSession();
 
   return {
-    async register({ username, password, about }: ValidRegistrationData): Promise<void> {
-      setUserSession(await register(username, password, about));
+    async register({ username, password, about }: ValidRegistrationData): Promise<RegistrationError> {
+      try {
+        setUserSession(await register(username, password, about));
+      } catch (e) {
+        return errorMessageFrom(e as RegistrationAPIException);
+      }
     },
     validate({ username, password, repeatPassword }: RegistrationData): ValidationError {
       if (password !== repeatPassword) {
@@ -34,5 +39,16 @@ export function useRegistrationState({ register } = registrationAPI): Registrati
 
       return undefined;
     }
+  }
+}
+
+function errorMessageFrom(e: RegistrationAPIException): RegistrationError {
+  switch (e) {
+    case "USERNAME_ALREADY_IN_USE":
+      return "Username already in use";
+    case "NETWORK_ERROR":
+      return "Network error";
+    default:
+      return "Generic error";
   }
 }

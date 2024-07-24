@@ -1,4 +1,4 @@
-import { render, screen, act, waitFor, getByRole } from '@testing-library/react';
+import { act, render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { RegistrationForm } from '../../src/Registration/RegistrationForm';
 import { mockUseRegistrationState } from '../utils/MockRegistrationState';
@@ -140,6 +140,16 @@ describe('RegistrationForm Component', () => {
     await act(() => userEvent.click(registerButton()));
 
     expect(state.register).not.toHaveBeenCalled();
+  });
+
+  it('should show an error when the registration fails', async () => {
+    const state = mockUseRegistrationState({ register: () => Promise.resolve('Generic error') });
+    render(<RegistrationForm {...state} />);
+    await fillRegistrationForm();
+
+    await userEvent.click(registerButton());
+
+    expect(screen.queryByText('Generic error')).toBeInTheDocument();
   });
 });
 

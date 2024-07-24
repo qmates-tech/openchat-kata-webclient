@@ -1,6 +1,6 @@
 import { useRegistrationState } from '../../src/Registration/RegistrationState';
 import { User } from '../../src/User/User';
-import { mockCreateRegistrationAPI, succeedWith } from '../utils/MockRegistrationAPI';
+import { failsWith, mockCreateRegistrationAPI, succeedWith } from '../utils/MockRegistrationAPI';
 import { mockUserSession } from '../utils/MockUserSession';
 
 describe('Registration State', () => {
@@ -22,11 +22,7 @@ describe('Registration State', () => {
     it('should return no errors when valid registration data id provided', () => {
       const { validate } = useRegistrationState()
 
-      const validationError = validate({
-        username: "an user",
-        password: "a password",
-        repeatPassword: "a password"
-      });
+      const validationError = validate({ username: "an user", password: "a pwd", repeatPassword: "a pwd" });
 
       expect(validationError).toEqual(undefined);
     });
@@ -34,11 +30,7 @@ describe('Registration State', () => {
     it('should return PASSWORDS_MISMATCH when the passwords do not match', () => {
       const { validate } = useRegistrationState()
 
-      const validationError = validate({
-        username: "an user",
-        password: "a password",
-        repeatPassword: "another password"
-      });
+      const validationError = validate({ username: "an user", password: "a password", repeatPassword: "another" });
 
       expect(validationError).toEqual("PASSWORDS_MISMATCH");
     });
@@ -46,11 +38,7 @@ describe('Registration State', () => {
     it('should return FIELDS_MISSING when the username is undefined', () => {
       const { validate } = useRegistrationState()
 
-      const validationError = validate({
-        username: undefined,
-        password: "a",
-        repeatPassword: "a"
-      });
+      const validationError = validate({ username: undefined, password: "a", repeatPassword: "a" });
 
       expect(validationError).toEqual("FIELDS_MISSING");
     });
@@ -66,11 +54,7 @@ describe('Registration State', () => {
     it('should return FIELDS_MISSING when the one field is empty', () => {
       const { validate } = useRegistrationState()
 
-      const validationError = validate({
-        username: "",
-        password: "a password",
-        repeatPassword: "a password"
-      });
+      const validationError = validate({ username: "", password: "a password", repeatPassword: "a password" });
 
       expect(validationError).toEqual("FIELDS_MISSING");
     });
@@ -78,11 +62,7 @@ describe('Registration State', () => {
     it('should return PASSWORD_MISMATCH when only one password is empty', () => {
       const { validate } = useRegistrationState()
 
-      const validationError = validate({
-        username: "an user",
-        password: "a password",
-        repeatPassword: ""
-      });
+      const validationError = validate({ username: "an user", password: "a password", repeatPassword: "" });
 
       expect(validationError).toEqual("PASSWORDS_MISMATCH");
     });
@@ -93,11 +73,7 @@ describe('Registration State', () => {
       const api = mockCreateRegistrationAPI({ register: succeedWith(anUser) });
       const { register } = useRegistrationState(api);
 
-      await register({
-        username: "an user",
-        password: "a password",
-        about: "about"
-      });
+      await register({ username: "an user", password: "a password", about: "about" });
 
       expect(api.register).toHaveBeenCalledWith("an user", "a password", "about");
     });
@@ -107,16 +83,47 @@ describe('Registration State', () => {
       const api = mockCreateRegistrationAPI({ register: succeedWith(anUser) });
       const { register } = useRegistrationState(api);
 
-      await register({
-        username: "an user",
-        password: "a password",
-        about: "about"
-      });
+      const error = await register({ username: "any", password: "any", about: "any" });
 
+      expect(error).toEqual(undefined);
       expect(userSession.setUserSession).toHaveBeenCalledWith(anUser);
     });
 
-    // TODO: handle NETWORK_ERROR
-    // TODO: handle USERNAME_ALREADY_IN_USE
+    it('should not set current user session after a failed registration', async () => {
+      const userSession = mockUserSession({ currentUser: undefined });
+      const api = mockCreateRegistrationAPI({ register: failsWith("any") });
+      const { register } = useRegistrationState(api);
+
+      await register({ username: "any", password: "any", about: "any" });
+
+      expect(userSession.setUserSession).not.toHaveBeenCalled();
+    });
+
+    it('should return a generic error after a not handled failed registration', async () => {
+      const api = mockCreateRegistrationAPI({ register: failsWith("unhandled") });
+      const { register } = useRegistrationState(api);
+
+      const error = await register({ username: "any", password: "any", about: "any" });
+
+      expect(error).toEqual("Generic error");
+    });
+
+    it('should return error after a failed API registration with USERNAME_ALREADY_IN_USE', async () => {
+      const api = mockCreateRegistrationAPI({ register: failsWith("USERNAME_ALREADY_IN_USE") });
+      const { register } = useRegistrationState(api);
+
+      const error = await register({ username: "any", password: "any", about: "any" });
+
+      expect(error).toEqual("Username already in use");
+    });
+
+    it('should return error after a failed API registration with NETWORK_ERROR', async () => {
+      const api = mockCreateRegistrationAPI({ register: failsWith("NETWORK_ERROR") });
+      const { register } = useRegistrationState(api);
+
+      const error = await register({ username: "any", password: "any", about: "any" });
+
+      expect(error).toEqual("Network error");
+    });
   });
 });
