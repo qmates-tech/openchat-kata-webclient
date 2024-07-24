@@ -41,7 +41,8 @@ export function RegistrationForm({ validate, register }: RegistrationState) {
     </form>
   );
 
-  function registerUser() {
+  function registerUser(e: React.MouseEvent) {
+    e.preventDefault();
     setIsRegistering(true);
     register(registrationData())
       .then(setRegistrationError)
