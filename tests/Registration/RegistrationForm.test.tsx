@@ -152,7 +152,6 @@ describe('RegistrationForm Component', () => {
     expect(screen.queryByText('Generic error')).toBeInTheDocument();
   });
 
-
   it('focus the username input when the registration fails', async () => {
     const state = mockUseRegistrationState({ register: () => Promise.resolve('Generic error') });
     render(<RegistrationForm {...state} />);
@@ -161,6 +160,40 @@ describe('RegistrationForm Component', () => {
     await userEvent.click(registerButton());
 
     expect(usernameInput()).toHaveFocus();
+  })
+
+  it('focus the username input on first load', async () => {
+    const state = mockUseRegistrationState();
+    render(<RegistrationForm {...state} />);
+
+    expect(usernameInput()).toHaveFocus();
+  })
+
+  it('focus the password input when enter is pressed in the username field', async () => {
+    const state = mockUseRegistrationState();
+    render(<RegistrationForm {...state} />);
+
+    await userEvent.type(usernameInput(), '[enter]');
+
+    expect(passwordInput()).toHaveFocus();
+  })
+
+  it('focus the repeatPassword input when enter is pressed in the password field', async () => {
+    const state = mockUseRegistrationState();
+    render(<RegistrationForm {...state} />);
+
+    await userEvent.type(passwordInput(), '[enter]');
+
+    expect(repeatPasswordInput()).toHaveFocus();
+  })
+
+  it('focus the about textarea when enter is pressed in the repeatPassword field', async () => {
+    const state = mockUseRegistrationState();
+    render(<RegistrationForm {...state} />);
+
+    await userEvent.type(repeatPasswordInput(), '[enter]');
+
+    expect(aboutTextarea()).toHaveFocus();
   })
 });
 
