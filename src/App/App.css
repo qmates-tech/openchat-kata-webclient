@@ -25,7 +25,6 @@ article header {
 
 article header .link {
   text-wrap: nowrap;
-  display: none;
 }
 
 article footer {
