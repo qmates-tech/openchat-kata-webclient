@@ -54,7 +54,7 @@ describe('RegistrationForm Component', () => {
     expect(state.validate).toHaveBeenCalledTimes(5);
   });
 
-  it('should disable the registration when the form has a FIELDS_MISSING error', async () => {
+  it('should disable the registration and show an error when the form has a FIELDS_MISSING error', async () => {
     const state = mockUseRegistrationState({ validate: () => "FIELDS_MISSING" });
     render(<RegistrationForm {...state} />);
 
@@ -66,7 +66,7 @@ describe('RegistrationForm Component', () => {
     expect(repeatPasswordInput()).not.toHaveAttribute('aria-invalid');
   });
 
-  it('should disable the registration when the form has a PASSWORDS_MISMATCH error', async () => {
+  it('should disable the registration and show an error when the form has a PASSWORDS_MISMATCH error', async () => {
     const state = mockUseRegistrationState({ validate: () => "PASSWORDS_MISMATCH" });
     render(<RegistrationForm {...state} />);
 
@@ -150,6 +150,40 @@ describe('RegistrationForm Component', () => {
     await userEvent.click(registerButton());
 
     expect(screen.queryByText('Generic error')).toBeInTheDocument();
+  });
+
+  it('hide the registration error when username input changes', async () => {
+    const state = mockUseRegistrationState({ register: () => Promise.resolve('Generic error') });
+    render(<RegistrationForm {...state} />);
+    await fillRegistrationForm();
+    await userEvent.click(registerButton());
+
+    await userEvent.type(usernameInput(), "other text");
+
+    expect(screen.queryByText('Generic error')).not.toBeInTheDocument();
+  });
+
+  it('hide the registration error when passwords input change', async () => {
+    const state = mockUseRegistrationState({ register: () => Promise.resolve('Generic error') });
+    render(<RegistrationForm {...state} />);
+    await fillRegistrationForm();
+    await userEvent.click(registerButton());
+
+    await userEvent.type(passwordInput(), "other");
+    await userEvent.type(repeatPasswordInput(), "other");
+
+    expect(screen.queryByText('Generic error')).not.toBeInTheDocument();
+  });
+
+  it('hide the registration error when about textarea changes', async () => {
+    const state = mockUseRegistrationState({ register: () => Promise.resolve('Generic error') });
+    render(<RegistrationForm {...state} />);
+    await fillRegistrationForm();
+    await userEvent.click(registerButton());
+
+    await userEvent.type(aboutTextarea(), "other text");
+
+    expect(screen.queryByText('Generic error')).not.toBeInTheDocument();
   });
 
   it('focus the username input when the registration fails', async () => {

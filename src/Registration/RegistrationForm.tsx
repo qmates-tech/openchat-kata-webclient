@@ -67,6 +67,7 @@ export function RegistrationForm({ validate, register }: RegistrationState) {
   }
 
   function validateForm() {
+    setRegistrationError(undefined);
     setValidationError(validate(registrationData()));
   }
 
