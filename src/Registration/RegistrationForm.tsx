@@ -3,6 +3,7 @@ import { RegistrationData, RegistrationError, RegistrationState, ValidationError
 
 export function RegistrationForm({ validate, register }: RegistrationState) {
   const formRef = useRef<HTMLFormElement>(null);
+  const usernameRef = useRef<HTMLInputElement>(null);
   const [isRegistering, setIsRegistering] = useState<boolean>(false);
   const [validationError, setValidationError] = useState<ValidationError | undefined>("FIELDS_MISSING");
   const [registrationError, setRegistrationError] = useState<RegistrationError | undefined>();
@@ -14,7 +15,7 @@ export function RegistrationForm({ validate, register }: RegistrationState) {
   return (
     <form ref={formRef}>
       <div>
-        <input required name="username" placeholder="username"
+        <input ref={usernameRef} required name="username" placeholder="username"
           onChange={validateForm}
         />
       </div>
@@ -45,8 +46,13 @@ export function RegistrationForm({ validate, register }: RegistrationState) {
     e.preventDefault();
     setIsRegistering(true);
     register(registrationData())
-      .then(setRegistrationError)
+      .then(handleRegistrationResponse)
       .finally(() => setIsRegistering(false));
+  }
+
+  function handleRegistrationResponse(error: RegistrationError | undefined) {
+    setRegistrationError(error);
+    error && usernameRef.current?.focus();
   }
 
   function validateForm() {

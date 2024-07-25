@@ -151,6 +151,17 @@ describe('RegistrationForm Component', () => {
 
     expect(screen.queryByText('Generic error')).toBeInTheDocument();
   });
+
+
+  it('focus the username input when the registration fails', async () => {
+    const state = mockUseRegistrationState({ register: () => Promise.resolve('Generic error') });
+    render(<RegistrationForm {...state} />);
+    await fillRegistrationForm();
+
+    await userEvent.click(registerButton());
+
+    expect(usernameInput()).toHaveFocus();
+  })
 });
 
 async function fillRegistrationForm() {
