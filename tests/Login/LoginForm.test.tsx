@@ -1,37 +1,35 @@
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { LoginForm } from '../../src/Login/LoginForm';
-import { mockUseLoginState } from '../utils/MockLoginState';
+import { vi } from "vitest";
+import { LoginState } from "../../src/Login/LoginState.ts";
 
 describe('LoginForm Component', () => {
   it('shows the loading message', async () => {
-    mockUseLoginState({ isLoggingIn: true });
-    render(<LoginForm />);
+    render(<LoginForm {...loginState({ isLoggingIn: true })} />);
 
     expect(screen.getByRole('button')).toHaveAttribute('aria-busy', 'true');
   })
 
   it('shows the error message', async () => {
-    mockUseLoginState({ loginError: "Generic error" });
-    render(<LoginForm />);
+    render(<LoginForm {...loginState({ loginError: "Generic error" })} />);
 
     expect(screen.getByText('Generic error')).toBeInTheDocument();
   })
 
   it('trigger the login function with the correct data on button click', async () => {
-    const mockedState = mockUseLoginState();
-    render(<LoginForm />);
+    const loginSpy = vi.fn();
+    render(<LoginForm {...loginState({ login: loginSpy })} />);
 
     await userEvent.type(usernameInput(), 'theUser');
     await userEvent.type(passwordInput(), 'thePassword');
     await userEvent.click(screen.getByRole('button'));
 
-    expect(mockedState.login).toHaveBeenCalledWith('theUser', 'thePassword');
+    expect(loginSpy).toHaveBeenCalledWith('theUser', 'thePassword');
   })
 
   it('hide the error message on username change', async () => {
-    mockUseLoginState({ loginError: "Generic error" });
-    render(<LoginForm />);
+    render(<LoginForm {...loginState({ loginError: "Generic error" })} />);
 
     await userEvent.type(usernameInput(), "usr");
 
@@ -39,8 +37,7 @@ describe('LoginForm Component', () => {
   })
 
   it('hide the error message on password change', async () => {
-    mockUseLoginState({ loginError: "Generic error" });
-    render(<LoginForm />);
+    render(<LoginForm {...loginState({ loginError: "Generic error" })} />);
 
     await userEvent.type(passwordInput(), "psw");
 
@@ -48,15 +45,13 @@ describe('LoginForm Component', () => {
   })
 
   it('focus the username input on page load', async () => {
-    mockUseLoginState();
-    render(<LoginForm />);
+    render(<LoginForm {...loginState()} />);
 
     expect(usernameInput()).toHaveFocus();
   })
 
   it('focus the password input when enter is pressed in the username field', async () => {
-    mockUseLoginState();
-    render(<LoginForm />);
+    render(<LoginForm {...loginState()} />);
 
     await userEvent.type(usernameInput(), 'user[enter]');
 
@@ -64,21 +59,19 @@ describe('LoginForm Component', () => {
   })
 
   it('perform the login when enter is pressed in the password field', async () => {
-    const mockedState = mockUseLoginState();
-    render(<LoginForm />);
+    const loginSpy = vi.fn();
+    render(<LoginForm {...loginState({ login: loginSpy })} />);
 
     await userEvent.type(passwordInput(), 'psw[enter]');
 
-    expect(mockedState.login).toHaveBeenCalled();
+    expect(loginSpy).toHaveBeenCalled();
   })
 
   it('focus the username input when the login throws an error', async () => {
-    mockUseLoginState();
-    const { rerender } = render(<LoginForm />);
+    const { rerender } = render(<LoginForm {...loginState()} />);
     await userEvent.click(passwordInput())
 
-    mockUseLoginState({ loginError: "Generic error" });
-    rerender(<LoginForm />);
+    rerender(<LoginForm {...loginState({ loginError: "Generic error" })} />);
 
     expect(usernameInput()).toHaveFocus();
   })
@@ -90,4 +83,13 @@ function usernameInput() {
 
 function passwordInput() {
   return screen.getByPlaceholderText('password');
+}
+
+function loginState(opts: Partial<LoginState> = {}): LoginState {
+  return {
+    login: vi.fn(),
+    isLoggingIn: false,
+    loginError: undefined,
+    ...opts
+  };
 }

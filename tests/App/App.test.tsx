@@ -16,6 +16,14 @@ describe("App", () => {
     expect(screen.queryByText("Welcome to OpenChat")).not.toBeInTheDocument();
   });
 
+  it("do not render any only-public page while retrieving the user", () => {
+    mockUserSession({ retrieving: true });
+
+    render(<App />, wrapWithRouter({ path: "/login" }));
+
+    expect(screen.queryByText("Welcome to OpenChat")).not.toBeInTheDocument();
+  });
+
   describe("Wall Page", () => {
     it("renders the Wall when already logged in", () => {
       mockUserSession({ currentUser: anUser });
