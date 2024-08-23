@@ -1,5 +1,4 @@
 import { HttpResponse } from 'msw';
-import { createLoginAPI } from '../../src/Login/LoginAPI';
 import { createMockServer } from '../utils/MockServer';
 import { createCreatePostAPI } from "../../src/Post/CreatePostAPI.ts";
 import { expect } from "vitest";
@@ -15,20 +14,18 @@ describe('CreatePostAPI', () => {
   });
 
   it('returns the created post on success', async () => {
-    const userId = "user-id";
-
-    mockServer.interceptPost(`/users/${userId}/timeline`, HttpResponse.json({
+    mockServer.interceptPost(`/users/user-id/timeline`, HttpResponse.json({
       postId: "599dd5eb-fdea-4472-8baf-81ef7c18a2f2",
-      userId: userId,
+      userId: "user-id",
       text: "the very first post",
       dateTime: "2018-01-10T11:30:00Z"
     }));
 
-    const createdPost = await API.createPost(userId, 'the very first post');
+    const createdPost = await API.createPost("user-id", 'the very first post');
 
     expect(createdPost).toStrictEqual({
       id: '599dd5eb-fdea-4472-8baf-81ef7c18a2f2',
-      userId: userId,
+      userId: "user-id",
       text: "the very first post",
       dateTime: "2018-01-10T11:30:00Z"
     });
@@ -56,6 +53,14 @@ describe('CreatePostAPI', () => {
     await expect(async () => {
       await API.createPost('an-id', 'inappropriate language here!');
     }).rejects.toThrow("INAPPROPRIATE_LANGUAGE");
+  });
+
+  it('throws Network Error when Server is not reachable', async () => {
+    mockServer.interceptPost('/users/any/timeline', HttpResponse.error());
+
+    await expect(async () => {
+      await API.createPost('any', 'any');
+    }).rejects.toThrow("NETWORK_ERROR");
   });
 
 });
