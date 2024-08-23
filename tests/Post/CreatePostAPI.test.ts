@@ -41,6 +41,23 @@ describe('CreatePostAPI', () => {
 
     expect(interceptor.receivedJsonBody()).toStrictEqual({ text: 'a post text' });
   });
+
+  it('throws USER_NOT_FOUND error when status code is 404', async () => {
+    mockServer.interceptPost('/users/wrong-id/timeline', notFoundResponse());
+
+    await expect(async () => {
+      await API.createPost('wrong-id', 'any');
+    }).rejects.toThrow("USER_NOT_FOUND");
+  });
+
+  it('throws INAPPROPRIATE_LANGUAGE error when status code is 400', async () => {
+    mockServer.interceptPost('/users/an-id/timeline', badRequestResponse());
+
+    await expect(async () => {
+      await API.createPost('an-id', 'inappropriate language here!');
+    }).rejects.toThrow("INAPPROPRIATE_LANGUAGE");
+  });
+
 });
 
 function createdPostOkResponse() {
@@ -49,5 +66,19 @@ function createdPostOkResponse() {
     userId: "any",
     text: "any",
     dateTime: "2018-01-10T11:30:00Z"
+  });
+}
+
+function notFoundResponse() {
+  return new HttpResponse('404', {
+    status: 404,
+    headers: { 'Content-Type': 'text/plain' },
+  });
+}
+
+function badRequestResponse() {
+  return new HttpResponse('400', {
+    status: 400,
+    headers: { 'Content-Type': 'text/plain' },
   });
 }

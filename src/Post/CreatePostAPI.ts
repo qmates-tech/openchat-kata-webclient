@@ -13,6 +13,14 @@ export function createCreatePostAPI(baseUrl: string = Env.loginUrl): CreatePostA
     async createPost(userId: User["id"], text: string): Promise<Post> {
       const response = await postRequest(`${baseUrl}/users/${userId}/timeline`, { text });
 
+      if (response.status === 404) {
+        throw "USER_NOT_FOUND";
+      }
+
+      if (response.status === 400) {
+        throw "INAPPROPRIATE_LANGUAGE";
+      }
+
       const responseBody = await response.json();
       return {
         id: responseBody.postId,
