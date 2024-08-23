@@ -1,7 +1,8 @@
 import { Env } from "../Env";
 import { User } from "../User/User";
+import { NetworkError, postRequest } from "../helpers/http.ts";
 
-export type RegistrationAPIException = "USERNAME_ALREADY_IN_USE" | "NETWORK_ERROR";
+export type RegistrationAPIException = "USERNAME_ALREADY_IN_USE" | NetworkError;
 export type RegistrationAPI = {
   register(username: string, password: string, about: string): Promise<User>;
 }
@@ -9,7 +10,7 @@ export type RegistrationAPI = {
 export function createRegistrationAPI(baseUrl: string = Env.loginUrl): RegistrationAPI {
   return {
     async register(username: string, password: string, about: string): Promise<User> {
-      const response = await post('/users', {
+      const response = await postRequest(`${baseUrl}/users`, {
         username: username,
         password: password,
         about: about
@@ -25,17 +26,6 @@ export function createRegistrationAPI(baseUrl: string = Env.loginUrl): Registrat
         username: responseBody.username,
         about: responseBody.about
       }
-    }
-  }
-
-  async function post(route: string, jsonBody: any) {
-    try {
-      return await fetch(baseUrl + route, {
-        method: 'POST',
-        body: JSON.stringify(jsonBody)
-      });
-    } catch (e) {
-      throw "NETWORK_ERROR";
     }
   }
 }
