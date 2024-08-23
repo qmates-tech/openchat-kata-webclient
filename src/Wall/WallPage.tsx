@@ -1,4 +1,5 @@
 import { useUserSession } from '../User/UserSessionState';
+import './Wall.css';
 
 export function WallPage() {
   const { currentUser } = useUserSession();
@@ -8,8 +9,10 @@ export function WallPage() {
 
   return (
     <article className="wall">
-      <header><h3>{currentUser?.username}'s wall</h3></header>
-      <div>{about}</div>
+      <header>
+        <h3>{currentUser?.username}'s wall</h3>
+        <small>{about}</small>
+      </header>
     </article>
   );
 }
