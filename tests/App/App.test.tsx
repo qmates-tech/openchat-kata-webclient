@@ -7,23 +7,6 @@ import { wrapWithRouter } from '../utils/renderHelpers';
 describe("App", () => {
   const anUser: User = { id: "1", username: "Pippo", about: "Pippo description" }
 
-  it("do not render any private page while retrieving the user", () => {
-    mockUserSession({ retrieving: true });
-
-    render(<App />, wrapWithRouter({ path: "/" }));
-
-    expect(screen.queryByText("Pippo's wall")).not.toBeInTheDocument();
-    expect(screen.queryByText("Welcome to OpenChat")).not.toBeInTheDocument();
-  });
-
-  it("do not render any only-public page while retrieving the user", () => {
-    mockUserSession({ retrieving: true });
-
-    render(<App />, wrapWithRouter({ path: "/login" }));
-
-    expect(screen.queryByText("Welcome to OpenChat")).not.toBeInTheDocument();
-  });
-
   describe("Wall Page", () => {
     it("renders the Wall when already logged in", () => {
       mockUserSession({ currentUser: anUser });
@@ -39,6 +22,15 @@ describe("App", () => {
       render(<App />, wrapWithRouter({ path: "/" }));
 
       expect(screen.getByText("Welcome to OpenChat")).toBeInTheDocument();
+    });
+
+    it("do not render yet the wall page while retrieving the user", () => {
+      mockUserSession({ retrieving: true });
+
+      render(<App />, wrapWithRouter({ path: "/" }));
+
+      expect(screen.queryByText("'s wall")).not.toBeInTheDocument();
+      expect(screen.queryByText("Welcome to OpenChat")).not.toBeInTheDocument();
     });
   });
 
@@ -58,6 +50,15 @@ describe("App", () => {
 
       expect(screen.getByText("Pippo's wall")).toBeInTheDocument();
     });
+
+    it("do not render yet the login page while retrieving the user", () => {
+      mockUserSession({ retrieving: true });
+
+      render(<App />, wrapWithRouter({ path: "/login" }));
+
+      expect(screen.queryByText("'s wall")).not.toBeInTheDocument();
+      expect(screen.queryByText("Welcome to OpenChat")).not.toBeInTheDocument();
+    });
   });
 
   describe("Registration Page", () => {
@@ -75,6 +76,15 @@ describe("App", () => {
       render(<App />, wrapWithRouter({ path: "/register" }));
 
       expect(screen.getByText("Pippo's wall")).toBeInTheDocument();
+    });
+
+    it("do not render yet the registration page while retrieving the user", () => {
+      mockUserSession({ retrieving: true });
+
+      render(<App />, wrapWithRouter({ path: "/register" }));
+
+      expect(screen.queryByText("'s wall")).not.toBeInTheDocument();
+      expect(screen.queryByText("Register now")).not.toBeInTheDocument();
     });
   });
 
