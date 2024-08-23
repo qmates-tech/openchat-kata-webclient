@@ -12,7 +12,7 @@ describe('NewPostForm', () => {
     await userEvent.type(writePostInput(), 'the very first post');
     await userEvent.click(sendPostButton());
 
-    expect(createPostMock).toHaveBeenCalledWith({ text: "the very first post" });
+    expect(createPostMock).toHaveBeenCalledWith("the very first post");
   });
 })
 

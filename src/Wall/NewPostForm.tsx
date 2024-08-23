@@ -1,7 +1,7 @@
 import React, { useRef } from "react";
 
 export interface NewPostFormProps {
-  createPost: (props: { text: string }) => void,
+  createPost: (text: string) => Promise<void>;
 }
 
 export function NewPostForm({ createPost }: NewPostFormProps) {
@@ -12,8 +12,8 @@ export function NewPostForm({ createPost }: NewPostFormProps) {
     <button type="submit" onClick={createNewPost}>Post</button>
   </fieldset>;
 
-  function createNewPost(e: React.MouseEvent) {
+  async function createNewPost(e: React.MouseEvent) {
     e.preventDefault();
-    createPost({ text: postTextRef.current!.value });
+    await createPost(postTextRef.current!.value);
   }
 }
