@@ -5,7 +5,7 @@ import { User } from '../../src/User/User';
 import { failsWith, mockCreateLoginAPI, succeedWith } from '../utils/MockLoginAPI';
 import { mockUserSession } from '../utils/MockUserSession';
 
-describe('Login State', () => {
+describe('LoginState', () => {
   const anUser: User = { id: "123", username: "alessio", about: "About Alessio" };
 
   beforeEach(() => {

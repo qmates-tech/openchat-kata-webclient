@@ -4,7 +4,7 @@ import { LoginForm } from '../../src/Login/LoginForm';
 import { vi } from "vitest";
 import { LoginState } from "../../src/Login/LoginState.ts";
 
-describe('LoginForm Component', () => {
+describe('LoginForm', () => {
   it('shows the loading message', async () => {
     render(<LoginForm {...loginState({ isLoggingIn: true })} />);
 

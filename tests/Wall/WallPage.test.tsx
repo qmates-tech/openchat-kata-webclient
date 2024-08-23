@@ -2,7 +2,7 @@ import { render, screen } from '@testing-library/react';
 import { WallPage } from '../../src/Wall/WallPage';
 import { mockUserSession } from '../utils/MockUserSession';
 
-describe('Login Component', () => {
+describe('WallPage', () => {
   it('renders the username', async () => {
     mockUserSession({ currentUser: { id: '1', username: 'John Doe', about: '' } });
 

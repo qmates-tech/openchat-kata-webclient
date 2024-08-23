@@ -3,7 +3,7 @@ import userEvent from '@testing-library/user-event';
 import { LogoutButton } from '../../src/Logout/LogoutButton';
 import { mockUserSession } from '../utils/MockUserSession';
 
-describe('LogoutButton Component', () => {
+describe('LogoutButton', () => {
   const anUser = { id: '123', username: 'alessio', about: 'About Alessio' };
 
   it('show the LogoutButton when the user is logged in', async () => {

@@ -2,7 +2,7 @@ import { renderHook } from '@testing-library/react';
 import { useNavigationState } from '../../src/Navigation/NavigationState';
 import { wrapWithRouter } from '../utils/renderHelpers';
 
-describe('Navigator State', () => {
+describe('NavigationState', () => {
   it('currentPath', async () => {
     const { result } = renderHook(useNavigationState, wrapWithRouter({ path: '/current' }));
 

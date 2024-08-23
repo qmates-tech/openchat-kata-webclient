@@ -8,7 +8,7 @@ import * as LoginFormToMock from "../../src/Login/LoginForm.tsx";
 import { LoginState } from "../../src/Login/LoginState.ts";
 import { mockUseLoginState } from "../utils/MockLoginState.ts";
 
-describe("LoginPage Component", () => {
+describe("LoginPage", () => {
   it("passes the full LoginState to the LoginForm", async () => {
     mockUserSession({ currentUser: undefined });
     const mockedLoginForm = mockLoginForm();

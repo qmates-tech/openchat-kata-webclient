@@ -3,8 +3,7 @@ import userEvent from '@testing-library/user-event';
 import { RegistrationForm } from '../../src/Registration/RegistrationForm';
 import { mockUseRegistrationState } from '../utils/MockRegistrationState';
 
-describe('RegistrationForm Component', () => {
-
+describe('RegistrationForm', () => {
   it('should not call the validate function at the first render', async () => {
     const state = mockUseRegistrationState();
     render(<RegistrationForm {...state} />);

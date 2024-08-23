@@ -8,7 +8,7 @@ import { mockUseRegistrationState } from "../utils/MockRegistrationState";
 import { mockUserSession } from "../utils/MockUserSession";
 import { wrapWithRouter } from "../utils/renderHelpers";
 
-describe("RegistrationPage Component", () => {
+describe("RegistrationPage", () => {
   it("passes the full RegistrationState to the RegistrationForm", async () => {
     mockUserSession({ currentUser: undefined });
     const mockedRegistrationForm = mockRegistrationForm();

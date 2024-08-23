@@ -2,7 +2,7 @@ import { HttpResponse } from 'msw';
 import { createRegistrationAPI } from '../../src/Registration/RegistrationAPI';
 import { createMockServer } from '../utils/MockServer';
 
-describe('Registration API', () => {
+describe('RegistrationAPI', () => {
   const BASE_URL = 'http://msw.mockapi.local';
 
   const registrationAPI = createRegistrationAPI(BASE_URL);
