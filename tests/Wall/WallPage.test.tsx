@@ -1,22 +1,25 @@
-import { render, screen } from '@testing-library/react';
+import { render } from '@testing-library/react';
 import { WallPage } from '../../src/Wall/WallPage';
 import { mockUserSession } from '../utils/MockUserSession';
+import { wrapWithRouter } from "../utils/renderHelpers.tsx";
+import * as WallToMock from "../../src/Wall/Wall.tsx";
+import { User } from "../../src/User/User.ts";
 
 describe('WallPage', () => {
-  it('renders the username', async () => {
-    mockUserSession({ currentUser: { id: '1', username: 'John Doe', about: '' } });
+  const anUser = { id: '1', username: 'John Doe', about: '' };
 
-    render(<WallPage />);
+  it("passes the User to the Wall Component", async () => {
+    mockUserSession({ currentUser: anUser });
+    const mockedWall = mockWall();
 
-    expect(screen.getByText('John Doe\'s wall')).toBeInTheDocument();
-  });
+    render(<WallPage />, wrapWithRouter({ path: "/" }));
 
-  it('renders the user bio transforming \n with separate paragraphs', async () => {
-    mockUserSession({ currentUser: { id: '1', username: 'John Doe', about: 'I am a\ndeveloper' } });
-
-    render(<WallPage />);
-
-    expect(screen.getByText("I am a", { selector: 'p' })).toBeInTheDocument();
-    expect(screen.getByText("developer", { selector: 'p' })).toBeInTheDocument();
+    expect(mockedWall).toHaveBeenCalledWith({ user: anUser })
   });
 })
+
+function mockWall() {
+  const spy = vi.fn((_: { user: User }) => <></>)
+  vi.spyOn(WallToMock, "Wall").mockImplementation((props) => spy(props));
+  return spy;
+}
