@@ -1,4 +1,4 @@
-type UUID = string
+import { UUID } from "../helpers/uuid";
 
 export type User = {
   readonly id: UUID,
