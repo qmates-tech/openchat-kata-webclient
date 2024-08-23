@@ -1,12 +1,11 @@
 import { HttpResponse } from 'msw';
 import { createMockServer } from '../utils/MockServer';
-import { createCreatePostAPI } from "../../src/Post/CreatePostAPI.ts";
+import { createNewPostAPI } from "../../src/Post/NewPostAPI.ts";
 import { expect } from "vitest";
 
-describe('CreatePostAPI', () => {
+describe('NewPostAPI', () => {
   const BASE_URL = 'http://msw.mockapi.local';
-
-  const API = createCreatePostAPI(BASE_URL);
+  const API = createNewPostAPI(BASE_URL);
   const mockServer = createMockServer(BASE_URL);
 
   afterEach(() => {
@@ -21,7 +20,7 @@ describe('CreatePostAPI', () => {
       dateTime: "2018-01-10T11:30:00Z"
     }));
 
-    const createdPost = await API.createPost("user-id", 'the very first post');
+    const createdPost = await API.createNewPost("user-id", 'the very first post');
 
     expect(createdPost).toStrictEqual({
       id: '599dd5eb-fdea-4472-8baf-81ef7c18a2f2',
@@ -34,7 +33,7 @@ describe('CreatePostAPI', () => {
   it('send properly request data to the API', async () => {
     const interceptor = mockServer.interceptPost('/users/an-id/timeline', createdPostOkResponse());
 
-    await API.createPost('an-id', 'a post text');
+    await API.createNewPost('an-id', 'a post text');
 
     expect(interceptor.receivedJsonBody()).toStrictEqual({ text: 'a post text' });
   });
@@ -43,7 +42,7 @@ describe('CreatePostAPI', () => {
     mockServer.interceptPost('/users/wrong-id/timeline', notFoundResponse());
 
     await expect(async () => {
-      await API.createPost('wrong-id', 'any');
+      await API.createNewPost('wrong-id', 'any');
     }).rejects.toThrow("USER_NOT_FOUND");
   });
 
@@ -51,7 +50,7 @@ describe('CreatePostAPI', () => {
     mockServer.interceptPost('/users/an-id/timeline', badRequestResponse());
 
     await expect(async () => {
-      await API.createPost('an-id', 'inappropriate language here!');
+      await API.createNewPost('an-id', 'inappropriate language here!');
     }).rejects.toThrow("INAPPROPRIATE_LANGUAGE");
   });
 
@@ -59,7 +58,7 @@ describe('CreatePostAPI', () => {
     mockServer.interceptPost('/users/any/timeline', HttpResponse.error());
 
     await expect(async () => {
-      await API.createPost('any', 'any');
+      await API.createNewPost('any', 'any');
     }).rejects.toThrow("NETWORK_ERROR");
   });
 
