@@ -18,7 +18,7 @@ describe('PostState', () => {
 
       act(() => result.current.createNewPost("text to publish"));
 
-      expect(mockedAPI.createNewPost).toHaveBeenCalledWith("user-id", "text to publish");
+      await waitFor(() => expect(mockedAPI.createNewPost).toHaveBeenCalledWith("user-id", "text to publish"));
     });
 
     it('should set creating status to false when API succeeded', async () => {
