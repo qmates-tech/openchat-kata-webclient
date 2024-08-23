@@ -15,7 +15,7 @@ export function Wall({ user }: WallProps) {
       <h3>{user.username}'s wall</h3>
     </header>
     <SideGrid sideBar={textAsParagraphs(user.about)}>
-      <NewPostForm />
+      <NewPostForm createPost={() => {}}/>
     </SideGrid>
   </article>;
 }

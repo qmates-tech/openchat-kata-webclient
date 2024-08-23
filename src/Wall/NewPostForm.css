@@ -1,8 +1,13 @@
-form.new-post textarea {
-    height: 95px;
-    resize: none;
+.new-post {
+    display: none;
 }
 
-form.new-post input {
+.new-post textarea {
+    min-height: 95px;
+    height: 95px;
+    resize: vertical;
+}
+
+.new-post input {
     height: auto;
 }
