@@ -1,4 +1,5 @@
 import React, { useRef } from "react";
+import "./NewPostForm.css";
 
 export interface NewPostFormProps {
   createPost: (text: string) => void;

@@ -1,7 +1,7 @@
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import React from "react";
-import { NewPostForm } from "../../src/Wall/NewPostForm.tsx";
+import { NewPostForm } from "../../src/Post/NewPostForm.tsx";
 
 describe('NewPostForm', () => {
   it('should call the createPost function', async () => {

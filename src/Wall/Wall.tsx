@@ -1,5 +1,4 @@
-import "./NewPostForm.css";
-import { NewPostForm } from "./NewPostForm.tsx";
+import { NewPostForm } from "../Post/NewPostForm.tsx";
 import { User } from "../User/User.ts";
 import React from "react";
 import { SideGrid } from "./SideGrid.tsx";
