@@ -1,8 +1,9 @@
 import React, { useRef } from "react";
 import "./NewPostForm.css";
+import { NewPostError } from "./PostState.ts";
 
 export interface NewPostFormProps {
-  createPost: (text: string) => void,
+  createPost: (text: string) => Promise<NewPostError>,
   isCreatingNewPost: boolean
 }
 
@@ -20,6 +21,9 @@ export function NewPostForm({ createPost, isCreatingNewPost }: NewPostFormProps)
 
   async function createNewPost(e: React.MouseEvent) {
     e.preventDefault();
-    createPost(postTextRef.current!.value);
+    await createPost(postTextRef.current!.value);
+    if (postTextRef.current) {
+      postTextRef.current.value = '';
+    }
   }
 }

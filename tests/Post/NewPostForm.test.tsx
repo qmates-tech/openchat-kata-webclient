@@ -5,7 +5,7 @@ import { NewPostForm } from "../../src/Post/NewPostForm.tsx";
 
 describe('NewPostForm', () => {
   it('should call the createPost function', async () => {
-    const createPostMock = vi.fn();
+    const createPostMock = vi.fn(() => Promise.resolve(undefined));
 
     render(<NewPostForm createPost={createPostMock} isCreatingNewPost={false} />);
 
@@ -16,11 +16,22 @@ describe('NewPostForm', () => {
   });
 
   it('disable the creating post while already creating', async () => {
-    render(<NewPostForm createPost={vi.fn} isCreatingNewPost={true}  />);
+    const createPostMock = vi.fn(() => Promise.resolve(undefined));
+    render(<NewPostForm createPost={createPostMock} isCreatingNewPost={true}  />);
 
     expect(writePostInput()).toHaveAttribute('disabled');
     expect(sendPostButton()).toHaveAttribute('disabled');
     expect(sendPostButton()).toHaveAttribute('aria-busy', 'true');
+  })
+
+  it('cleanup the text field when post is successfully created', async () => {
+    const createPostMock = vi.fn(() => Promise.resolve(undefined));
+    render(<NewPostForm createPost={createPostMock} isCreatingNewPost={false}  />);
+
+    await userEvent.type(writePostInput(), 'the very first post');
+    await userEvent.click(sendPostButton());
+
+    expect(writePostInput()).toHaveValue('');
   })
 })
 

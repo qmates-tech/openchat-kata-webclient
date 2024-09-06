@@ -1,11 +1,12 @@
 import { createNewPostAPI } from "./NewPostAPI.ts";
 import { useMemo, useState } from "react";
-import { createLoginAPI } from "../Login/LoginAPI.ts";
 
 export type PostState = {
   isCreatingNewPost: boolean;
-  createNewPost: (text: string) => void;
+  createNewPost: (text: string) => Promise<NewPostError>;
 }
+
+export type NewPostError = undefined
 
 export function usePostState(userId: string): PostState {
   const API = useMemo(() => createNewPostAPI(), []);
@@ -13,11 +14,12 @@ export function usePostState(userId: string): PostState {
 
   return {
     isCreatingNewPost,
-    createNewPost: (text: string) => {
+    createNewPost: async (text: string) => {
       setIsCreatingNewPost(true);
-      API.createNewPost(userId, text)
+      await API.createNewPost(userId, text)
         .catch(e => {})
         .finally(() => setIsCreatingNewPost(false));
+      return undefined;
     }
   };
 }
