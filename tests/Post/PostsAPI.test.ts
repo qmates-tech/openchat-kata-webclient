@@ -1,11 +1,11 @@
 import { HttpResponse } from 'msw';
 import { createMockServer } from '../utils/MockServer';
-import { createNewPostAPI } from "../../src/Post/NewPostAPI.ts";
+import { createPostsAPI } from "../../src/Post/PostsAPI.ts";
 import { expect } from "vitest";
 
-describe('NewPostAPI', () => {
+describe('PostsAPI', () => {
   const BASE_URL = 'http://msw.mockapi.local';
-  const API = createNewPostAPI(BASE_URL);
+  const API = createPostsAPI(BASE_URL);
   const mockServer = createMockServer(BASE_URL);
 
   afterEach(() => {

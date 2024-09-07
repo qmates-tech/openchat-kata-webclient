@@ -1,4 +1,4 @@
-import { createNewPostAPI } from "./NewPostAPI.ts";
+import { createPostsAPI } from "./PostsAPI.ts";
 import { useState } from "react";
 
 export type PostState = {
@@ -8,9 +8,9 @@ export type PostState = {
 
 export type NewPostError = undefined
 
-const newPostAPI = createNewPostAPI();
+const postsAPI = createPostsAPI();
 
-export function usePostState(userId: string, API = newPostAPI): PostState {
+export function usePostState(userId: string, API = postsAPI): PostState {
   const [isCreatingNewPost, setIsCreatingNewPost] = useState<boolean>(false);
 
   return {

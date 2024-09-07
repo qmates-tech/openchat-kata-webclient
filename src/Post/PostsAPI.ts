@@ -4,11 +4,11 @@ import { Post } from "./Post.ts";
 import { NetworkError, postRequest } from "../helpers/http.ts";
 
 export type NewPostAPIException = "USER_NOT_FOUND" | "INAPPROPRIATE_LANGUAGE" | NetworkError;
-export type NewPostAPI = {
+export type PostsAPI = {
   createNewPost(userId: User["id"], text: string): Promise<Post>;
 }
 
-export function createNewPostAPI(baseUrl: string = Env.loginUrl): NewPostAPI {
+export function createPostsAPI(baseUrl: string = Env.loginUrl): PostsAPI {
   return {
     async createNewPost(userId: User["id"], text: string): Promise<Post> {
       const response = await postRequest(`${baseUrl}/users/${userId}/timeline`, { text });
