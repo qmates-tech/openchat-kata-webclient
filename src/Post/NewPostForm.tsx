@@ -5,7 +5,7 @@ import { PostState } from "./PostState.ts";
 export function NewPostForm({ createNewPost, isCreatingNewPost }: PostState) {
   const postTextRef = useRef<HTMLTextAreaElement>(null);
 
-  useEffect(watchIsCreatingNewPost, [isCreatingNewPost]);
+  useEffect(clearTextWhenNewPostIsCreated, [isCreatingNewPost]);
 
   return <fieldset className="new-post" role="group">
     <textarea ref={postTextRef} placeholder="What's on your mind?"
@@ -21,7 +21,7 @@ export function NewPostForm({ createNewPost, isCreatingNewPost }: PostState) {
     createNewPost(postTextRef.current!.value);
   }
 
-  function watchIsCreatingNewPost() {
+  function clearTextWhenNewPostIsCreated() {
     if (!isCreatingNewPost && postTextRef.current) {
       postTextRef.current.value = '';
     }
