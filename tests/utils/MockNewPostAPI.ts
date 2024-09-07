@@ -2,11 +2,11 @@ import { vi } from 'vitest';
 import * as toMock from '../../src/Post/PostsAPI.ts';
 import { delay } from "msw";
 import { Post } from "../../src/Post/Post.ts";
-import { NewPostAPIException } from "../../src/Post/PostsAPI.ts";
 
 export function mockNewPostAPI(obj: Partial<toMock.PostsAPI> = {}): toMock.PostsAPI {
   const mocked = {
     createNewPost: vi.fn(() => Promise.resolve(aPost())),
+    retrieveWall: vi.fn(() => Promise.resolve([])),
     ...obj
   };
   vi.spyOn(toMock, "createPostsAPI").mockImplementation(() => mocked);

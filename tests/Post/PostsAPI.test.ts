@@ -1,7 +1,7 @@
 import { HttpResponse } from 'msw';
 import { createMockServer } from '../utils/MockServer';
 import { createPostsAPI } from "../../src/Post/PostsAPI.ts";
-import { expect } from "vitest";
+import { describe, expect } from "vitest";
 
 describe('PostsAPI', () => {
   const BASE_URL = 'http://msw.mockapi.local';
@@ -12,56 +12,89 @@ describe('PostsAPI', () => {
     mockServer.resetHandlers();
   });
 
-  it('returns the created post on success', async () => {
-    mockServer.interceptPost(`/users/user-id/timeline`, HttpResponse.json({
-      postId: "599dd5eb-fdea-4472-8baf-81ef7c18a2f2",
-      userId: "user-id",
-      text: "the very first post",
-      dateTime: "2018-01-10T11:30:00Z"
-    }));
+  describe('createNewPost', () => {
+    it('returns the created post on success', async () => {
+      mockServer.interceptPost(`/users/user-id/timeline`, HttpResponse.json({
+        postId: "599dd5eb-fdea-4472-8baf-81ef7c18a2f2",
+        userId: "user-id",
+        text: "the very first post",
+        dateTime: "2018-01-10T11:30:00Z"
+      }));
 
-    const createdPost = await API.createNewPost("user-id", 'the very first post');
+      const createdPost = await API.createNewPost("user-id", 'the very first post');
 
-    expect(createdPost).toStrictEqual({
-      id: '599dd5eb-fdea-4472-8baf-81ef7c18a2f2',
-      userId: "user-id",
-      text: "the very first post",
-      dateTime: "2018-01-10T11:30:00Z"
+      expect(createdPost).toStrictEqual({
+        id: '599dd5eb-fdea-4472-8baf-81ef7c18a2f2',
+        userId: "user-id",
+        text: "the very first post",
+        dateTime: "2018-01-10T11:30:00Z"
+      });
+    });
+
+    it('send properly request data to the API', async () => {
+      const interceptor = mockServer.interceptPost('/users/an-id/timeline', createdPostOkResponse());
+
+      await API.createNewPost('an-id', 'a post text');
+
+      expect(interceptor.receivedJsonBody()).toStrictEqual({ text: 'a post text' });
+    });
+
+    it('throws USER_NOT_FOUND error when status code is 404', async () => {
+      mockServer.interceptPost('/users/wrong-id/timeline', notFoundResponse());
+
+      await expect(async () => {
+        await API.createNewPost('wrong-id', 'any');
+      }).rejects.toThrow("USER_NOT_FOUND");
+    });
+
+    it('throws INAPPROPRIATE_LANGUAGE error when status code is 400', async () => {
+      mockServer.interceptPost('/users/an-id/timeline', badRequestResponse());
+
+      await expect(async () => {
+        await API.createNewPost('an-id', 'inappropriate language here!');
+      }).rejects.toThrow("INAPPROPRIATE_LANGUAGE");
+    });
+
+    it('throws Network Error when Server is not reachable', async () => {
+      mockServer.interceptPost('/users/any/timeline', HttpResponse.error());
+
+      await expect(async () => {
+        await API.createNewPost('any', 'any');
+      }).rejects.toThrow("NETWORK_ERROR");
     });
   });
 
-  it('send properly request data to the API', async () => {
-    const interceptor = mockServer.interceptPost('/users/an-id/timeline', createdPostOkResponse());
+  describe(`retrieveWall`, () => {
+    it('returns the list of posts on success', async () => {
+      mockServer.interceptGet(`/users/user-id/wall`, HttpResponse.json([
+        post("uuid-2", "followee-id"),
+        post("uuid-1", "user-id")
+      ]));
 
-    await API.createNewPost('an-id', 'a post text');
+      const wall = await API.retrieveWall("user-id");
 
-    expect(interceptor.receivedJsonBody()).toStrictEqual({ text: 'a post text' });
+      expect(wall).toStrictEqual([
+        { id: "uuid-2", userId: "followee-id", text: "any text", dateTime: "any-date-time" },
+        { id: 'uuid-1', userId: "user-id", text: "any text", dateTime: "any-date-time" }
+      ]);
+    });
+
+    it('throws USER_NOT_FOUND error when status code is 404', async () => {
+      mockServer.interceptGet(`/users/any/wall`, notFoundResponse());
+
+      await expect(async () => {
+        await API.retrieveWall("any");
+      }).rejects.toThrow("USER_NOT_FOUND");
+    });
+
+    it('throws Network Error when Server is not reachable', async () => {
+      mockServer.interceptGet('/users/any/wall', HttpResponse.error());
+
+      await expect(async () => {
+        await API.retrieveWall('any');
+      }).rejects.toThrow("NETWORK_ERROR");
+    });
   });
-
-  it('throws USER_NOT_FOUND error when status code is 404', async () => {
-    mockServer.interceptPost('/users/wrong-id/timeline', notFoundResponse());
-
-    await expect(async () => {
-      await API.createNewPost('wrong-id', 'any');
-    }).rejects.toThrow("USER_NOT_FOUND");
-  });
-
-  it('throws INAPPROPRIATE_LANGUAGE error when status code is 400', async () => {
-    mockServer.interceptPost('/users/an-id/timeline', badRequestResponse());
-
-    await expect(async () => {
-      await API.createNewPost('an-id', 'inappropriate language here!');
-    }).rejects.toThrow("INAPPROPRIATE_LANGUAGE");
-  });
-
-  it('throws Network Error when Server is not reachable', async () => {
-    mockServer.interceptPost('/users/any/timeline', HttpResponse.error());
-
-    await expect(async () => {
-      await API.createNewPost('any', 'any');
-    }).rejects.toThrow("NETWORK_ERROR");
-  });
-
 });
 
 function createdPostOkResponse() {
@@ -85,4 +118,18 @@ function badRequestResponse() {
     status: 400,
     headers: { 'Content-Type': 'text/plain' },
   });
+}
+
+function post(
+  postId: string | null = null,
+  userId: string | null = null,
+  text: string | null = null,
+  dateTime: string | null = null
+) {
+  return {
+    postId: postId || "199dd5eb-fdea-4472-8baf-81ef7c18a2f2",
+    userId: userId || "any-user-id",
+    text: text || "any text",
+    dateTime: dateTime || "any-date-time"
+  }
 }

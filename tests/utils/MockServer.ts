@@ -6,6 +6,9 @@ export function createMockServer(baseUrl: string) {
   mockServer.listen({ onUnhandledRequest: 'error' });
 
   return {
+    interceptGet(path: string, response: HttpResponse) {
+      mockServer.use(http.get(baseUrl + path, () => response));
+    },
     interceptPost(path: string, response: HttpResponse) {
       let receivedJsonBody: any;
       mockServer.use(http.post(baseUrl + path, async (request) => {
