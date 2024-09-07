@@ -1,8 +1,8 @@
 import React, { useEffect, useMemo, useState } from "react";
 import "./NewPostForm.css";
-import { PostState } from "./PostState.ts";
+import { CreatePostState } from "./PostState.ts";
 
-export function NewPostForm({ createNewPost, isCreatingNewPost }: PostState) {
+export function NewPostForm({ createNewPost, isCreatingNewPost }: CreatePostState) {
   const [text, changeText] = useState<string>("");
   const buttonDisabled = useMemo(() => isCreatingNewPost || !(text.trim()), [isCreatingNewPost, text]);
 
