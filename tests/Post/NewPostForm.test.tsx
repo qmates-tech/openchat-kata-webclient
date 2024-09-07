@@ -22,7 +22,7 @@ describe('NewPostForm', () => {
     expect(writePostInput()).toHaveAttribute('disabled');
     expect(sendPostButton()).toHaveAttribute('disabled');
     expect(sendPostButton()).toHaveAttribute('aria-busy', 'true');
-  })
+  });
 
   it('cleanup the text field when post is successfully created', async () => {
     const createPostMock = vi.fn(() => Promise.resolve(undefined));
@@ -35,7 +35,25 @@ describe('NewPostForm', () => {
     await waitFor(() => {
       expect(writePostInput()).toHaveValue('');
     });
-  })
+  });
+
+  it('disable the creating post button when text is empty', async () => {
+    const createPostMock = vi.fn(() => Promise.resolve(undefined));
+    render(<NewPostForm createNewPost={createPostMock} isCreatingNewPost={false}  />);
+
+    expect(sendPostButton()).toHaveAttribute('disabled');
+    expect(sendPostButton()).toHaveAttribute('aria-busy', 'false');
+  });
+
+  it('disable the creating post button when text is blank', async () => {
+    const createPostMock = vi.fn(() => Promise.resolve(undefined));
+    render(<NewPostForm createNewPost={createPostMock} isCreatingNewPost={false}  />);
+
+    await userEvent.type(writePostInput(), '\n  ');
+
+    expect(sendPostButton()).toHaveAttribute('disabled');
+    expect(sendPostButton()).toHaveAttribute('aria-busy', 'false');
+  });
 })
 
 function writePostInput() {

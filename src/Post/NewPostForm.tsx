@@ -1,29 +1,31 @@
-import React, { useEffect, useRef } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import "./NewPostForm.css";
 import { PostState } from "./PostState.ts";
 
 export function NewPostForm({ createNewPost, isCreatingNewPost }: PostState) {
-  const postTextRef = useRef<HTMLTextAreaElement>(null);
+  const [text, changeText] = useState<string>("");
+  const buttonDisabled = useMemo(() => isCreatingNewPost || !(text.trim()), [isCreatingNewPost, text]);
 
   useEffect(clearTextWhenNewPostIsCreated, [isCreatingNewPost]);
 
   return <fieldset className="new-post" role="group">
-    <textarea ref={postTextRef} placeholder="What's on your mind?"
-              maxLength={100} disabled={isCreatingNewPost} />
+    <textarea placeholder="What's on your mind?" maxLength={100}
+              value={text} onChange={e => changeText(e.target.value)}
+              disabled={isCreatingNewPost} />
     <button type="submit" onClick={createPost}
-            disabled={isCreatingNewPost} aria-busy={isCreatingNewPost}>
+            disabled={buttonDisabled} aria-busy={isCreatingNewPost}>
       Post
     </button>
   </fieldset>;
 
   async function createPost(e: React.MouseEvent) {
     e.preventDefault();
-    createNewPost(postTextRef.current!.value);
+    createNewPost(text);
   }
 
   function clearTextWhenNewPostIsCreated() {
-    if (!isCreatingNewPost && postTextRef.current) {
-      postTextRef.current.value = '';
+    if (!isCreatingNewPost) {
+      changeText('');
     }
   }
 }
