@@ -4,6 +4,7 @@ import React from "react";
 import { SideGrid } from "./SideGrid.tsx";
 import { textAsParagraphs } from "../helpers/textAsParagraphs.tsx";
 import { usePostState } from "../Post/PostState.ts";
+import { PostsList } from "../Post/PostsList.tsx";
 
 interface WallProps {
   user: User
@@ -18,6 +19,7 @@ export function Wall({ user }: WallProps) {
     </header>
     <SideGrid sideBar={textAsParagraphs(user.about)}>
       <NewPostForm createNewPost={postState.createNewPost} isCreatingNewPost={postState.isCreatingNewPost} />
+      <PostsList posts={postState.wall} isLoading={postState.isLoadingWall} />
     </SideGrid>
   </article>;
 }
