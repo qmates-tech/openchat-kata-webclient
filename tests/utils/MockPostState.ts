@@ -4,6 +4,7 @@ import * as toMock from '../../src/Post/PostState';
 export function mockUsePostState(obj: Partial<toMock.PostState> = {}): toMock.PostState {
   const mocked: toMock.PostState = {
     isCreatingNewPost: false,
+    createNewPostError: undefined,
     createNewPost: vi.fn(),
     isLoadingWall: false,
     wall: [],

@@ -4,6 +4,9 @@ import { failsWith, mockPostsAPI, succeedWith } from "../utils/MockPostsAPI.ts";
 import { usePostState } from "../../src/Post/PostState.ts";
 import { Post } from "../../src/Post/Post.ts";
 import { describe } from "vitest";
+import { mockCreateLoginAPI } from "../utils/MockLoginAPI.ts";
+import { useLoginState } from "../../src/Login/LoginState.ts";
+import { NewPostAPIException } from "../../src/Post/PostsAPI.ts";
 
 describe('PostState', () => {
   const aPost: Post = { id: "123", userId: "user-id", text: "text to publish", dateTime: "2021-09-01T00:00:00Z" };
@@ -43,13 +46,62 @@ describe('PostState', () => {
       await waitFor(() => expect(result.current.isCreatingNewPost).toStrictEqual(false));
     });
 
-    it('should update the wall state after a new post is created', async () => {
+    it('should handle USER_NOT_FOUND error', async () => {
+      const api = mockPostsAPI({ createNewPost: failsWith<NewPostAPIException>("USER_NOT_FOUND") });
+      const { result } = renderHook(() => usePostState("user-id", api));
+
+      act(() => result.current.createNewPost("text"));
+
+      await waitFor(() => expect(result.current.createNewPostError).toBe("User not found"));
+    });
+
+    it('should handle INAPPROPRIATE_LANGUAGE error', async () => {
+      const api = mockPostsAPI({ createNewPost: failsWith<NewPostAPIException>("INAPPROPRIATE_LANGUAGE") });
+      const { result } = renderHook(() => usePostState("user-id", api));
+
+      act(() => result.current.createNewPost("text"));
+
+      await waitFor(() => expect(result.current.createNewPostError).toBe("Inappropriate language detected"));
+    });
+
+    it('should handle NETWORK_ERROR error', async () => {
+      const api = mockPostsAPI({ createNewPost: failsWith<NewPostAPIException>("NETWORK_ERROR") });
+      const { result } = renderHook(() => usePostState("user-id", api));
+
+      act(() => result.current.createNewPost("text"));
+
+      await waitFor(() => expect(result.current.createNewPostError).toBe("Network error"));
+    });
+
+    it('should handle as generic error any other unhandled error', async () => {
+      const api = mockPostsAPI({ createNewPost: failsWith<NewPostAPIException>("any other error") });
+      const { result } = renderHook(() => usePostState("user-id", api));
+
+      act(() => result.current.createNewPost("text"));
+
+      await waitFor(() => expect(result.current.createNewPostError).toBe("Generic error"));
+    });
+
+    it('should cleanup the error on every new createNewPost request', async () => {
       const api = mockPostsAPI({ createNewPost: succeedWith(aPost) });
       const { result } = renderHook(() => usePostState("user-id", api));
 
       act(() => result.current.createNewPost("text"));
 
       await waitFor(() => expect(api.retrieveWall).toHaveBeenCalledTimes(2));
+    });
+
+    it('should update the wall state after a new post is created', async () => {
+      let response = failsWith<NewPostAPIException>("any other error");
+      const api = mockPostsAPI({ createNewPost: () => response() });
+      const { result } = renderHook(() => usePostState("user-id", api));
+      act(() => result.current.createNewPost("text"));
+      await waitFor(() => expect(result.current.createNewPostError).toStrictEqual("Generic error"));
+
+      response = succeedWith(aPost);
+      act(() => result.current.createNewPost("text"));
+
+      await waitFor(() => expect(result.current.createNewPostError).toStrictEqual(undefined));
     });
   });
 

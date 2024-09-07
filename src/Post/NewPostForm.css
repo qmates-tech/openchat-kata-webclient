@@ -11,3 +11,12 @@
 .new-post input {
     height: auto;
 }
+
+article.error-message {
+    position: fixed;
+    right: 30px;
+    bottom: 5px;
+    border: 1px solid #8c0c0c;
+    background: #ffebeb;
+    color: #8c0c0c;
+}
