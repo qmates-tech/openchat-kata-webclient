@@ -1,7 +1,5 @@
-import { render, screen, waitFor } from '@testing-library/react';
-import userEvent from '@testing-library/user-event';
+import { render, screen } from '@testing-library/react';
 import React from "react";
-import { NewPostForm } from "../../src/Post/NewPostForm.tsx";
 import { PostsList } from "../../src/Post/PostsList.tsx";
 
 describe('Posts', () => {

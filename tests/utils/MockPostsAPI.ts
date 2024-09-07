@@ -1,7 +1,6 @@
 import { vi } from 'vitest';
-import { PostsAPI, NewPostAPIException } from '../../src/Post/PostsAPI.ts';
+import { PostsAPI } from '../../src/Post/PostsAPI.ts';
 import { delay } from "msw";
-import { Post } from "../../src/Post/Post.ts";
 
 export function mockPostsAPI(obj: Partial<PostsAPI> = {}): PostsAPI {
   return {

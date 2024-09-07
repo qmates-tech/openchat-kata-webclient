@@ -1,6 +1,5 @@
-import { ReactNode, useEffect, useState } from "react";
+import { createContext, ReactNode, useContext, useEffect, useState } from "react";
 import { User } from "./User";
-import { createContext, useContext } from "react";
 
 const sessionName = "openChatSession";
 
