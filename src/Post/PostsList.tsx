@@ -14,7 +14,7 @@ export function PostsList({ posts, isLoading }: PostsProps) {
 
   return <div className="posts-list">
     <div data-testid="posts-list-loading" className="loading" aria-busy={isLoading}></div>
-    {posts.map(post => <PostItem post={post} />)}
+    {posts.map(post => <PostItem key={post.id} post={post} />)}
   </div>;
 }
 
