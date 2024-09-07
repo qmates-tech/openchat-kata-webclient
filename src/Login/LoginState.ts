@@ -1,6 +1,6 @@
-import { useMemo, useState } from "react";
+import { useState } from "react";
 import { useUserSession } from "../User/UserSessionState";
-import { LoginAPIException, createLoginAPI } from "./LoginAPI";
+import { createLoginAPI, LoginAPIException } from "./LoginAPI";
 
 export type LoginError = 'Invalid credentials' | 'Network error' | 'Generic error';
 export type LoginState = {
@@ -8,8 +8,10 @@ export type LoginState = {
   loginError: LoginError | undefined;
   login(username: string | undefined, password: string | undefined): void;
 };
-export function useLoginState(): LoginState {
-  const { login } = useMemo(() => createLoginAPI(), []);
+
+const loginAPI = createLoginAPI();
+
+export function useLoginState({ login } = loginAPI): LoginState {
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [error, setError] = useState<LoginError | undefined>();
   const { retrieving, setUserSession } = useUserSession();

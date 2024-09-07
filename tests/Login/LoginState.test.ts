@@ -14,8 +14,8 @@ describe('LoginState', () => {
 
   it('should be able to login', async () => {
     const userSession = mockUserSession();
-    mockCreateLoginAPI({ login: succeedWith(anUser) });
-    const { result } = renderHook(useLoginState);
+    const loginAPI = mockCreateLoginAPI({ login: succeedWith(anUser) });
+    const { result } = renderHook(() => useLoginState(loginAPI));
 
     act(() => result.current.login("right_user", "right_password"));
 
@@ -25,8 +25,8 @@ describe('LoginState', () => {
   });
 
   it('should set loading status to false when API succeeded', async () => {
-    mockCreateLoginAPI({ login: succeedWith(anUser, 100) });
-    const { result } = renderHook(useLoginState);
+    const loginAPI = mockCreateLoginAPI({ login: succeedWith(anUser, 100) });
+    const { result } = renderHook(() => useLoginState(loginAPI));
 
     act(() => result.current.login("right_user", "right_password"));
 
@@ -35,8 +35,8 @@ describe('LoginState', () => {
   });
 
   it('should set loading status to false when API fails', async () => {
-    mockCreateLoginAPI({ login: failsWith("any error", 100) });
-    const { result } = renderHook(useLoginState);
+    const loginAPI = mockCreateLoginAPI({ login: failsWith("any error", 100) });
+    const { result } = renderHook(() => useLoginState(loginAPI));
 
     act(() => result.current.login("right_user", "right_password"));
 
@@ -45,8 +45,8 @@ describe('LoginState', () => {
   });
 
   it('should handle no user and password as INVALID_CREDENTIAL error', async () => {
-    mockCreateLoginAPI({ login: succeedWith(anUser) });
-    const { result } = renderHook(useLoginState);
+    const loginAPI = mockCreateLoginAPI({ login: succeedWith(anUser) });
+    const { result } = renderHook(() => useLoginState(loginAPI));
 
     act(() => result.current.login(undefined, undefined));
 
@@ -58,7 +58,7 @@ describe('LoginState', () => {
 
   it('should not perform the api call when user is blank', async () => {
     const loginAPI = mockCreateLoginAPI({ login: succeedWith(anUser) });
-    const { result } = renderHook(useLoginState);
+    const { result } = renderHook(() => useLoginState(loginAPI));
 
     act(() => result.current.login("", "pwd"));
 
@@ -67,7 +67,7 @@ describe('LoginState', () => {
 
   it('should not perform the api call when password is blank', async () => {
     const loginAPI = mockCreateLoginAPI({ login: succeedWith(anUser) });
-    const { result } = renderHook(useLoginState);
+    const { result } = renderHook(() => useLoginState(loginAPI));
 
     act(() => result.current.login("usr", ""));
 
@@ -75,8 +75,8 @@ describe('LoginState', () => {
   });
 
   it('should handle INVALID_CREDENTIAL from the API', async () => {
-    mockCreateLoginAPI({ login: failsWith("INVALID_CREDENTIALS") });
-    const { result } = renderHook(useLoginState);
+    const loginAPI = mockCreateLoginAPI({ login: failsWith("INVALID_CREDENTIALS") });
+    const { result } = renderHook(() => useLoginState(loginAPI));
 
     act(() => result.current.login("wrongUser", "wrongPassword"));
 
@@ -86,8 +86,8 @@ describe('LoginState', () => {
   });
 
   it('should handle NETWORK_ERROR from the api', async () => {
-    mockCreateLoginAPI({ login: failsWith("NETWORK_ERROR") });
-    const { result } = renderHook(useLoginState);
+    const loginAPI = mockCreateLoginAPI({ login: failsWith("NETWORK_ERROR") });
+    const { result } = renderHook(() => useLoginState(loginAPI));
 
     act(() => result.current.login("anyUser", "anyPassword"));
 
@@ -97,8 +97,8 @@ describe('LoginState', () => {
   });
 
   it('should handle any other error from the api as Generic Error', async () => {
-    mockCreateLoginAPI({ login: failsWith("ANY_OTHER_ERROR") });
-    const { result } = renderHook(useLoginState);
+    const loginAPI = mockCreateLoginAPI({ login: failsWith("ANY_OTHER_ERROR") });
+    const { result } = renderHook(() => useLoginState(loginAPI));
 
     act(() => result.current.login("anyUser", "anyPassword"));
 
@@ -109,7 +109,7 @@ describe('LoginState', () => {
 
   it('should ignore the login attempt while a previous one is still in progress', async () => {
     const loginAPI = mockCreateLoginAPI({ login: succeedWith(anUser, 50) });
-    const { result } = renderHook(useLoginState);
+    const { result } = renderHook(() => useLoginState(loginAPI));
 
     act(() => result.current.login("usr", "pwd"));
     await delay(10);
@@ -121,7 +121,7 @@ describe('LoginState', () => {
 
   it('should ignore the login attempt if already authenticated', async () => {
     const loginAPI = mockCreateLoginAPI({ login: succeedWith(anUser) });
-    const { result } = renderHook(useLoginState);
+    const { result } = renderHook(() => useLoginState(loginAPI));
 
     act(() => result.current.login("any", "any"));
     act(() => result.current.login("any another", "any"));

@@ -13,17 +13,17 @@ describe('PostState', () => {
 
   describe('createNewPost', () => {
     it('should call the create new post API correctly', async () => {
-      const mockedAPI = mockNewPostAPI();
-      const { result } = renderHook(() => usePostState("user-id"));
+      const api = mockNewPostAPI();
+      const { result } = renderHook(() => usePostState("user-id", api));
 
       await result.current.createNewPost("text to publish");
 
-      await waitFor(() => expect(mockedAPI.createNewPost).toHaveBeenCalledWith("user-id", "text to publish"));
+      await waitFor(() => expect(api.createNewPost).toHaveBeenCalledWith("user-id", "text to publish"));
     });
 
     it('should set creating status to false when API succeeded', async () => {
-      mockNewPostAPI({ createNewPost: succeedWith(aPost) });
-      const { result } = renderHook(() => usePostState("user-id"));
+      const api = mockNewPostAPI({ createNewPost: succeedWith(aPost) });
+      const { result } = renderHook(() => usePostState("user-id", api));
 
       await result.current.createNewPost("text");
 
@@ -32,8 +32,8 @@ describe('PostState', () => {
     });
 
     it('should set creating status to false when API fails', async () => {
-      mockNewPostAPI({ createNewPost: failsWith("any error") });
-      const { result } = renderHook(() => usePostState("user-id"));
+      const api = mockNewPostAPI({ createNewPost: failsWith("any error") });
+      const { result } = renderHook(() => usePostState("user-id", api));
 
       await result.current.createNewPost("text");
 

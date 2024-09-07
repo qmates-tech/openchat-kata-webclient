@@ -1,15 +1,13 @@
 import { delay } from 'msw';
 import { vi } from 'vitest';
-import * as toMock from '../../src/Login/LoginAPI';
+import { LoginAPI, LoginAPIException } from '../../src/Login/LoginAPI';
 import { User } from '../../src/User/User';
 
-export function mockCreateLoginAPI(obj: Partial<toMock.LoginAPI> = {}): toMock.LoginAPI {
-  const mocked = {
+export function mockCreateLoginAPI(obj: Partial<LoginAPI> = {}): LoginAPI {
+  return {
     login: vi.fn(),
     ...obj
-  };
-  vi.spyOn(toMock, "createLoginAPI").mockImplementation(() => mocked);
-  return mocked;
+  }
 }
 
 export function succeedWith(user: User, delayMs: number = 0) {
@@ -19,7 +17,7 @@ export function succeedWith(user: User, delayMs: number = 0) {
   });
 }
 
-export function failsWith(exception: toMock.LoginAPIException | string, delayMs: number = 0) {
+export function failsWith(exception: LoginAPIException | string, delayMs: number = 0) {
   return vi.fn().mockImplementation(async () => {
     await delay(delayMs);
     throw exception;

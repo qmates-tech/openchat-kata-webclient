@@ -1,5 +1,5 @@
 import { createNewPostAPI } from "./NewPostAPI.ts";
-import { useMemo, useState } from "react";
+import { useState } from "react";
 
 export type PostState = {
   isCreatingNewPost: boolean;
@@ -8,8 +8,9 @@ export type PostState = {
 
 export type NewPostError = undefined
 
-export function usePostState(userId: string): PostState {
-  const API = useMemo(() => createNewPostAPI(), []);
+const newPostAPI = createNewPostAPI();
+
+export function usePostState(userId: string, API = newPostAPI): PostState {
   const [isCreatingNewPost, setIsCreatingNewPost] = useState<boolean>(false);
 
   return {
