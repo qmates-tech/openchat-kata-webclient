@@ -1,4 +1,4 @@
-import { renderHook, waitFor } from '@testing-library/react';
+import { act, renderHook, waitFor } from '@testing-library/react';
 import { mockUserSession } from '../utils/MockUserSession';
 import { mockNewPostAPI, succeedWith, failsWith } from "../utils/MockNewPostAPI.ts";
 import { usePostState } from "../../src/Post/PostState.ts";
@@ -16,7 +16,7 @@ describe('PostState', () => {
       const api = mockNewPostAPI();
       const { result } = renderHook(() => usePostState("user-id", api));
 
-      await result.current.createNewPost("text to publish");
+      act(() => result.current.createNewPost("text to publish"));
 
       await waitFor(() => expect(api.createNewPost).toHaveBeenCalledWith("user-id", "text to publish"));
     });
@@ -25,7 +25,7 @@ describe('PostState', () => {
       const api = mockNewPostAPI({ createNewPost: succeedWith(aPost) });
       const { result } = renderHook(() => usePostState("user-id", api));
 
-      await result.current.createNewPost("text");
+      act(() => result.current.createNewPost("text"));
 
       expect(result.current.isCreatingNewPost).toStrictEqual(true);
       await waitFor(() => expect(result.current.isCreatingNewPost).toStrictEqual(false));
@@ -35,7 +35,7 @@ describe('PostState', () => {
       const api = mockNewPostAPI({ createNewPost: failsWith("any error") });
       const { result } = renderHook(() => usePostState("user-id", api));
 
-      await result.current.createNewPost("text");
+      act(() => result.current.createNewPost("text"));
 
       expect(result.current.isCreatingNewPost).toStrictEqual(true);
       await waitFor(() => expect(result.current.isCreatingNewPost).toStrictEqual(false));

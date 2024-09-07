@@ -3,7 +3,7 @@ import { useState } from "react";
 
 export type PostState = {
   isCreatingNewPost: boolean;
-  createNewPost: (text: string) => Promise<NewPostError>;
+  createNewPost: (text: string) => void;
 }
 
 export type NewPostError = undefined
@@ -15,12 +15,11 @@ export function usePostState(userId: string, API = newPostAPI): PostState {
 
   return {
     isCreatingNewPost,
-    createNewPost: async (text: string) => {
+    createNewPost: (text: string) => {
       setIsCreatingNewPost(true);
-      await API.createNewPost(userId, text)
-        .catch(e => {})
+      API.createNewPost(userId, text)
+        .catch(() => {})
         .finally(() => setIsCreatingNewPost(false));
-      return undefined;
     }
   };
 }

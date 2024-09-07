@@ -1,4 +1,4 @@
-import { render, screen } from '@testing-library/react';
+import { render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import React from "react";
 import { NewPostForm } from "../../src/Post/NewPostForm.tsx";
@@ -7,7 +7,7 @@ describe('NewPostForm', () => {
   it('should call the createPost function', async () => {
     const createPostMock = vi.fn(() => Promise.resolve(undefined));
 
-    render(<NewPostForm createPost={createPostMock} isCreatingNewPost={false} />);
+    render(<NewPostForm createNewPost={createPostMock} isCreatingNewPost={false} />);
 
     await userEvent.type(writePostInput(), 'the very first post');
     await userEvent.click(sendPostButton());
@@ -17,7 +17,7 @@ describe('NewPostForm', () => {
 
   it('disable the creating post while already creating', async () => {
     const createPostMock = vi.fn(() => Promise.resolve(undefined));
-    render(<NewPostForm createPost={createPostMock} isCreatingNewPost={true}  />);
+    render(<NewPostForm createNewPost={createPostMock} isCreatingNewPost={true}  />);
 
     expect(writePostInput()).toHaveAttribute('disabled');
     expect(sendPostButton()).toHaveAttribute('disabled');
@@ -26,12 +26,15 @@ describe('NewPostForm', () => {
 
   it('cleanup the text field when post is successfully created', async () => {
     const createPostMock = vi.fn(() => Promise.resolve(undefined));
-    render(<NewPostForm createPost={createPostMock} isCreatingNewPost={false}  />);
-
+    const { rerender } = render(<NewPostForm createNewPost={createPostMock} isCreatingNewPost={false}  />);
     await userEvent.type(writePostInput(), 'the very first post');
-    await userEvent.click(sendPostButton());
 
-    expect(writePostInput()).toHaveValue('');
+    rerender(<NewPostForm createNewPost={createPostMock} isCreatingNewPost={true} />);
+    rerender(<NewPostForm createNewPost={createPostMock} isCreatingNewPost={false} />);
+
+    await waitFor(() => {
+      expect(writePostInput()).toHaveValue('');
+    });
   })
 })
 
