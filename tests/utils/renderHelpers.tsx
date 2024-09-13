@@ -2,6 +2,7 @@ import { InitialEntry } from '@remix-run/router';
 import { ReactNode } from 'react';
 import { MemoryRouter, Route, Routes } from "react-router-dom";
 import { UserSessionProvider } from '../../src/User/UserSessionState';
+import { PostsListStateProvider } from "../../src/Post/PostsListState.tsx";
 
 export type RouteLocation = { path: string; from?: string; };
 export function wrapWithRouter(location: RouteLocation) {
@@ -30,6 +31,12 @@ export function wrapWithCustomRoutes(location: RouteLocation, routes: string[]) 
 export function wrapWithUserSession() {
   return {
     wrapper: ({ children }: WrapperProps): ReactNode => (<UserSessionProvider>{children}</UserSessionProvider>)
+  }
+}
+
+export function wrapWithPostListState() {
+  return {
+    wrapper: ({ children }: WrapperProps): ReactNode => (<PostsListStateProvider>{children}</PostsListStateProvider>)
   }
 }
 

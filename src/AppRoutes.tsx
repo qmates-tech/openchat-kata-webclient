@@ -5,12 +5,13 @@ import { PageNotFound } from "./NotFound/PageNotFound";
 import { RegistrationPage } from "./Registration/RegistrationPage";
 import { WallPage } from "./Wall/WallPage";
 import { OnlyPublicRoute } from "./App/OnlyPublicRoute.tsx";
+import { PostsListStateProvider } from "./Post/PostsListState.tsx";
 
 export type RouteName = 'login' | 'registration' | 'wall';
 
 const routes: Record<RouteName, RouteProps> = {
   login: { path: '/login', element: <OnlyPublicRoute><LoginPage /></OnlyPublicRoute> },
-  wall: { path: '/', element: <PrivateRoute><WallPage /></PrivateRoute> },
+  wall: { path: '/', element: <PrivateRoute><PostsListStateProvider><WallPage /></PostsListStateProvider></PrivateRoute> },
   registration: { path: '/register', element: <OnlyPublicRoute><RegistrationPage /></OnlyPublicRoute> },
 }
 

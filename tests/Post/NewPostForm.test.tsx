@@ -4,10 +4,12 @@ import React from "react";
 import { NewPostForm } from "../../src/Post/NewPostForm.tsx";
 
 describe('NewPostForm', () => {
+  const aPost = { id: "123", userId: "user-id", text: "text to publish", dateTime: "2021-09-01T00:00:00Z" };
+
   it('should call the createPost function', async () => {
     const createPostMock = vi.fn(() => Promise.resolve(undefined));
 
-    render(<NewPostForm createNewPost={createPostMock} isCreatingNewPost={false} createNewPostError={undefined} />);
+    render(<NewPostForm post={undefined} create={createPostMock} isCreating={false} error={undefined} />);
 
     await userEvent.type(writePostInput(), 'the very first post');
     await userEvent.click(sendPostButton());
@@ -17,7 +19,7 @@ describe('NewPostForm', () => {
 
   it('disable the creating post while already creating', async () => {
     const createPostMock = vi.fn(() => Promise.resolve(undefined));
-    render(<NewPostForm createNewPost={createPostMock} isCreatingNewPost={true} createNewPostError={undefined} />);
+    render(<NewPostForm post={undefined} create={createPostMock} isCreating={true} error={undefined} />);
 
     expect(writePostInput()).toHaveAttribute('disabled');
     expect(sendPostButton()).toHaveAttribute('disabled');
@@ -25,12 +27,12 @@ describe('NewPostForm', () => {
   });
 
   it('cleanup the text field when post is successfully created', async () => {
-    const createPostMock = vi.fn(() => Promise.resolve(undefined));
-    const { rerender } = render(<NewPostForm createNewPost={createPostMock} isCreatingNewPost={false} createNewPostError={undefined} />);
+    const createPostMock = vi.fn(() => Promise.resolve(aPost));
+    const { rerender } = render(<NewPostForm post={undefined} create={createPostMock} isCreating={false} error={undefined} />);
     await userEvent.type(writePostInput(), 'the very first post');
 
-    rerender(<NewPostForm createNewPost={createPostMock} isCreatingNewPost={true} createNewPostError={undefined} />);
-    rerender(<NewPostForm createNewPost={createPostMock} isCreatingNewPost={false} createNewPostError={undefined} />);
+    rerender(<NewPostForm post={undefined} create={createPostMock} isCreating={true} error={undefined} />);
+    rerender(<NewPostForm post={aPost} create={createPostMock} isCreating={false} error={undefined} />);
 
     await waitFor(() => {
       expect(writePostInput()).toHaveValue('');
@@ -39,7 +41,7 @@ describe('NewPostForm', () => {
 
   it('disable the creating post button when text is empty', async () => {
     const createPostMock = vi.fn(() => Promise.resolve(undefined));
-    render(<NewPostForm createNewPost={createPostMock} isCreatingNewPost={false} createNewPostError={undefined} />);
+    render(<NewPostForm post={undefined} create={createPostMock} isCreating={false} error={undefined} />);
 
     expect(sendPostButton()).toHaveAttribute('disabled');
     expect(sendPostButton()).toHaveAttribute('aria-busy', 'false');
@@ -47,7 +49,7 @@ describe('NewPostForm', () => {
 
   it('disable the creating post button when text is blank', async () => {
     const createPostMock = vi.fn(() => Promise.resolve(undefined));
-    render(<NewPostForm createNewPost={createPostMock} isCreatingNewPost={false} createNewPostError={undefined}  />);
+    render(<NewPostForm post={undefined} create={createPostMock} isCreating={false} error={undefined}  />);
 
     await userEvent.type(writePostInput(), '\n  ');
 
@@ -56,11 +58,11 @@ describe('NewPostForm', () => {
   });
 
   it('should show the error message and keep the text when a post creation is failed', async () => {
-    const { rerender } = render(<NewPostForm createNewPostError={undefined} isCreatingNewPost={false} createNewPost={vi.fn()} />);
+    const { rerender } = render(<NewPostForm post={undefined} error={undefined} isCreating={false} create={vi.fn()} />);
     await userEvent.type(writePostInput(), 'the very first post');
 
-    rerender(<NewPostForm createNewPostError={undefined} isCreatingNewPost={true} createNewPost={vi.fn()} />);
-    rerender(<NewPostForm createNewPostError={"Network error"} isCreatingNewPost={false} createNewPost={vi.fn()} />);
+    rerender(<NewPostForm post={undefined} error={undefined} isCreating={true} create={vi.fn()} />);
+    rerender(<NewPostForm post={undefined} error={"Network error"} isCreating={false} create={vi.fn()} />);
 
     await waitFor(() => expect(createNewPostError()).toBeInTheDocument());
     expect(createNewPostError()).toHaveTextContent('Network error');

@@ -1,33 +1,33 @@
 import React, { useEffect, useMemo, useState } from "react";
 import "./NewPostForm.css";
-import { CreatePostState } from "./PostState.ts";
+import { NewPostState } from "./NewPostState.ts";
 
-export function NewPostForm({ createNewPost, isCreatingNewPost, createNewPostError }: CreatePostState) {
+export function NewPostForm({ post, create, isCreating, error }: NewPostState) {
   const [text, changeText] = useState<string>("");
-  const buttonDisabled = useMemo(() => isCreatingNewPost || !(text.trim()), [isCreatingNewPost, text]);
+  const buttonDisabled = useMemo(() => isCreating || !(text.trim()), [isCreating, text]);
 
-  useEffect(clearTextWhenNewPostIsCreated, [isCreatingNewPost]);
+  useEffect(clearTextWhenNewPostIsCreated, [post]);
 
   return <>
     <fieldset className="new-post" role="group">
     <textarea placeholder="What's on your mind?" maxLength={100}
               value={text} onChange={e => changeText(e.target.value)}
-              disabled={isCreatingNewPost} />
+              disabled={isCreating} />
       <button type="submit" onClick={createPost}
-              disabled={buttonDisabled} aria-busy={isCreatingNewPost}>
+              disabled={buttonDisabled} aria-busy={isCreating}>
         Post
       </button>
     </fieldset>
-    {createNewPostError && <article data-testid="create-new-post-error" className="error-message">{createNewPostError}</article>}
+    {error && <article data-testid="create-new-post-error" className="error-message">{error}</article>}
   </>;
 
   async function createPost(e: React.MouseEvent) {
     e.preventDefault();
-    createNewPost(text);
+    create(text);
   }
 
   function clearTextWhenNewPostIsCreated() {
-    if (!isCreatingNewPost && !createNewPostError) {
+    if (post) {
       changeText('');
     }
   }
