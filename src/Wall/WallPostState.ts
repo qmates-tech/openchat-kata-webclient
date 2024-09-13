@@ -1,9 +1,9 @@
-import { createPostsAPI, PostsAPI } from "../Post/PostsAPI.ts";
 import { useEffect, useState } from "react";
 import { Post } from "../Post/Post.ts";
 import { usePostsListState } from "../Post/PostsListState.tsx";
+import { createWallPostsAPI, WallPostsAPI } from "./WallPostsAPI.ts";
 
-const postsAPI = createPostsAPI();
+const wallPostsAPI = createWallPostsAPI();
 
 export type WallPostsState = {
   isLoading: boolean;
@@ -11,7 +11,7 @@ export type WallPostsState = {
   update(): void;
 }
 
-export function useWallPostsState(userId: string, API: PostsAPI = postsAPI): WallPostsState {
+export function useWallPostsState(userId: string, API: WallPostsAPI = wallPostsAPI): WallPostsState {
   const { posts, replace } = usePostsListState();
 
   useEffect(update, []);

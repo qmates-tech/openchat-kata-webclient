@@ -2,8 +2,10 @@ import { act, renderHook, waitFor } from '@testing-library/react';
 import { delay } from 'msw';
 import { useLoginState } from '../../src/Login/LoginState';
 import { User } from '../../src/User/User';
-import { failsWith, mockCreateLoginAPI, succeedWith } from '../utils/MockLoginAPI';
+import { mockCreateLoginAPI } from '../utils/MockLoginAPI';
 import { mockUserSession } from '../utils/MockUserSession';
+import { failsWith, succeedWith } from "../utils/APIResponseMock.ts";
+import { LoginAPIException } from "../../src/Login/LoginAPI.ts";
 
 describe('LoginState', () => {
   const anUser: User = { id: "123", username: "alessio", about: "About Alessio" };
@@ -35,7 +37,7 @@ describe('LoginState', () => {
   });
 
   it('should set loading status to false when API fails', async () => {
-    const loginAPI = mockCreateLoginAPI({ login: failsWith("any error", 100) });
+    const loginAPI = mockCreateLoginAPI({ login: failsWith<LoginAPIException>("any error", 100) });
     const { result } = renderHook(() => useLoginState(loginAPI));
 
     act(() => result.current.login("right_user", "right_password"));
@@ -75,7 +77,7 @@ describe('LoginState', () => {
   });
 
   it('should handle INVALID_CREDENTIAL from the API', async () => {
-    const loginAPI = mockCreateLoginAPI({ login: failsWith("INVALID_CREDENTIALS") });
+    const loginAPI = mockCreateLoginAPI({ login: failsWith<LoginAPIException>("INVALID_CREDENTIALS") });
     const { result } = renderHook(() => useLoginState(loginAPI));
 
     act(() => result.current.login("wrongUser", "wrongPassword"));
@@ -86,7 +88,7 @@ describe('LoginState', () => {
   });
 
   it('should handle NETWORK_ERROR from the api', async () => {
-    const loginAPI = mockCreateLoginAPI({ login: failsWith("NETWORK_ERROR") });
+    const loginAPI = mockCreateLoginAPI({ login: failsWith<LoginAPIException>("NETWORK_ERROR") });
     const { result } = renderHook(() => useLoginState(loginAPI));
 
     act(() => result.current.login("anyUser", "anyPassword"));

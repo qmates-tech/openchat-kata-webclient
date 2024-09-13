@@ -1,7 +1,9 @@
 import { useRegistrationState } from '../../src/Registration/RegistrationState';
 import { User } from '../../src/User/User';
-import { failsWith, mockCreateRegistrationAPI, succeedWith } from '../utils/MockRegistrationAPI';
+import { mockCreateRegistrationAPI } from '../utils/MockRegistrationAPI';
 import { mockUserSession } from '../utils/MockUserSession';
+import { failsWith, succeedWith } from "../utils/APIResponseMock.ts";
+import { RegistrationAPIException } from "../../src/Registration/RegistrationAPI.ts";
 
 describe('Registration State', () => {
   const anUser: User = { id: "123", username: "alessio", about: "About Alessio" };
@@ -91,7 +93,7 @@ describe('Registration State', () => {
 
     it('should not set current user session after a failed registration', async () => {
       const userSession = mockUserSession({ currentUser: undefined });
-      const api = mockCreateRegistrationAPI({ register: failsWith("any") });
+      const api = mockCreateRegistrationAPI({ register: failsWith<RegistrationAPIException>("any") });
       const { register } = useRegistrationState(api);
 
       await register({ username: "any", password: "any", about: "any" });
@@ -100,7 +102,7 @@ describe('Registration State', () => {
     });
 
     it('should return a generic error after a not handled failed registration', async () => {
-      const api = mockCreateRegistrationAPI({ register: failsWith("unhandled") });
+      const api = mockCreateRegistrationAPI({ register: failsWith<RegistrationAPIException>("unhandled") });
       const { register } = useRegistrationState(api);
 
       const error = await register({ username: "any", password: "any", about: "any" });
@@ -109,7 +111,7 @@ describe('Registration State', () => {
     });
 
     it('should return error after a failed API registration with USERNAME_ALREADY_IN_USE', async () => {
-      const api = mockCreateRegistrationAPI({ register: failsWith("USERNAME_ALREADY_IN_USE") });
+      const api = mockCreateRegistrationAPI({ register: failsWith<RegistrationAPIException>("USERNAME_ALREADY_IN_USE") });
       const { register } = useRegistrationState(api);
 
       const error = await register({ username: "any", password: "any", about: "any" });
@@ -118,7 +120,7 @@ describe('Registration State', () => {
     });
 
     it('should return error after a failed API registration with NETWORK_ERROR', async () => {
-      const api = mockCreateRegistrationAPI({ register: failsWith("NETWORK_ERROR") });
+      const api = mockCreateRegistrationAPI({ register: failsWith<RegistrationAPIException>("NETWORK_ERROR") });
       const { register } = useRegistrationState(api);
 
       const error = await register({ username: "any", password: "any", about: "any" });

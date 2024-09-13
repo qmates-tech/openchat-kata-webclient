@@ -1,10 +1,11 @@
 import { act, renderHook, waitFor } from '@testing-library/react';
 import { mockUserSession } from '../utils/MockUserSession';
-import { mockPostsAPI, succeedWith } from "../utils/MockPostsAPI.ts";
 import { Post } from "../../src/Post/Post.ts";
 import { describe } from "vitest";
 import { useWallPostsState } from "../../src/Wall/WallPostState.ts";
 import { wrapWithPostListState } from "../utils/renderHelpers.tsx";
+import { mockWallPostsAPI } from "../utils/MockWallPostsAPI.ts";
+import { succeedWith } from "../utils/APIResponseMock.ts";
 
 describe('PostState', () => {
   const aPost: Post = { id: "123", userId: "user-id", text: "text to publish", dateTime: "2021-09-01T00:00:00Z" };
@@ -15,7 +16,7 @@ describe('PostState', () => {
   });
 
   it('should update wall state at the hook initialization', async () => {
-    const api = mockPostsAPI();
+    const api = mockWallPostsAPI();
 
     renderHook(() => useWallPostsState("user-id", api), wrapWithPostListState());
 
@@ -23,7 +24,7 @@ describe('PostState', () => {
   });
 
   it('should call the retrieve wall API correctly', async () => {
-    const api = mockPostsAPI();
+    const api = mockWallPostsAPI();
     const { result } = renderHook(() => useWallPostsState("user-id", api), wrapWithPostListState());
 
     act(() => result.current.update());
@@ -32,7 +33,7 @@ describe('PostState', () => {
   });
 
   it(`should update the wall's posts state`, async () => {
-    const api = mockPostsAPI({ retrieveWall: () => Promise.resolve([aPost]) });
+    const api = mockWallPostsAPI({ retrieveWall: succeedWith([aPost]) });
     const { result } = renderHook(() => useWallPostsState("user-id", api), wrapWithPostListState());
 
     act(() => result.current.update());
@@ -42,7 +43,7 @@ describe('PostState', () => {
 
   it(`should replace old values`, async () => {
     let wallApiResponse: Post[] = []
-    const api = mockPostsAPI({ retrieveWall: () => Promise.resolve(wallApiResponse) });
+    const api = mockWallPostsAPI({ retrieveWall: () => Promise.resolve(wallApiResponse) });
     const { result } = renderHook(() => useWallPostsState("user-id", api), wrapWithPostListState());
     act(() => result.current.update());
 
@@ -53,7 +54,7 @@ describe('PostState', () => {
   });
 
   it(`should set loading status to false when API succeeded`, async () => {
-    const api = mockPostsAPI({ retrieveWall: succeedWith([aPost]) });
+    const api = mockWallPostsAPI({ retrieveWall: succeedWith([aPost]) });
     const { result } = renderHook(() => useWallPostsState("user-id", api), wrapWithPostListState());
 
     act(() => result.current.update());

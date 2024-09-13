@@ -1,14 +1,15 @@
 import { act, renderHook, waitFor } from '@testing-library/react';
 import { mockUserSession } from '../utils/MockUserSession';
-import { failsWith, mockPostsAPI, succeedWith } from "../utils/MockPostsAPI.ts";
 import { Post } from "../../src/Post/Post.ts";
 import { describe } from "vitest";
-import { NewPostAPIException } from "../../src/Post/PostsAPI.ts";
+import { NewPostAPIException } from "../../src/Post/NewPostsAPI.ts";
 import { useNewPostState } from "../../src/Post/NewPostState.ts";
 import { wrapWithPostListState } from "../utils/renderHelpers.tsx";
 import { mockPostListState } from "../utils/MockPostListState.ts";
+import { mockNewPostsAPI } from "../utils/MockNewPostsAPI.ts";
+import { failsWith, succeedWith } from "../utils/APIResponseMock.ts";
 
-describe('CreatePostState', () => {
+describe('NewPostsState', () => {
   const aPost: Post = { id: "123", userId: "user-id", text: "text to publish", dateTime: "2021-09-01T00:00:00Z" };
 
   beforeEach(() => {
@@ -17,7 +18,7 @@ describe('CreatePostState', () => {
   });
 
   it('should call the create new post API correctly', async () => {
-    const api = mockPostsAPI();
+    const api = mockNewPostsAPI();
     const { result } = renderHook(() => useNewPostState("user-id", api), wrapWithPostListState());
 
     act(() => result.current.create("text to publish"));
@@ -26,7 +27,7 @@ describe('CreatePostState', () => {
   });
 
   it('should set creating status to false when API succeeded', async () => {
-    const api = mockPostsAPI({ createNewPost: succeedWith(aPost) });
+    const api = mockNewPostsAPI({ createNewPost: succeedWith(aPost) });
     const { result } = renderHook(() => useNewPostState("user-id", api), wrapWithPostListState());
 
     act(() => result.current.create("text"));
@@ -36,7 +37,7 @@ describe('CreatePostState', () => {
   });
 
   it('should set creating status to false when API fails', async () => {
-    const api = mockPostsAPI({ createNewPost: failsWith("any error") });
+    const api = mockNewPostsAPI({ createNewPost: failsWith("any error") });
     const { result } = renderHook(() => useNewPostState("user-id", api), wrapWithPostListState());
 
     act(() => result.current.create("text"));
@@ -46,7 +47,7 @@ describe('CreatePostState', () => {
   });
 
   it('should handle USER_NOT_FOUND error', async () => {
-    const api = mockPostsAPI({ createNewPost: failsWith<NewPostAPIException>("USER_NOT_FOUND") });
+    const api = mockNewPostsAPI({ createNewPost: failsWith<NewPostAPIException>("USER_NOT_FOUND") });
     const { result } = renderHook(() => useNewPostState("user-id", api), wrapWithPostListState());
 
     act(() => result.current.create("text"));
@@ -55,7 +56,7 @@ describe('CreatePostState', () => {
   });
 
   it('should handle INAPPROPRIATE_LANGUAGE error', async () => {
-    const api = mockPostsAPI({ createNewPost: failsWith<NewPostAPIException>("INAPPROPRIATE_LANGUAGE") });
+    const api = mockNewPostsAPI({ createNewPost: failsWith<NewPostAPIException>("INAPPROPRIATE_LANGUAGE") });
     const { result } = renderHook(() => useNewPostState("user-id", api), wrapWithPostListState());
 
     act(() => result.current.create("text"));
@@ -64,7 +65,7 @@ describe('CreatePostState', () => {
   });
 
   it('should handle NETWORK_ERROR error', async () => {
-    const api = mockPostsAPI({ createNewPost: failsWith<NewPostAPIException>("NETWORK_ERROR") });
+    const api = mockNewPostsAPI({ createNewPost: failsWith<NewPostAPIException>("NETWORK_ERROR") });
     const { result } = renderHook(() => useNewPostState("user-id", api), wrapWithPostListState());
 
     act(() => result.current.create("text"));
@@ -73,7 +74,7 @@ describe('CreatePostState', () => {
   });
 
   it('should handle as generic error any other unhandled error', async () => {
-    const api = mockPostsAPI({ createNewPost: failsWith<NewPostAPIException>("any other error") });
+    const api = mockNewPostsAPI({ createNewPost: failsWith<NewPostAPIException>("any other error") });
     const { result } = renderHook(() => useNewPostState("user-id", api), wrapWithPostListState());
 
     act(() => result.current.create("text"));
@@ -82,7 +83,7 @@ describe('CreatePostState', () => {
   });
 
   it('should cleanup the error on every new createNewPost request', async () => {
-    const api = mockPostsAPI({ createNewPost: succeedWith(aPost) });
+    const api = mockNewPostsAPI({ createNewPost: succeedWith(aPost) });
     const mockedPostListState = mockPostListState();
     const { result } = renderHook(() => useNewPostState("user-id", api));
 
@@ -93,7 +94,7 @@ describe('CreatePostState', () => {
 
   it('should update the wall state after a new post is created', async () => {
     let response = failsWith<NewPostAPIException>("any other error");
-    const api = mockPostsAPI({ createNewPost: () => response() });
+    const api = mockNewPostsAPI({ createNewPost: () => response() });
     const { result } = renderHook(() => useNewPostState("user-id", api), wrapWithPostListState());
     act(() => result.current.create("text"));
     await waitFor(() => expect(result.current.error).toStrictEqual("Generic error"));
