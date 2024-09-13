@@ -9,7 +9,7 @@ type PostsProps = {
 };
 export function PostsList({ posts, isLoading }: PostsProps) {
   if (posts.length === 0 && !isLoading) {
-    return (<div className="wall-post-list">No posts present.</div>);
+    return (<div className="posts-list empty-list">No posts present.</div>);
   }
 
   return <div className="posts-list">
