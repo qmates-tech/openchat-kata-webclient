@@ -1,14 +1,14 @@
 import { useEffect, useState } from "react";
-import { usePostsListState, UserPost } from "../Post/PostsListState.tsx";
+import { usePostsListState } from "../Post/PostsListState.tsx";
 import { createWallPostsAPI, WallPostsAPI } from "./WallPostsAPI.ts";
 import { Post } from "../Post/Post.ts";
-import { UUID } from "../helpers/uuid";
+import { applyAllUserNames, PostWithName } from "../Post/PostWithName.tsx";
 
 const wallPostsAPI = createWallPostsAPI();
 
 export type WallPostsState = {
   isLoading: boolean;
-  wall: UserPost[];
+  wall: PostWithName[];
   update(): void;
 }
 
@@ -29,16 +29,9 @@ export function useWallPostsState(userId: string, API: WallPostsAPI = wallPostsA
     setIsLoading(true);
     API.retrieveWall(userId)
       .then((post: Post[]) => {
-        return replace(applyUserName(post, userId));
+        return replace(applyAllUserNames(post, userId));
       })
       .catch(() => {})
       .finally(() => setIsLoading(false));
   }
-}
-
-function applyUserName(posts: Post[], currentUserId: UUID): UserPost[] {
-  return posts.map(post => ({
-    ...post,
-    username: post.userId === currentUserId ? "You" : post.userId
-  }));
 }

@@ -4,7 +4,7 @@ import React from "react";
 import { NewPostForm } from "../../src/Post/NewPostForm.tsx";
 
 describe('NewPostForm', () => {
-  const aPost = { id: "123", userId: "user-id", text: "text to publish", dateTime: "2021-09-01T00:00:00Z" };
+  const aPost = { id: "123", userId: "user-id", text: "text", dateTime: "2021-09-01T00:00:00Z", username: "You" };
 
   it('should call the createPost function', async () => {
     const createPostMock = vi.fn(() => Promise.resolve(undefined));

@@ -1,8 +1,8 @@
 import { render, screen } from '@testing-library/react';
 import React from "react";
 import { Wall } from "../../src/Wall/Wall.tsx";
-import { Post } from "../../src/Post/Post.ts";
 import { mockPostListState } from "../utils/MockPostListState.ts";
+import { PostWithName } from "../../src/Post/PostWithName.tsx";
 
 describe('Wall', () => {
   const anUser = { id: '1', username: 'John Doe', about: '' };
@@ -35,7 +35,7 @@ describe('Wall', () => {
   });
 
   it('renders the post list', async () => {
-    const aPost: Post = { id: '1', text: 'POST_TEXT', userId: '1', dateTime: '2024-09-07' };
+    const aPost: PostWithName = { id: '1', text: 'POST_TEXT', userId: '1', dateTime: '2024-09-07', username: "You" };
     mockPostListState({ posts: [aPost] });
 
     render(<Wall user={anUser} />);

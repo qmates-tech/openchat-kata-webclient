@@ -1,7 +1,7 @@
 import React from "react";
-import { UserPost } from "./PostsListState.tsx";
+import { PostWithName } from "./PostWithName.tsx";
 
-export function PostItem({ post }: { post: UserPost }) {
+export function PostItem({ post }: { post: PostWithName }) {
   return <article>
     {post.text}
     <footer><small>{post.username} - {post.dateTime}</small></footer>

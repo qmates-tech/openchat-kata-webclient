@@ -17,9 +17,9 @@ describe('PostsListState', () => {
   });
 
   it('should replace the posts list', async () => {
-    const firstPost = { id: "123", userId: "user-id", text: "text 1", dateTime: "2021-09-01T00:00:00Z" };
-    const secondPost = { id: "321", userId: "user-id", text: "text 2", dateTime: "2021-09-02T00:00:00Z" };
-    const anotherPost = { id: "456", userId: "another-id", text: "a text", dateTime: "2024-10-22T00:00:00Z" };
+    const firstPost = { id: "123", userId: "user-id", text: "text 1", dateTime: "2021-09-01T00:00:00Z", username: "You" };
+    const secondPost = { id: "321", userId: "user-id", text: "text 2", dateTime: "2021-09-02T00:00:00Z", username: "You" };
+    const anotherPost = { id: "456", userId: "another-id", text: "a text", dateTime: "2024-10-22T00:00:00Z", username: "another-id" };
     const { result } = renderHook(usePostsListState, wrapWithPostListState());
     act(() => result.current.replace([firstPost, secondPost]));
 
@@ -29,9 +29,9 @@ describe('PostsListState', () => {
   });
 
   it('should prepend to the posts list', async () => {
-    const firstPost = { id: "123", userId: "user-id", text: "text 1", dateTime: "2021-09-01T00:00:00Z" };
-    const secondPost = { id: "321", userId: "user-id", text: "text 2", dateTime: "2021-09-02T00:00:00Z" };
-    const anotherPost = { id: "456", userId: "another-id", text: "a text", dateTime: "2024-10-22T00:00:00Z" };
+    const firstPost = { id: "123", userId: "user-id", text: "text 1", dateTime: "2021-09-01T00:00:00Z", username: "You" };
+    const secondPost = { id: "321", userId: "user-id", text: "text 2", dateTime: "2021-09-02T00:00:00Z", username: "You" };
+    const anotherPost = { id: "456", userId: "another-id", text: "a text", dateTime: "2024-10-22T00:00:00Z", username: "another-id" };
     const { result } = renderHook(usePostsListState, wrapWithPostListState());
     act(() => result.current.replace([firstPost, secondPost]));
 

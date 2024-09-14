@@ -1,10 +1,11 @@
 import React from "react";
 import "./PostsList.css";
 import { PostItem } from "./PostItem.tsx";
-import { UserPost } from "./PostsListState.tsx";
+
+import {PostWithName} from "./PostWithName.tsx";
 
 type PostsProps = {
-  posts: UserPost[]
+  posts: PostWithName[]
   isLoading: boolean
 };
 

@@ -1,8 +1,7 @@
 import { createNewPostsAPI, NewPostAPIException, NewPostsAPI } from "./NewPostsAPI.ts";
 import { useState } from "react";
-import { Post } from "./Post.ts";
-import { usePostsListState, UserPost } from "./PostsListState.tsx";
-import { UUID } from "../helpers/uuid";
+import { usePostsListState } from "./PostsListState.tsx";
+import { applyUserName, PostWithName } from "./PostWithName.tsx";
 
 const newPostsAPI = createNewPostsAPI();
 
@@ -15,13 +14,13 @@ export type CreateNewPostError =
 export type NewPostState = {
   isCreating: boolean;
   error: CreateNewPostError | undefined;
-  post: UserPost | undefined;
+  post: PostWithName | undefined;
   create(text: string): void;
 }
 
 export function useNewPostState(userId: string, API: NewPostsAPI = newPostsAPI): NewPostState {
   const { prepend } = usePostsListState();
-  const [post, setPost] = useState<UserPost | undefined>(undefined);
+  const [post, setPost] = useState<PostWithName | undefined>(undefined);
   const [isCreating, setIsCreating] = useState<boolean>(false);
   const [error, setError] = useState<CreateNewPostError | undefined>();
 
@@ -58,11 +57,4 @@ function parseCreateNewPostError(error: NewPostAPIException): CreateNewPostError
     default:
       return "Generic error";
   }
-}
-
-function applyUserName(post: Post, currentUserId: UUID): UserPost {
-  return {
-    ...post,
-    username: post.userId === currentUserId ? "You" : post.userId
-  };
 }
