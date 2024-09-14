@@ -51,11 +51,15 @@ describe('PostState', () => {
     act(() => result.current.update());
 
 
-    wallApiResponse = [{ id: "456", userId: 'user-id', text: "another", dateTime: "another-date" }];
+    wallApiResponse = [
+        { id: "456", userId: 'another-id', text: "another", dateTime: "another-date" },
+        { id: "123", userId: 'user-id', text: "user", dateTime: "user-date" }
+    ];
     act(() => result.current.update());
 
     await waitFor(() => expect(result.current.wall).toStrictEqual([
-      { id: "456", userId: 'user-id', text: "another", dateTime: "another-date", username: "You" }
+      { id: "456", userId: 'another-id', text: "another", dateTime: "another-date", username: "another-id" },
+      { id: "123", userId: 'user-id', text: "user", dateTime: "user-date", username: "You" }
     ]));
   });
 
