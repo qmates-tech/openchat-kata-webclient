@@ -19,23 +19,23 @@ describe('Posts', () => {
   });
 
   it('should show the older posts while loading', async () => {
-    const anOldPost = { id: "1", userId: "user1", text: "an older post's text", dateTime: "2021-01-01" };
+    const anOldPost = { id: "1", userId: "user1", text: "an older post", dateTime: "2021-01-01", username: "username" };
 
     render(<PostsList posts={[anOldPost]} isLoading={true} />);
 
-    expect(screen.getByText("an older post's text")).toBeInTheDocument();
-    expect(screen.getByText("user1 - 2021-01-01")).toBeInTheDocument();
+    expect(screen.getByText("an older post")).toBeInTheDocument();
+    expect(screen.getByText("username - 2021-01-01")).toBeInTheDocument();
   });
 
   it('should show the post list', async () => {
-    const secondPost = { id: "2", userId: "user2", text: "another post", dateTime: "2021-01-02" };
-    const firstPost = { id: "1", userId: "user1", text: "an old post", dateTime: "2021-01-01" };
+    const secondPost = { id: "2", userId: "user2", text: "another post", dateTime: "2021-01-02", username: "name2" };
+    const firstPost = { id: "1", userId: "user1", text: "an old post", dateTime: "2021-01-01", username: "name1" };
 
     render(<PostsList posts={[secondPost, firstPost]} isLoading={true} />);
 
     expect(screen.getByText("an old post")).toBeInTheDocument();
-    expect(screen.getByText("user1 - 2021-01-01")).toBeInTheDocument();
+    expect(screen.getByText("name1 - 2021-01-01")).toBeInTheDocument();
     expect(screen.getByText("another post")).toBeInTheDocument();
-    expect(screen.getByText("user2 - 2021-01-02")).toBeInTheDocument();
+    expect(screen.getByText("name2 - 2021-01-02")).toBeInTheDocument();
   });
 });

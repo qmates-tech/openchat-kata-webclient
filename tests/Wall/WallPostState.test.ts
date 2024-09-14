@@ -33,12 +33,15 @@ describe('PostState', () => {
   });
 
   it(`should update the wall's posts state`, async () => {
+    const aPost = { id: "123", userId: 'user-id', text: "text", dateTime: "a-date" };
     const api = mockWallPostsAPI({ retrieveWall: succeedWith([aPost]) });
     const { result } = renderHook(() => useWallPostsState("user-id", api), wrapWithPostListState());
 
     act(() => result.current.update());
 
-    await waitFor(() => expect(result.current.wall).toStrictEqual([aPost]));
+    await waitFor(() => expect(result.current.wall).toStrictEqual([
+      { id: "123", userId: "user-id", text: "text", dateTime: "a-date", username: "You" }
+    ]));
   });
 
   it(`should replace old values`, async () => {
@@ -47,10 +50,13 @@ describe('PostState', () => {
     const { result } = renderHook(() => useWallPostsState("user-id", api), wrapWithPostListState());
     act(() => result.current.update());
 
-    wallApiResponse = [anotherPost];
+
+    wallApiResponse = [{ id: "456", userId: 'user-id', text: "another", dateTime: "another-date" }];
     act(() => result.current.update());
 
-    await waitFor(() => expect(result.current.wall).toStrictEqual([anotherPost]));
+    await waitFor(() => expect(result.current.wall).toStrictEqual([
+      { id: "456", userId: 'user-id', text: "another", dateTime: "another-date", username: "You" }
+    ]));
   });
 
   it(`should set loading status to false when API succeeded`, async () => {

@@ -1,12 +1,13 @@
 import React from "react";
 import "./PostsList.css";
-import { Post } from "./Post.ts";
 import { PostItem } from "./PostItem.tsx";
+import { UserPost } from "./PostsListState.tsx";
 
 type PostsProps = {
-  posts: Post[]
+  posts: UserPost[]
   isLoading: boolean
 };
+
 export function PostsList({ posts, isLoading }: PostsProps) {
   if (posts.length === 0 && !isLoading) {
     return (<div className="posts-list empty-list">No posts present.</div>);

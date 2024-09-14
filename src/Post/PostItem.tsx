@@ -1,9 +1,9 @@
-import { Post } from "./Post.ts";
 import React from "react";
+import { UserPost } from "./PostsListState.tsx";
 
-export function PostItem({ post }: { post: Post }) {
+export function PostItem({ post }: { post: UserPost }) {
   return <article>
     {post.text}
-    <footer><small>{post.userId} - {post.dateTime}</small></footer>
+    <footer><small>{post.username} - {post.dateTime}</small></footer>
   </article>;
 }

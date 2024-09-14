@@ -1,10 +1,11 @@
 import { createContext, ReactNode, useContext, useState } from "react";
 import { Post } from "./Post.ts";
 
+export type UserPost = Post & { username?: string | undefined };
 export type PostsListState = {
-  posts: Post[];
-  replace(newWall: Post[]): void;
-  prepend(newPost: Post): void;
+  posts: UserPost[];
+  replace(newWall: UserPost[]): void;
+  prepend(newPost: UserPost): void;
 };
 const PostsListContext = createContext<PostsListState | undefined>(undefined);
 
@@ -17,14 +18,14 @@ export const usePostsListState = () => {
 };
 
 export function PostsListStateProvider({ children }: { children: ReactNode }): ReactNode {
-  const [posts, setPosts] = useState<Post[]>([]);
+  const [posts, setPosts] = useState<UserPost[]>([]);
 
   const postListValue = {
     posts,
-    replace(newWall: Post[]) {
+    replace(newWall: UserPost[]) {
       setPosts(newWall)
     },
-    prepend(newPost: Post) {
+    prepend(newPost: UserPost) {
       setPosts(wall => [newPost, ...wall])
     }
   }
