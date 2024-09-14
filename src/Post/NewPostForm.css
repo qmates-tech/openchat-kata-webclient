@@ -8,8 +8,10 @@
     resize: vertical;
 }
 
-.new-post input {
-    height: auto;
+.new-post button small {
+    display: block;
+    font-size: 0.6rem;
+    white-space: nowrap;
 }
 
 article.error-message {

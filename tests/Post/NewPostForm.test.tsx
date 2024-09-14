@@ -1,4 +1,4 @@
-import { render, screen, waitFor } from '@testing-library/react';
+import { act, render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import React from "react";
 import { NewPostForm } from "../../src/Post/NewPostForm.tsx";
@@ -8,13 +8,22 @@ describe('NewPostForm', () => {
 
   it('should call the createPost function', async () => {
     const createPostMock = vi.fn(() => Promise.resolve(undefined));
-
     render(<NewPostForm post={undefined} create={createPostMock} isCreating={false} error={undefined} />);
 
     await userEvent.type(writePostInput(), 'the very first post');
     await userEvent.click(sendPostButton());
 
     expect(createPostMock).toHaveBeenCalledWith("the very first post");
+  });
+
+  it('ctrl + Enter on textarea should call the createPost function', async () => {
+    const createPostMock = vi.fn(() => Promise.resolve(undefined));
+    render(<NewPostForm post={undefined} create={createPostMock} isCreating={false} error={undefined} />);
+
+    await userEvent.click(writePostInput());
+    await userEvent.keyboard('text{Control>}{Enter}{/Control}');
+
+    expect(createPostMock).toHaveBeenCalledWith("text");
   });
 
   it('disable the creating post while already creating', async () => {
@@ -68,10 +77,30 @@ describe('NewPostForm', () => {
     expect(createNewPostError()).toHaveTextContent('Network error');
     expect(writePostInput()).toHaveValue('the very first post');
   });
+
+  it('should hide the error message when the text is changed', async () => {
+    const { rerender } = render(<NewPostForm post={undefined} error={undefined} isCreating={false} create={vi.fn()} />);
+    await userEvent.type(writePostInput(), 'inappropriate');
+
+    rerender(<NewPostForm post={undefined} error={"Inappropriate language detected"} isCreating={false} create={vi.fn()} />);
+
+    await userEvent.clear(writePostInput());
+
+    await waitFor(() => expect(createNewPostError()).not.toBeInTheDocument());
+    expect(writePostInput()).toHaveValue('');
+  });
+
+  it('should focus on the text input when an error is shown', async () => {
+    const { rerender } = render(<NewPostForm post={undefined} error={undefined} isCreating={false} create={vi.fn()} />);
+
+    rerender(<NewPostForm post={undefined} error={"Inappropriate language detected"} isCreating={false} create={vi.fn()} />);
+
+    expect(writePostInput()).toHaveFocus();
+  });
 });
 
 function createNewPostError() {
-  return screen.getByTestId('create-new-post-error')
+  return screen.queryByTestId('create-new-post-error')
 }
 
 function writePostInput() {
