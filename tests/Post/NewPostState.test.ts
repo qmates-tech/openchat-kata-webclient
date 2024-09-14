@@ -92,7 +92,7 @@ describe('NewPostState', () => {
     await waitFor(() => expect(mockedPostListState.prepend).toHaveBeenCalledTimes(1));
   });
 
-  it('should update the wall state after a new post is created', async () => {
+  it('should clean the error after a new post is created', async () => {
     let response = failsWith<NewPostAPIException>("any other error");
     const api = mockNewPostsAPI({ createNewPost: () => response() });
     const { result } = renderHook(() => useNewPostState("user-id", api), wrapWithPostListState());
@@ -103,5 +103,18 @@ describe('NewPostState', () => {
     act(() => result.current.create("text"));
 
     await waitFor(() => expect(result.current.error).toStrictEqual(undefined));
+  });
+
+  it('should update the wall state after a new post is created', async () => {
+    const aPost = { id: "123", userId: "user-id", text: "post-test", dateTime: "a-date" };
+    const postListStateMock = mockPostListState();
+    const api = mockNewPostsAPI({ createNewPost: succeedWith(aPost) });
+    const { result } = renderHook(() => useNewPostState("user-id", api));
+
+    act(() => result.current.create("text"));
+
+    const expectedUserPost = { id: "123", userId: "user-id", text: "post-test", dateTime: "a-date", username: "You" };
+    await waitFor(() => expect(postListStateMock.prepend).toHaveBeenCalledWith(expectedUserPost));
+    await waitFor(() => expect(result.current.post).toStrictEqual(expectedUserPost));
   });
 });
