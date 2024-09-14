@@ -9,7 +9,7 @@ import { mockPostListState } from "../utils/MockPostListState.ts";
 import { mockNewPostsAPI } from "../utils/MockNewPostsAPI.ts";
 import { failsWith, succeedWith } from "../utils/APIResponseMock.ts";
 
-describe('NewPostsState', () => {
+describe('NewPostState', () => {
   const aPost: Post = { id: "123", userId: "user-id", text: "text to publish", dateTime: "2021-09-01T00:00:00Z" };
 
   beforeEach(() => {
