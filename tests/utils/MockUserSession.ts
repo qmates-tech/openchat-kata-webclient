@@ -5,6 +5,7 @@ export function mockUserSession(obj: Partial<toMock.UserSession> = {}): toMock.U
   const mocked = {
     currentUser: undefined,
     retrieving: false,
+    removeUserSession: vi.fn(),
     setUserSession: vi.fn(),
     ...obj
   };

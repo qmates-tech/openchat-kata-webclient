@@ -44,6 +44,6 @@ describe('LogoutButton', () => {
 
     await userEvent.click(screen.getByRole('button'));
 
-    expect(mock.setUserSession).toHaveBeenCalledWith(undefined);
+    expect(mock.removeUserSession).toHaveBeenCalled();
   });
 });

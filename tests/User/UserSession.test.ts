@@ -32,7 +32,7 @@ describe('User Session', () => {
     localStorage.setItem("openChatSession", JSON.stringify(anUser));
     const { result } = renderHook(() => useUserSession(), wrapWithUserSession());
 
-    act(() => result.current.setUserSession(undefined));
+    act(() => result.current.removeUserSession());
 
     await waitFor(() => {
       expect(localStorage.getItem("openChatSession")).toBeNull();

@@ -8,12 +8,13 @@ import { wrapWithPostListState } from "../../utils/renderHelpers.tsx";
 import { mockPostListState } from "../../utils/MockPostListState.ts";
 import { mockNewPostsAPI } from "../../utils/MockNewPostsAPI.ts";
 import { failsWith, succeedWith } from "../../utils/APIResponseMock.ts";
+import {mockUseLogoutState} from "../../utils/MockLogoutState.ts";
 
 describe('NewPostState', () => {
   const aPost: Post = { id: "123", userId: "user-id", text: "text to publish", dateTime: "2021-09-01T00:00:00Z" };
 
   beforeEach(() => {
-    mockUserSession();
+    mockUseLogoutState();
     mockPostListState();
   });
 
@@ -37,7 +38,7 @@ describe('NewPostState', () => {
   });
 
   it('should set creating status to false when API fails', async () => {
-    const userSessionMock = mockUserSession();
+    const logoutStateMock = mockUseLogoutState();
     const api = mockNewPostsAPI({ createNewPost: failsWith("any error") });
     const { result } = renderHook(() => useNewPostState("user-id", api), wrapWithPostListState());
 
@@ -45,18 +46,18 @@ describe('NewPostState', () => {
 
     expect(result.current.isCreating).toStrictEqual(true);
     await waitFor(() => expect(result.current.isCreating).toStrictEqual(false));
-    await waitFor(() => expect(userSessionMock.setUserSession).not.toHaveBeenCalled());
+    await waitFor(() => expect(logoutStateMock.logout).not.toHaveBeenCalled());
   });
 
-  it('should handle USER_NOT_FOUND error and remove the current user session', async () => {
-    const userSessionMock = mockUserSession();
+  it('should handle USER_NOT_FOUND error and perform a logout', async () => {
+    const logoutStateMock = mockUseLogoutState();
     const api = mockNewPostsAPI({ createNewPost: failsWith<NewPostAPIException>("USER_NOT_FOUND") });
     const { result } = renderHook(() => useNewPostState("user-id", api), wrapWithPostListState());
 
     act(() => result.current.create("text"));
 
     await waitFor(() => expect(result.current.error).toBe("User not found"));
-    await waitFor(() => expect(userSessionMock.setUserSession).toHaveBeenCalledWith(undefined));
+    await waitFor(() => expect(logoutStateMock.logout).toHaveBeenCalled());
   });
 
   it('should handle INAPPROPRIATE_LANGUAGE error', async () => {

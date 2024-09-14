@@ -6,7 +6,8 @@ const sessionName = "openChatSession";
 export type UserSession = {
   currentUser: User | undefined;
   retrieving: boolean;
-  setUserSession(user: User | undefined): void;
+  removeUserSession(): void;
+  setUserSession(user: User): void;
 };
 const UserSessionContext = createContext<UserSession | undefined>(undefined);
 
@@ -31,13 +32,13 @@ export function UserSessionProvider({ children }: { children: ReactNode }): Reac
   const userSession: UserSession = {
     currentUser,
     retrieving,
-    setUserSession: (user: User | undefined) => {
+    removeUserSession: () => {
+      setCurrentUser(undefined);
+      localStorage.removeItem(sessionName);
+    },
+    setUserSession: (user: User) => {
       setCurrentUser(user);
-      if (user) {
-        localStorage.setItem(sessionName, JSON.stringify(user));
-      } else {
-        localStorage.removeItem(sessionName);
-      }
+      localStorage.setItem(sessionName, JSON.stringify(user));
     }
   }
 
