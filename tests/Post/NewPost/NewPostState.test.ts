@@ -37,6 +37,7 @@ describe('NewPostState', () => {
   });
 
   it('should set creating status to false when API fails', async () => {
+    const userSessionMock = mockUserSession();
     const api = mockNewPostsAPI({ createNewPost: failsWith("any error") });
     const { result } = renderHook(() => useNewPostState("user-id", api), wrapWithPostListState());
 
@@ -44,15 +45,18 @@ describe('NewPostState', () => {
 
     expect(result.current.isCreating).toStrictEqual(true);
     await waitFor(() => expect(result.current.isCreating).toStrictEqual(false));
+    await waitFor(() => expect(userSessionMock.setUserSession).not.toHaveBeenCalled());
   });
 
-  it('should handle USER_NOT_FOUND error', async () => {
+  it('should handle USER_NOT_FOUND error and remove the current user session', async () => {
+    const userSessionMock = mockUserSession();
     const api = mockNewPostsAPI({ createNewPost: failsWith<NewPostAPIException>("USER_NOT_FOUND") });
     const { result } = renderHook(() => useNewPostState("user-id", api), wrapWithPostListState());
 
     act(() => result.current.create("text"));
 
     await waitFor(() => expect(result.current.error).toBe("User not found"));
+    await waitFor(() => expect(userSessionMock.setUserSession).toHaveBeenCalledWith(undefined));
   });
 
   it('should handle INAPPROPRIATE_LANGUAGE error', async () => {

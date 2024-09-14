@@ -2,6 +2,7 @@ import { createNewPostsAPI, NewPostAPIException, NewPostsAPI } from "./NewPostsA
 import { useState } from "react";
 import { usePostsListState } from "../PostsList/PostsListState.tsx";
 import { applyUserName, PostWithName } from "../PostWithName.ts";
+import { useUserSession } from "../../User/UserSessionState.tsx";
 
 const newPostsAPI = createNewPostsAPI();
 
@@ -19,6 +20,7 @@ export type NewPostState = {
 }
 
 export function useNewPostState(userId: string, API: NewPostsAPI = newPostsAPI): NewPostState {
+  const { setUserSession } = useUserSession();
   const { prepend } = usePostsListState();
   const [post, setPost] = useState<PostWithName | undefined>(undefined);
   const [isCreating, setIsCreating] = useState<boolean>(false);
@@ -41,7 +43,13 @@ export function useNewPostState(userId: string, API: NewPostsAPI = newPostsAPI):
         setPost(userPost)
         prepend(userPost)
       })
-      .catch((e) => setError(parseCreateNewPostError(e)))
+      .catch((e) => {
+        let error = parseCreateNewPostError(e);
+        if(error === "User not found") {
+          setUserSession(undefined);
+        }
+        setError(error);
+      })
       .finally(() => setIsCreating(false));
   }
 }
