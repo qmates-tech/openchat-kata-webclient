@@ -1,5 +1,5 @@
 import React from "react";
-import { PostWithName } from "./PostWithName.tsx";
+import { PostWithName } from "../PostWithName.ts";
 
 export function PostItem({ post }: { post: PostWithName }) {
   return <article>

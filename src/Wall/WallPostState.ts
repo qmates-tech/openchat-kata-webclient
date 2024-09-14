@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react";
-import { usePostsListState } from "../Post/PostsListState.tsx";
+import { usePostsListState } from "../Post/PostsList/PostsListState.tsx";
 import { createWallPostsAPI, WallPostsAPI } from "./WallPostsAPI.ts";
 import { Post } from "../Post/Post.ts";
-import { applyAllUserNames, PostWithName } from "../Post/PostWithName.tsx";
+import { applyAllUserNames, PostWithName } from "../Post/PostWithName.ts";
 
 const wallPostsAPI = createWallPostsAPI();
 

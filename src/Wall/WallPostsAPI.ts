@@ -2,7 +2,7 @@ import { Env } from "../Env";
 import { User } from "../User/User";
 import { Post } from "../Post/Post.ts";
 import { getRequest } from "../helpers/http.ts";
-import { parseToPost } from "../Post/PostFromAPI.ts";
+import { parseToPost } from "../Post/NewPost/PostFromAPI.ts";
 
 export type WallPostsAPI = {
   retrieveWall(userId: User["id"]): Promise<Post[]>;

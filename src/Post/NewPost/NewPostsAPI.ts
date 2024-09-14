@@ -1,7 +1,7 @@
-import { Env } from "../Env";
-import { User } from "../User/User";
-import { Post } from "./Post.ts";
-import { NetworkError, postRequest } from "../helpers/http.ts";
+import { Env } from "../../Env.ts";
+import { User } from "../../User/User.ts";
+import { Post } from "../Post.ts";
+import { NetworkError, postRequest } from "../../helpers/http.ts";
 import { parseToPost } from "./PostFromAPI.ts";
 
 export type NewPostAPIException = "USER_NOT_FOUND" | "INAPPROPRIATE_LANGUAGE" | NetworkError;

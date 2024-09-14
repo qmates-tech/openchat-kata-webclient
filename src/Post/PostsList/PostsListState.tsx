@@ -1,5 +1,5 @@
 import { createContext, ReactNode, useContext, useState } from "react";
-import { PostWithName } from "./PostWithName.tsx";
+import { PostWithName } from "../PostWithName.ts";
 
 export type PostsListState = {
   posts: PostWithName[];

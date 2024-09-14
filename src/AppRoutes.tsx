@@ -5,7 +5,7 @@ import { PageNotFound } from "./NotFound/PageNotFound";
 import { RegistrationPage } from "./Registration/RegistrationPage";
 import { WallPage } from "./Wall/WallPage";
 import { OnlyPublicRoute } from "./App/OnlyPublicRoute.tsx";
-import { PostsListStateProvider } from "./Post/PostsListState.tsx";
+import { PostsListStateProvider } from "./Post/PostsList/PostsListState.tsx";
 
 export type RouteName = 'login' | 'registration' | 'wall';
 

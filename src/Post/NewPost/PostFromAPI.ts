@@ -1,4 +1,4 @@
-import { Post } from "./Post.ts";
+import { Post } from "../Post.ts";
 
 export type PostFromAPI = {
   postId: string,

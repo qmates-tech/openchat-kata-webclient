@@ -2,7 +2,7 @@ import { InitialEntry } from '@remix-run/router';
 import { ReactNode } from 'react';
 import { MemoryRouter, Route, Routes } from "react-router-dom";
 import { UserSessionProvider } from '../../src/User/UserSessionState';
-import { PostsListStateProvider } from "../../src/Post/PostsListState.tsx";
+import { PostsListStateProvider } from "../../src/Post/PostsList/PostsListState.tsx";
 
 export type RouteLocation = { path: string; from?: string; };
 export function wrapWithRouter(location: RouteLocation) {

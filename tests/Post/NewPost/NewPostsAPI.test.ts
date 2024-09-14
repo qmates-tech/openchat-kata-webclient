@@ -1,6 +1,6 @@
 import { HttpResponse } from 'msw';
-import { createMockServer } from '../utils/MockServer';
-import { createNewPostsAPI } from "../../src/Post/NewPostsAPI.ts";
+import { createMockServer } from '../../utils/MockServer.ts';
+import { createNewPostsAPI } from "../../../src/Post/NewPost/NewPostsAPI.ts";
 import { describe, expect } from "vitest";
 
 describe('NewPostsAPI', () => {

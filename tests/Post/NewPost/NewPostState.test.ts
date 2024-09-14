@@ -1,13 +1,13 @@
 import { act, renderHook, waitFor } from '@testing-library/react';
-import { mockUserSession } from '../utils/MockUserSession';
-import { Post } from "../../src/Post/Post.ts";
+import { mockUserSession } from '../../utils/MockUserSession.ts';
+import { Post } from "../../../src/Post/Post.ts";
 import { describe } from "vitest";
-import { NewPostAPIException } from "../../src/Post/NewPostsAPI.ts";
-import { useNewPostState } from "../../src/Post/NewPostState.ts";
-import { wrapWithPostListState } from "../utils/renderHelpers.tsx";
-import { mockPostListState } from "../utils/MockPostListState.ts";
-import { mockNewPostsAPI } from "../utils/MockNewPostsAPI.ts";
-import { failsWith, succeedWith } from "../utils/APIResponseMock.ts";
+import { NewPostAPIException } from "../../../src/Post/NewPost/NewPostsAPI.ts";
+import { useNewPostState } from "../../../src/Post/NewPost/NewPostState.ts";
+import { wrapWithPostListState } from "../../utils/renderHelpers.tsx";
+import { mockPostListState } from "../../utils/MockPostListState.ts";
+import { mockNewPostsAPI } from "../../utils/MockNewPostsAPI.ts";
+import { failsWith, succeedWith } from "../../utils/APIResponseMock.ts";
 
 describe('NewPostState', () => {
   const aPost: Post = { id: "123", userId: "user-id", text: "text to publish", dateTime: "2021-09-01T00:00:00Z" };

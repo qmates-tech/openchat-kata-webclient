@@ -2,7 +2,7 @@ import React from "react";
 import "./PostsList.css";
 import { PostItem } from "./PostItem.tsx";
 
-import {PostWithName} from "./PostWithName.tsx";
+import {PostWithName} from "../PostWithName.ts";
 
 type PostsProps = {
   posts: PostWithName[]

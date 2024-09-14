@@ -1,7 +1,7 @@
 import { act, render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import React from "react";
-import { NewPostForm } from "../../src/Post/NewPostForm.tsx";
+import { NewPostForm } from "../../../src/Post/NewPost/NewPostForm.tsx";
 
 describe('NewPostForm', () => {
   const aPost = { id: "123", userId: "user-id", text: "text", dateTime: "2021-09-01T00:00:00Z", username: "You" };

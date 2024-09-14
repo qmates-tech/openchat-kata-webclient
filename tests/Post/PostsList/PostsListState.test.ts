@@ -1,6 +1,6 @@
 import { act, renderHook, waitFor } from '@testing-library/react';
-import { wrapWithPostListState } from '../utils/renderHelpers';
-import { usePostsListState } from "../../src/Post/PostsListState.tsx";
+import { wrapWithPostListState } from '../../utils/renderHelpers.tsx';
+import { usePostsListState } from "../../../src/Post/PostsList/PostsListState.tsx";
 
 describe('PostsListState', () => {
   it('throw error if it is used outside its Provider', async () => {
