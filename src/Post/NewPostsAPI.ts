@@ -13,10 +13,14 @@ export function createNewPostsAPI(baseUrl: string = Env.loginUrl): NewPostsAPI {
   return {
     async createNewPost(userId: User["id"], text: string): Promise<Post> {
       const response = await postRequest(`${baseUrl}/users/${userId}/timeline`, { text });
-      if (response.status === 404) throw "USER_NOT_FOUND";
-      if (response.status === 400) throw "INAPPROPRIATE_LANGUAGE";
-      const responseBody = await response.json()
-      return parseToPost(responseBody);
+      const body = await response.text();
+      if (isUserNotFound(response.status, body)) throw "USER_NOT_FOUND";
+      if (response.status === 400)  throw "INAPPROPRIATE_LANGUAGE";
+      return parseToPost(JSON.parse(body));
     }
   }
+}
+
+function isUserNotFound(status: number, body: string): boolean {
+  return status === 404 || (status === 400 && body === "User does not exists.");
 }

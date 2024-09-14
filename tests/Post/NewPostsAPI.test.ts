@@ -46,6 +46,14 @@ describe('NewPostsAPI', () => {
     }).rejects.toThrow("USER_NOT_FOUND");
   });
 
+  it('throws USER_NOT_FOUND error when status code is 400 and the body is "User does not exists."', async () => {
+    mockServer.interceptPost('/users/wrong-id/timeline', userNotFoundResponse());
+
+    await expect(async () => {
+      await API.createNewPost('wrong-id', 'any');
+    }).rejects.toThrow("USER_NOT_FOUND");
+  });
+
   it('throws INAPPROPRIATE_LANGUAGE error when status code is 400', async () => {
     mockServer.interceptPost('/users/an-id/timeline', badRequestResponse());
 
@@ -76,6 +84,13 @@ function notFoundResponse() {
   return new HttpResponse('404', {
     status: 404,
     headers: { 'Content-Type': 'text/plain' },
+  });
+}
+
+function userNotFoundResponse() {
+  return new HttpResponse('User does not exists.', {
+    status: 400,
+    headers: { 'Content-Type': 'text/plain' }
   });
 }
 
