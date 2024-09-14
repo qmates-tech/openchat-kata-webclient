@@ -1,4 +1,4 @@
-import { KeyboardEvent, RefObject, useEffect, useRef, useState } from "react";
+import React, { KeyboardEvent, RefObject, useEffect, useRef, useState } from "react";
 import { RegistrationData, RegistrationError, RegistrationState, ValidationError } from "./RegistrationState";
 
 export function RegistrationForm({ validate, register }: RegistrationState) {

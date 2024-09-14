@@ -1,4 +1,4 @@
-import { KeyboardEvent, useEffect, useRef, useState } from "react";
+import React, { KeyboardEvent, useEffect, useRef, useState } from "react";
 import { LoginError, LoginState } from "./LoginState";
 
 export function LoginForm({ login, isLoggingIn, loginError }: LoginState) {
