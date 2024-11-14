@@ -34,4 +34,13 @@ describe('Timeline', () => {
 
     expect(screen.getByText("POST_TEXT")).toBeInTheDocument();
   });
+
+  it('does not render the post owner', async () => {
+    const aPost = { id: '1', text: 'POST_TEXT', userId: 'user-id', dateTime: '2024-09-07', username: "Someone" };
+    mockPostListState({ posts: [aPost] });
+
+    render(<Timeline user={anUser} />);
+
+    expect(screen.queryByText(/Someone/i)).not.toBeInTheDocument();
+  });
 })

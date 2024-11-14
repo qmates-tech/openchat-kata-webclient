@@ -11,13 +11,13 @@ export interface TimelineProps {
 }
 
 export function Timeline({ user , itsMe }: TimelineProps) {
-    const { posts, replace } = usePostsListState();
+    const { posts } = usePostsListState();
 
     return <article className="timeline">
         <header>
             <h3>{title()}</h3>
         </header>
-        <PostsList posts={posts} isLoading={false} />
+        <PostsList hideOwners posts={posts} isLoading={false} />
     </article>;
 
     function title() {

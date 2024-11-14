@@ -6,17 +6,18 @@ import {PostWithName} from "../PostWithName.ts";
 
 type PostsProps = {
   posts: PostWithName[]
-  isLoading: boolean
+  isLoading: boolean,
+  hideOwners?: boolean
 };
 
-export function PostsList({ posts, isLoading }: PostsProps) {
+export function PostsList({ posts, isLoading, hideOwners }: PostsProps) {
   if (posts.length === 0 && !isLoading) {
     return (<div className="posts-list empty-list">No posts present.</div>);
   }
 
   return <div className="posts-list">
     <div data-testid="posts-list-loading" className="loading" aria-busy={isLoading}></div>
-    {posts.map(post => <PostItem key={post.id} post={post} />)}
+    {posts.map(post => <PostItem hideOwners={hideOwners} key={post.id} post={post} />)}
   </div>;
 }
 

@@ -38,4 +38,13 @@ describe('Posts', () => {
     expect(screen.getByText("another post")).toBeInTheDocument();
     expect(screen.getByText("name2 - 2021-01-02")).toBeInTheDocument();
   });
+
+  it('should hide the owner', async () => {
+    const post = { id: "2", userId: "user", text: "a post", dateTime: "2021-01-02", username: "Someone" };
+
+    render(<PostsList posts={[post]} isLoading={false} hideOwners />);
+
+    expect(screen.getByText("2021-01-02")).toBeInTheDocument();
+    expect(screen.queryByText("Someone - 2021-01-02")).not.toBeInTheDocument();
+  });
 });
