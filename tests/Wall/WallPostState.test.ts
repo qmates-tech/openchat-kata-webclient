@@ -7,9 +7,8 @@ import { wrapWithPostListState } from "../utils/renderHelpers.tsx";
 import { mockWallPostsAPI } from "../utils/MockWallPostsAPI.ts";
 import { succeedWith } from "../utils/APIResponseMock.ts";
 
-describe('PostState', () => {
+describe('WallPostState', () => {
   const aPost: Post = { id: "123", userId: "user-id", text: "text to publish", dateTime: "2021-09-01T00:00:00Z" };
-  const anotherPost: Post = { id: "456", userId: "user-id", text: "another text", dateTime: "2021-09-02T00:00:00Z" };
 
   beforeEach(() => {
     mockUserSession();
