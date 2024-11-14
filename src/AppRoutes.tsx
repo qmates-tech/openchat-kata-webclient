@@ -14,7 +14,7 @@ const routes: Record<RouteName, RouteProps> = {
   login: { path: '/login', element: <OnlyPublicRoute><LoginPage /></OnlyPublicRoute> },
   wall: { path: '/', element: <PrivateRoute><PostsListStateProvider><WallPage /></PostsListStateProvider></PrivateRoute> },
   registration: { path: '/register', element: <OnlyPublicRoute><RegistrationPage /></OnlyPublicRoute> },
-  timeline: { path: '/timeline', element: <PrivateRoute><YourTimelinePage /></PrivateRoute> },
+  timeline: { path: '/timeline', element: <PrivateRoute><PostsListStateProvider><YourTimelinePage /></PostsListStateProvider></PrivateRoute> },
 }
 
 export function AppRoutes() {
