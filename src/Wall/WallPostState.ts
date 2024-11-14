@@ -28,8 +28,8 @@ export function useWallPostsState(userId: string, API: WallPostsAPI = wallPostsA
   function update() {
     setIsLoading(true);
     API.retrieveWall(userId)
-      .then((post: Post[]) => {
-        return replace(applyAllUserNames(post, userId));
+      .then((posts: Post[]) => {
+        return replace(applyAllUserNames(posts, userId));
       })
       .catch(() => {})
       .finally(() => setIsLoading(false));
