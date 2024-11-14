@@ -3,11 +3,13 @@ import React from "react";
 import { Timeline } from "../../src/Timeline/Timeline.tsx";
 import {mockPostListState} from "../utils/MockPostListState.ts";
 import {beforeEach} from "vitest";
+import {mockUserSession} from "../utils/MockUserSession.ts";
 
 describe('Timeline', () => {
   const anUser = { id: '1', username: 'John Doe', about: '' };
 
   beforeEach(() => {
+    mockUserSession();
     mockPostListState({ posts: [] });
   });
 
@@ -42,4 +44,17 @@ describe('Timeline', () => {
 
     expect(screen.queryByText(/Someone/i)).not.toBeInTheDocument();
   });
+
+  it('does not render the new post creation form on other users timeline', async () => {
+    render(<Timeline user={anUser} />);
+
+    expect(screen.queryByText("Post", { selector: 'button' })).not.toBeInTheDocument();
+  });
+
+  it('renders the new post creation form on current user timeline', async () => {
+    render(<Timeline itsMe user={anUser} />);
+
+    expect(screen.getByText("Post", { selector: 'button' })).toBeInTheDocument();
+  });
 })
+
