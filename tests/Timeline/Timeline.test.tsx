@@ -1,7 +1,6 @@
 import { render, screen } from '@testing-library/react';
 import React from "react";
 import { Timeline } from "../../src/Timeline/Timeline.tsx";
-import {PostWithName} from "../../src/Post/PostWithName.ts";
 import {mockPostListState} from "../utils/MockPostListState.ts";
 import {beforeEach} from "vitest";
 

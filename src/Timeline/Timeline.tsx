@@ -4,6 +4,7 @@ import {usePostsListState} from "../Post/PostsList/PostsListState.tsx";
 import {Post} from "../Post/Post.ts";
 import {applyAllUserNames} from "../Post/PostWithName.ts";
 import {PostsList} from "../Post/PostsList/PostsList.tsx";
+import {useTimelinePostsState} from "./TimelinePostState.ts";
 
 export interface TimelineProps {
     user: User
@@ -11,13 +12,13 @@ export interface TimelineProps {
 }
 
 export function Timeline({ user , itsMe }: TimelineProps) {
-    const { posts } = usePostsListState();
+    const { timeline } = useTimelinePostsState(user.id);
 
     return <article className="timeline">
         <header>
             <h3>{title()}</h3>
         </header>
-        <PostsList hideOwners posts={posts} isLoading={false} />
+        <PostsList hideOwners posts={timeline} isLoading={false} />
     </article>;
 
     function title() {
