@@ -1,8 +1,5 @@
-import { User } from "../User/User.ts";
-import React, {useEffect} from "react";
-import {usePostsListState} from "../Post/PostsList/PostsListState.tsx";
-import {Post} from "../Post/Post.ts";
-import {applyAllUserNames} from "../Post/PostWithName.ts";
+import {User} from "../User/User.ts";
+import React from "react";
 import {PostsList} from "../Post/PostsList/PostsList.tsx";
 import {useTimelinePostsState} from "./TimelinePostState.ts";
 import {NewPostForm} from "../Post/NewPost/NewPostForm.tsx";

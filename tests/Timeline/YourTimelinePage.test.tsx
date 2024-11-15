@@ -10,11 +10,11 @@ describe('YourTimelinePage', () => {
 
   it("passes current user and itsMe flag to the Timeline Component", async () => {
     mockUserSession({ currentUser: anUser });
-    const mockedWall = mockTimeline();
+    const mockedTimeline = mockTimeline();
 
     render(<YourTimelinePage />, wrapWithRouter({ path: "/" }));
 
-    expect(mockedWall).toHaveBeenCalledWith({ user: anUser, itsMe: true });
+    expect(mockedTimeline).toHaveBeenCalledWith({ user: anUser, itsMe: true });
   });
 })
 
