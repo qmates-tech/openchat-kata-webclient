@@ -9,8 +9,8 @@ export function Navigation() {
         <li>OpenChat</li>
       </ul>
       <ul>
-          <li><LinkTo to={"wall"}>Your Wall</LinkTo></li>
-          <li><LinkTo to={"timeline"}>Your Posts</LinkTo></li>
+          <li><LinkTo to={"wall"}>Wall</LinkTo></li>
+          <li><LinkTo to={"timeline"}>Timeline</LinkTo></li>
         <li><LogoutButton /></li>
       </ul>
     </nav>
