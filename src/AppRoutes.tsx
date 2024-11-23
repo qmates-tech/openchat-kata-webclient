@@ -1,20 +1,21 @@
 import { Route, RouteProps, Routes } from "react-router-dom";
+import { OnlyPublicRoute } from "./App/OnlyPublicRoute.tsx";
 import { PrivateRoute } from "./App/PrivateRoute";
 import { LoginPage } from "./Login/LoginPage";
 import { PageNotFound } from "./NotFound/PageNotFound";
-import { RegistrationPage } from "./Registration/RegistrationPage";
-import { WallPage } from "./Wall/WallPage";
-import { OnlyPublicRoute } from "./App/OnlyPublicRoute.tsx";
 import { PostsListStateProvider } from "./Post/PostsList/PostsListState.tsx";
+import { RegistrationPage } from "./Registration/RegistrationPage";
 import { YourTimelinePage } from "./Timeline/YourTimelinePage.tsx";
+import { WallPage } from "./Wall/WallPage";
 
-export type RouteName = 'login' | 'registration' | 'wall' | 'timeline';
+export type RouteName = 'login' | 'registration' | 'wall' | 'timeline' | 'userTimeline';
 
 const routes: Record<RouteName, RouteProps> = {
   login: { path: '/login', element: <OnlyPublicRoute><LoginPage /></OnlyPublicRoute> },
   wall: { path: '/', element: <PrivateRoute><PostsListStateProvider><WallPage /></PostsListStateProvider></PrivateRoute> },
   registration: { path: '/register', element: <OnlyPublicRoute><RegistrationPage /></OnlyPublicRoute> },
   timeline: { path: '/timeline', element: <PrivateRoute><PostsListStateProvider><YourTimelinePage /></PostsListStateProvider></PrivateRoute> },
+  userTimeline: { path: '/users/:userId/timeline', element: <>Coming Soon</>}
 }
 
 export function AppRoutes() {
@@ -26,6 +27,9 @@ export function AppRoutes() {
   </Routes>
 }
 
-export function pathOf(routeName: RouteName): string {
-  return routes[routeName].path!;
+export function pathOf(routeName: RouteName, pathParams?: Record<string, string>): string {
+  const path = routes[routeName].path!;
+  if (!pathParams) return path;
+
+  return path.replace(/:(\w+)/g, (_, key) => pathParams[key]);
 }

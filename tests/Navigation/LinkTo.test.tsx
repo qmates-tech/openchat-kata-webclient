@@ -19,4 +19,15 @@ describe("LinkTo", () => {
 
     expect(screen.getByText("ROUTE: /")).toBeInTheDocument();
   });
+
+  it('redirect to a route with a path parameter', async () => {
+    render(
+      <LinkTo to="userTimeline" pathParams={{userId: "an-user-id"}}>LINK</LinkTo>,
+      wrapWithCustomRoutes({ path: "/" }, ["/", "/users/:userId/timeline"])
+    );
+
+    await userEvent.click(screen.getByText("LINK"));
+
+    expect(screen.getByText("ROUTE: /users/an-user-id/timeline")).toBeInTheDocument();
+  });
 });

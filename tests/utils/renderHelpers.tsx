@@ -1,6 +1,6 @@
 import { InitialEntry } from '@remix-run/router';
 import { ReactNode } from 'react';
-import { MemoryRouter, Route, Routes } from "react-router-dom";
+import { MemoryRouter, Route, Routes, useLocation } from "react-router-dom";
 import { UserSessionProvider } from '../../src/User/UserSessionState';
 import { PostsListStateProvider } from "../../src/Post/PostsList/PostsListState.tsx";
 
@@ -21,11 +21,15 @@ export function wrapWithCustomRoutes(location: RouteLocation, routes: string[]) 
       <MemoryRouter initialEntries={[fromRouteLocation(location)]} >
         {children}
         <Routes>
-          {routes.map((route, index) => <Route key={index} path={route} element={<div>ROUTE: {route}</div>} />)}
+          {routes.map((route, index) => <Route key={index} path={route} element={<CustomRoute />} />)}
         </Routes>
       </MemoryRouter>
     </>)
   }
+}
+
+function CustomRoute() {
+  return <div>ROUTE: {useLocation().pathname}</div>;
 }
 
 export function wrapWithUserSession() {
