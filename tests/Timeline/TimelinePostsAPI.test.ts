@@ -1,15 +1,13 @@
 import { HttpResponse } from 'msw';
+import { createTimelinePostsAPI } from "../../src/Timeline/TimelinePostsAPI.ts";
 import { createMockServer } from '../utils/MockServer';
-import { describe, expect } from "vitest";
-import { createWallPostsAPI } from "../../src/Wall/WallPostsAPI.ts";
-import {createTimelinePostsAPI} from "../../src/Timeline/TimelinePostsAPI.ts";
 
 describe('TimelinePostsAPI', () => {
   const BASE_URL = 'http://msw.mockapi.local';
   const API = createTimelinePostsAPI(BASE_URL);
   const mockServer = createMockServer(BASE_URL);
 
-  afterEach(() => { 
+  afterEach(() => {
     mockServer.resetHandlers();
   });
 

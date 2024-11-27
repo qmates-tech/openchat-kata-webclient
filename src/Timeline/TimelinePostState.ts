@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react";
-import { usePostsListState } from "../Post/PostsList/PostsListState.tsx";
-import { createTimelinePostsAPI, TimelinePostsAPI } from "./TimelinePostsAPI.ts";
 import { Post } from "../Post/Post.ts";
+import { usePostsListState } from "../Post/PostsList/PostsListState.tsx";
 import { applyAllUserNames, PostWithName } from "../Post/PostWithName.ts";
+import { createTimelinePostsAPI, TimelinePostsAPI } from "./TimelinePostsAPI.ts";
 
 const timelinePostsAPI = createTimelinePostsAPI();
 

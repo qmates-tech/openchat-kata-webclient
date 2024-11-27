@@ -1,10 +1,9 @@
 import { render, screen } from '@testing-library/react';
-import React from "react";
-import { Wall } from "../../src/Wall/Wall.tsx";
-import { mockPostListState } from "../utils/MockPostListState.ts";
-import { PostWithName } from "../../src/Post/PostWithName.ts";
 import { beforeEach } from "vitest";
+import { PostWithName } from "../../src/Post/PostWithName.ts";
+import { Wall } from "../../src/Wall/Wall.tsx";
 import { mockNewPostState } from "../utils/MockNewPostState.ts";
+import { mockPostListState } from "../utils/MockPostListState.ts";
 
 describe('Wall', () => {
   const anUser = { id: '1', username: 'John Doe', about: '' };

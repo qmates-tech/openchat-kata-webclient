@@ -1,9 +1,8 @@
-import {User} from "../User/User.ts";
-import React from "react";
-import {PostsList} from "../Post/PostsList/PostsList.tsx";
-import {useTimelinePostsState} from "./TimelinePostState.ts";
-import {NewPostForm} from "../Post/NewPost/NewPostForm.tsx";
-import {useNewPostState} from "../Post/NewPost/NewPostState.ts";
+import { NewPostForm } from "../Post/NewPost/NewPostForm.tsx";
+import { useNewPostState } from "../Post/NewPost/NewPostState.ts";
+import { PostsList } from "../Post/PostsList/PostsList.tsx";
+import { User } from "../User/User.ts";
+import { useTimelinePostsState } from "./TimelinePostState.ts";
 
 export interface TimelineProps {
     user: User

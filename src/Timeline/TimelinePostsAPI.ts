@@ -1,8 +1,8 @@
 import { Env } from "../Env";
-import { User } from "../User/User";
-import { Post } from "../Post/Post.ts";
 import { getRequest } from "../helpers/http.ts";
 import { parseToPost } from "../Post/NewPost/PostFromAPI.ts";
+import { Post } from "../Post/Post.ts";
+import { User } from "../User/User";
 
 export type TimelinePostsAPI = {
   retrieveTimeline(userId: User["id"]): Promise<Post[]>;

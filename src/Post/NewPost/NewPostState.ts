@@ -1,8 +1,8 @@
-import { createNewPostsAPI, NewPostAPIException, NewPostsAPI } from "./NewPostsAPI.ts";
 import { useState } from "react";
+import { useLogoutState } from "../../Logout/LogoutState.tsx";
 import { usePostsListState } from "../PostsList/PostsListState.tsx";
 import { applyUserName, PostWithName } from "../PostWithName.ts";
-import { useLogoutState } from "../../Logout/LogoutState.tsx";
+import { createNewPostsAPI, NewPostAPIException, NewPostsAPI } from "./NewPostsAPI.ts";
 
 const newPostsAPI = createNewPostsAPI();
 

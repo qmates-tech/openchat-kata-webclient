@@ -1,7 +1,6 @@
 import { HttpResponse } from 'msw';
-import { createMockServer } from '../../utils/MockServer.ts';
 import { createNewPostsAPI } from "../../../src/Post/NewPost/NewPostsAPI.ts";
-import { describe, expect } from "vitest";
+import { createMockServer } from '../../utils/MockServer.ts';
 
 describe('NewPostsAPI', () => {
   const BASE_URL = 'http://msw.mockapi.local';

@@ -1,5 +1,5 @@
-import {Post} from "./Post.ts";
-import {UUID} from "../helpers/uuid";
+import { UUID } from "../helpers/uuid";
+import { Post } from "./Post.ts";
 
 export type PostWithName = Post & { username: string };
 

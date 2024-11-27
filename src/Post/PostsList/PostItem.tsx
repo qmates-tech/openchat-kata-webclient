@@ -1,4 +1,3 @@
-import React from "react";
 import { PostWithName } from "../PostWithName.ts";
 
 export function PostItem({ post, hideOwners }: { post: PostWithName, hideOwners?: boolean }) {

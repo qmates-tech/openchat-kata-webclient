@@ -1,4 +1,3 @@
-
 export type NetworkError = "NETWORK_ERROR";
 
 export async function getRequest(url: string) {

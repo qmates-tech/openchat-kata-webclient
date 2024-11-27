@@ -1,9 +1,9 @@
+import { RegistrationAPIException } from "../../src/Registration/RegistrationAPI.ts";
 import { useRegistrationState } from '../../src/Registration/RegistrationState';
 import { User } from '../../src/User/User';
+import { failsWith, succeedWith } from "../utils/APIResponseMock.ts";
 import { mockCreateRegistrationAPI } from '../utils/MockRegistrationAPI';
 import { mockUserSession } from '../utils/MockUserSession';
-import { failsWith, succeedWith } from "../utils/APIResponseMock.ts";
-import { RegistrationAPIException } from "../../src/Registration/RegistrationAPI.ts";
 
 describe('Registration State', () => {
   const anUser: User = { id: "123", username: "alessio", about: "About Alessio" };

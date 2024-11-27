@@ -1,6 +1,6 @@
 import { LogoutButton } from '../Logout/LogoutButton';
+import { LinkTo } from "./LinkTo.tsx";
 import './Navigation.css';
-import {LinkTo} from "./LinkTo.tsx";
 
 export function Navigation() {
   return (

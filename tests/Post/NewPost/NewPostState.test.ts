@@ -1,14 +1,12 @@
 import { act, renderHook, waitFor } from '@testing-library/react';
-import { mockUserSession } from '../../utils/MockUserSession.ts';
-import { Post } from "../../../src/Post/Post.ts";
-import { describe } from "vitest";
 import { NewPostAPIException } from "../../../src/Post/NewPost/NewPostsAPI.ts";
 import { useNewPostState } from "../../../src/Post/NewPost/NewPostState.ts";
-import { wrapWithPostListState } from "../../utils/renderHelpers.tsx";
-import { mockPostListState } from "../../utils/MockPostListState.ts";
-import { mockNewPostsAPI } from "../../utils/MockNewPostsAPI.ts";
+import { Post } from "../../../src/Post/Post.ts";
 import { failsWith, succeedWith } from "../../utils/APIResponseMock.ts";
-import {mockUseLogoutState} from "../../utils/MockLogoutState.ts";
+import { mockUseLogoutState } from "../../utils/MockLogoutState.ts";
+import { mockNewPostsAPI } from "../../utils/MockNewPostsAPI.ts";
+import { mockPostListState } from "../../utils/MockPostListState.ts";
+import { wrapWithPostListState } from "../../utils/renderHelpers.tsx";
 
 describe('NewPostState', () => {
   const aPost: Post = { id: "123", userId: "user-id", text: "text to publish", dateTime: "2021-09-01T00:00:00Z" };

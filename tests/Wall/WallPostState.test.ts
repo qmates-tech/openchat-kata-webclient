@@ -1,11 +1,10 @@
 import { act, renderHook, waitFor } from '@testing-library/react';
-import { mockUserSession } from '../utils/MockUserSession';
 import { Post } from "../../src/Post/Post.ts";
-import { describe } from "vitest";
 import { useWallPostsState } from "../../src/Wall/WallPostState.ts";
-import { wrapWithPostListState } from "../utils/renderHelpers.tsx";
-import { mockWallPostsAPI } from "../utils/MockWallPostsAPI.ts";
 import { succeedWith } from "../utils/APIResponseMock.ts";
+import { mockUserSession } from '../utils/MockUserSession';
+import { mockWallPostsAPI } from "../utils/MockWallPostsAPI.ts";
+import { wrapWithPostListState } from "../utils/renderHelpers.tsx";
 
 describe('WallPostState', () => {
   const aPost: Post = { id: "123", userId: "user-id", text: "text to publish", dateTime: "2021-09-01T00:00:00Z" };

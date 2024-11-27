@@ -1,11 +1,11 @@
 import { act, renderHook, waitFor } from '@testing-library/react';
 import { delay } from 'msw';
+import { LoginAPIException } from "../../src/Login/LoginAPI.ts";
 import { useLoginState } from '../../src/Login/LoginState';
 import { User } from '../../src/User/User';
+import { failsWith, succeedWith } from "../utils/APIResponseMock.ts";
 import { mockCreateLoginAPI } from '../utils/MockLoginAPI';
 import { mockUserSession } from '../utils/MockUserSession';
-import { failsWith, succeedWith } from "../utils/APIResponseMock.ts";
-import { LoginAPIException } from "../../src/Login/LoginAPI.ts";
 
 describe('LoginState', () => {
   const anUser: User = { id: "123", username: "alessio", about: "About Alessio" };

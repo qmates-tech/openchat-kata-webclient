@@ -1,11 +1,10 @@
-import { NewPostForm } from "../Post/NewPost/NewPostForm.tsx";
-import { User } from "../User/User.ts";
-import React from "react";
-import { SideGrid } from "./SideGrid.tsx";
 import { textAsParagraphs } from "../helpers/textAsParagraphs.tsx";
+import { NewPostForm } from "../Post/NewPost/NewPostForm.tsx";
 import { useNewPostState } from "../Post/NewPost/NewPostState.ts";
-import { useWallPostsState } from "./WallPostState.ts";
 import { PostsList } from "../Post/PostsList/PostsList.tsx";
+import { User } from "../User/User.ts";
+import { SideGrid } from "./SideGrid.tsx";
+import { useWallPostsState } from "./WallPostState.ts";
 
 interface WallProps {
   user: User

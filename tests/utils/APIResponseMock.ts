@@ -1,5 +1,5 @@
-import { vi } from "vitest";
 import { delay } from "msw";
+import { vi } from "vitest";
 
 export function succeedWith<T>(response: T, delayMs: number = 0) {
   return vi.fn().mockImplementation(async () => {

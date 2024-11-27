@@ -1,6 +1,6 @@
+import React from "react";
 import { NavigateTo } from "../Navigation/NavigateTo";
 import { useUserSession } from "../User/UserSessionState";
-import React from "react";
 
 type PrivateRouteProps = {
   children: React.ReactNode;

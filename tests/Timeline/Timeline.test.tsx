@@ -1,9 +1,8 @@
 import { render, screen } from '@testing-library/react';
-import React from "react";
+import { beforeEach } from "vitest";
 import { Timeline } from "../../src/Timeline/Timeline.tsx";
-import {mockPostListState} from "../utils/MockPostListState.ts";
-import {beforeEach} from "vitest";
-import {mockUserSession} from "../utils/MockUserSession.ts";
+import { mockPostListState } from "../utils/MockPostListState.ts";
+import { mockUserSession } from "../utils/MockUserSession.ts";
 
 describe('Timeline', () => {
   const anUser = { id: '1', username: 'John Doe', about: '' };

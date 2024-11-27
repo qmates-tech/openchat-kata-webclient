@@ -1,7 +1,6 @@
 import { useUserSession } from '../User/UserSessionState';
-import './WallPage.css';
-import React from "react";
 import { Wall } from "./Wall.tsx";
+import './WallPage.css';
 
 export function WallPage() {
   const { currentUser } = useUserSession();
