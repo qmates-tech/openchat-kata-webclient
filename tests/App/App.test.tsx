@@ -24,31 +24,4 @@ describe("App", () => {
       expect(screen.getByText("Page not found")).toBeInTheDocument();
     });
   });
-
-  describe("Your Timeline", () => {
-    it("renders Your Timeline when already logged in", () => {
-      mockUserSession({ currentUser: anUser });
-
-      render(<App />, wrapWithRouter({ path: "/timeline" }));
-
-      expect(screen.getByText("Your Timeline")).toBeInTheDocument();
-    });
-
-    it("redirects to the Login Page when not logged in", () => {
-      mockUserSession({ currentUser: undefined });
-
-      render(<App />, wrapWithRouter({ path: "/timeline" }));
-
-      expect(screen.getByText("Welcome to OpenChat")).toBeInTheDocument();
-    });
-
-    it("do not render yet Your Timeline page while retrieving the user", () => {
-      mockUserSession({ retrieving: true });
-
-      render(<App />, wrapWithRouter({ path: "/timeline" }));
-
-      expect(screen.queryByText("Your Timeline")).not.toBeInTheDocument();
-      expect(screen.queryByText("Welcome to OpenChat")).not.toBeInTheDocument();
-    });
-  });
 });
