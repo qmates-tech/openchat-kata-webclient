@@ -3,7 +3,7 @@ import { delay } from 'msw';
 import { LoginAPIException } from "../../src/Login/LoginAPI.ts";
 import { useLoginState } from '../../src/Login/LoginState';
 import { User } from '../../src/User/User';
-import { failsWith, succeedWith } from "../utils/APIResponseMock.ts";
+import { failsWith, succeedWith } from "../utils/MockAPIResponse.ts";
 import { mockCreateLoginAPI } from '../utils/MockLoginAPI';
 import { mockUserSession } from '../utils/MockUserSession';
 

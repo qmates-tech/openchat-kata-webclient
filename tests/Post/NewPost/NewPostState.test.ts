@@ -2,7 +2,7 @@ import { act, renderHook, waitFor } from '@testing-library/react';
 import { NewPostAPIException } from "../../../src/Post/NewPost/NewPostsAPI.ts";
 import { useNewPostState } from "../../../src/Post/NewPost/NewPostState.ts";
 import { Post } from "../../../src/Post/Post.ts";
-import { failsWith, succeedWith } from "../../utils/APIResponseMock.ts";
+import { failsWith, succeedWith } from "../../utils/MockAPIResponse.ts";
 import { mockUseLogoutState } from "../../utils/MockLogoutState.ts";
 import { mockNewPostsAPI } from "../../utils/MockNewPostsAPI.ts";
 import { mockPostListState } from "../../utils/MockPostListState.ts";

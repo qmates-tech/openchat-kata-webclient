@@ -1,7 +1,7 @@
 import { act, renderHook, waitFor } from '@testing-library/react';
 import { Post } from "../../src/Post/Post.ts";
 import { useTimelinePostsState } from "../../src/Timeline/TimelinePostState.ts";
-import { succeedWith } from "../utils/APIResponseMock.ts";
+import { succeedWith } from "../utils/MockAPIResponse.ts";
 import { mockTimelinePostsAPI } from "../utils/MockTimelinePostsAPI.ts";
 import { mockUserSession } from '../utils/MockUserSession';
 import { wrapWithPostListState } from "../utils/renderHelpers.tsx";

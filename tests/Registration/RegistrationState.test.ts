@@ -1,7 +1,7 @@
 import { RegistrationAPIException } from "../../src/Registration/RegistrationAPI.ts";
 import { useRegistrationState } from '../../src/Registration/RegistrationState';
 import { User } from '../../src/User/User';
-import { failsWith, succeedWith } from "../utils/APIResponseMock.ts";
+import { failsWith, succeedWith } from "../utils/MockAPIResponse.ts";
 import { mockCreateRegistrationAPI } from '../utils/MockRegistrationAPI';
 import { mockUserSession } from '../utils/MockUserSession';
 
