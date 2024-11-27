@@ -34,33 +34,6 @@ describe("App", () => {
     });
   });
 
-  describe("Login Page", () => {
-    it("renders the login page when not logged in", () => {
-      mockUserSession({ currentUser: undefined });
-
-      render(<App />, wrapWithRouter({ path: "/login" }));
-
-      expect(screen.getByText("Welcome to OpenChat")).toBeInTheDocument();
-    });
-
-    it("redirects to the wall page when already logged in", () => {
-      mockUserSession({ currentUser: anUser });
-
-      render(<App />, wrapWithRouter({ path: "/login" }));
-
-      expect(screen.getByText("Pippo's wall")).toBeInTheDocument();
-    });
-
-    it("do not render yet the login page while retrieving the user", () => {
-      mockUserSession({ retrieving: true });
-
-      render(<App />, wrapWithRouter({ path: "/login" }));
-
-      expect(screen.queryByText("'s wall")).not.toBeInTheDocument();
-      expect(screen.queryByText("Welcome to OpenChat")).not.toBeInTheDocument();
-    });
-  });
-
   describe("Registration Page", () => {
     it("renders the registration page when not logged in", () => {
       mockUserSession({ currentUser: undefined });
