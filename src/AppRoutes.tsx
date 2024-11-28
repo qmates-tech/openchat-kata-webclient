@@ -5,6 +5,7 @@ import { LoginPage } from "./Login/LoginPage";
 import { PageNotFound } from "./NotFound/PageNotFound";
 import { PostsListStateProvider } from "./Post/PostsList/PostsListState.tsx";
 import { RegistrationPage } from "./Registration/RegistrationPage";
+import { UserTimelinePage } from "./Timeline/UserTimelinePage.tsx";
 import { YourTimelinePage } from "./Timeline/YourTimelinePage.tsx";
 import { WallPage } from "./Wall/WallPage";
 
@@ -15,7 +16,7 @@ const routes: Record<RouteName, RouteProps> = {
   wall: { path: '/', element: <PrivateRoute><PostsListStateProvider><WallPage /></PostsListStateProvider></PrivateRoute> },
   registration: { path: '/register', element: <OnlyPublicRoute><RegistrationPage /></OnlyPublicRoute> },
   timeline: { path: '/timeline', element: <PrivateRoute><PostsListStateProvider><YourTimelinePage /></PostsListStateProvider></PrivateRoute> },
-  userTimeline: { path: '/users/:userId/timeline', element: <>Coming Soon</>}
+  userTimeline: { path: '/users/:userId/timeline', element: <PrivateRoute><PostsListStateProvider><UserTimelinePage /></PostsListStateProvider></PrivateRoute> }
 }
 
 export function AppRoutes() {
