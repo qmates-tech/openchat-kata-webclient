@@ -1,8 +1,8 @@
-import { createContext, ReactNode, useContext, useEffect, useState } from "react";
+import { createContext, ReactNode, useContext, useState } from "react";
 import { Modal, ModalStatus } from "./Modal";
 
 export type ModalActions = {
-  open: (title: string, content: ReactNode) => void;
+  open: (title: string, content: ReactNode, footer?: ReactNode | undefined) => void;
   close: () => void;
 };
 const ModalContext = createContext<ModalActions | undefined>(undefined);
@@ -19,11 +19,13 @@ export function ModalProvider({ children }: { children: ReactNode }): ReactNode 
   const [status, setStatus] = useState<ModalStatus>();
   const [title, setTitle] = useState("");
   const [content, setContent] = useState<ReactNode | undefined>();
+  const [footer, setFooter] = useState<ReactNode | undefined>();
 
   const modal: ModalActions = {
-    open: (title: string, content: ReactNode | undefined) => {
+    open: (title: string, content: ReactNode, footer?: ReactNode | undefined) => {
       setTitle(title);
       setContent(content);
+      setFooter(footer);
       setStatus("open");
     },
     close: () => {
@@ -34,12 +36,13 @@ export function ModalProvider({ children }: { children: ReactNode }): ReactNode 
   const onClosed = () => {
     setTitle("");
     setContent(<></>);
+    setFooter(undefined);
   }
 
   return (
     <ModalContext.Provider value={modal}>
       {children}
-      <Modal status={status} title={title} close={modal.close} onClosed={onClosed}>
+      <Modal status={status} title={title} footer={footer} close={modal.close} onClosed={onClosed}>
         {content}
       </Modal>
     </ModalContext.Provider>

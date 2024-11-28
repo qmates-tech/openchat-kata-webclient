@@ -1,9 +1,17 @@
 import { ReactNode, useEffect, useMemo, useState } from "react";
+import "./Modal.css";
 
 export type ModalStatus = "open" | "close" | undefined;
 type ModalInternalStatus = "opening" | "open" | "closing" | "closed";
-
-export function Modal({ status, title, close, onClosed, children }: { status: ModalStatus, title: string, close: () => void, onClosed: () => void, children?: ReactNode | undefined }) {
+type ModalProps = {
+  status: ModalStatus,
+  title: string,
+  close: () => void,
+  onClosed: () => void,
+  footer?: ReactNode | undefined,
+  children?: ReactNode | undefined
+}
+export function Modal({ status, title, close, onClosed, footer, children }: ModalProps) {
   const modalAnimationDuration = 400;
   const htmlTag = document.querySelector("html")!;
   const [internalStatus, setInternalStatus] = useState<ModalInternalStatus>("closed");
@@ -15,13 +23,16 @@ export function Modal({ status, title, close, onClosed, children }: { status: Mo
   useEffect(handleEscapeKey, [isActive]);
 
   return (
-    <dialog open={isOpen} onClick={onOverlayClick}>
+    <dialog className="modal" open={isOpen} onClick={onOverlayClick}>
       <article>
         <header>
-          <h3>{title}</h3>
+          <h5>{title}</h5>
           <button aria-label="Close Modal" rel="prev" onClick={close}></button>
         </header>
-        {children}
+        <div className="content">
+          {children}
+        </div>
+        {footer && <footer>{footer}</footer>}
       </article>
     </dialog>
   );

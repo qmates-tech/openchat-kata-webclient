@@ -1,0 +1,27 @@
+dialog.modal {
+
+}
+
+dialog.modal > article {
+  display: flex;
+  flex-direction: column;
+  padding: 0;
+  max-height: calc(95vh - var(--pico-spacing)* 2);
+  overflow: hidden;
+}
+
+dialog.modal > article > header {
+  margin: 0;
+  padding: var(--pico-block-spacing-vertical) var(--pico-block-spacing-horizontal);
+}
+
+dialog.modal > article > div.content {
+  flex: 1;
+  overflow-y: auto;
+  padding: var(--pico-block-spacing-vertical) var(--pico-block-spacing-horizontal);
+}
+
+dialog.modal > article > footer {
+  margin: 0;
+  padding: var(--pico-block-spacing-vertical) var(--pico-block-spacing-horizontal);
+}

@@ -17,9 +17,10 @@ describe("ModalProvider", () => {
 
     expect(screen.queryByText("A Title")).not.toBeInTheDocument();
     expect(screen.queryByText("Some Content")).not.toBeInTheDocument();
+    expect(screen.queryByRole("footer")).not.toBeInTheDocument();
   });
 
-  it("open the modal", async () => {
+  it("open the modal without footer", async () => {
     render(<ModalProvider>
       <TestModal title='A Title'><p>Some Content</p></TestModal>
     </ModalProvider>);
@@ -29,6 +30,20 @@ describe("ModalProvider", () => {
     screen.logTestingPlaygroundURL();
     expect(screen.getByText("A Title", { selector: 'dialog header *'})).toBeVisible();
     expect(screen.getByText("Some Content", { selector: 'dialog p'})).toBeVisible();
+    expect(screen.queryByText("footer text", { selector: "footer" })).not.toBeInTheDocument();
+  });
+
+  it("open the modal with footer", async () => {
+    render(<ModalProvider>
+      <TestModal title='A Title' footer="footer text"><p>Some Content</p></TestModal>
+    </ModalProvider>);
+
+    await userEvent.click(screen.getByText("Open modal"));
+
+    screen.logTestingPlaygroundURL();
+    expect(screen.getByText("A Title", { selector: 'dialog header *'})).toBeVisible();
+    expect(screen.getByText("Some Content", { selector: 'dialog p'})).toBeVisible();
+    expect(screen.getByText("footer text", { selector: "footer" })).toBeVisible();
   });
 
   it("close the modal on close icon", async () => {
@@ -42,6 +57,7 @@ describe("ModalProvider", () => {
     await waitFor(() => {
       expect(screen.queryByText("A Title")).not.toBeInTheDocument();
       expect(screen.queryByText("Some Content")).not.toBeInTheDocument();
+      expect(screen.queryByText("footer text", { selector: "footer" })).not.toBeInTheDocument();
     });
   });
 
@@ -56,6 +72,7 @@ describe("ModalProvider", () => {
     await waitFor(() => {
       expect(screen.queryByText("A Title")).not.toBeInTheDocument();
       expect(screen.queryByText("Some Content")).not.toBeInTheDocument();
+      expect(screen.queryByText("footer text", { selector: "footer" })).not.toBeInTheDocument();
     });
   });
 
@@ -70,6 +87,7 @@ describe("ModalProvider", () => {
     await waitFor(() => {
       expect(screen.queryByText("A Title")).not.toBeInTheDocument();
       expect(screen.queryByText("Some Content")).not.toBeInTheDocument();
+      expect(screen.queryByText("footer text", { selector: "footer" })).not.toBeInTheDocument();
     });
   });
 
@@ -84,15 +102,17 @@ describe("ModalProvider", () => {
     await waitFor(() => {
       expect(screen.queryByText("A Title")).not.toBeInTheDocument();
       expect(screen.queryByText("Some Content")).not.toBeInTheDocument();
+      expect(screen.queryByText("footer text", { selector: "footer" })).not.toBeInTheDocument();
     });
   });
 })
 
-function TestModal({ title, children }: { title: string, children?: React.ReactNode | undefined }) {
+function TestModal({ title, footer, children }: { title: string, footer?: string | undefined, children?: React.ReactNode | undefined }) {
   const { open } = useModal();
+  const footerElement = <>{footer}</> || undefined
 
   return (
-    <button onClick={() => open(title, children)}>Open modal</button>
+    <button onClick={() => open(title, children, footerElement)}>Open modal</button>
   )
 }
 
