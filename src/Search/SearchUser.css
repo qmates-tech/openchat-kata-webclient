@@ -1,0 +1,12 @@
+.search-user {
+  margin: auto;
+}
+
+.search-user input {
+  width: 200px;
+  padding: calc(var(--pico-nav-link-spacing-vertical) - var(--pico-border-width)* 2) var(--pico-nav-link-spacing-horizontal);
+}
+
+.search-user button {
+  padding: 0 1rem;
+}
