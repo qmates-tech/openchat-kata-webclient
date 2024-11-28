@@ -3,6 +3,7 @@ import { ReactNode } from 'react';
 import { MemoryRouter, Route, Routes, useLocation } from "react-router-dom";
 import { PostsListStateProvider } from "../../src/Post/PostsList/PostsListState.tsx";
 import { UserSessionProvider } from '../../src/User/UserSessionState';
+import { ModalProvider } from '../../src/helpers/Modal/ModalProvider.tsx';
 
 export type RouteLocation = { path: string; from?: string; };
 export function wrapWithRouter(location: RouteLocation) {
@@ -25,6 +26,12 @@ export function wrapWithCustomRoutes(location: RouteLocation, routes: string[]) 
         </Routes>
       </MemoryRouter>
     </>)
+  }
+}
+
+export function wrapWithModal() {
+  return {
+    wrapper: ({ children }: WrapperProps): ReactNode => (<ModalProvider>{children}</ModalProvider>)
   }
 }
 
