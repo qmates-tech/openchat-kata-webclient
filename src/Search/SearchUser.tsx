@@ -1,4 +1,4 @@
-import { useRef } from 'react';
+import { useEffect, useState } from 'react';
 import { useModal } from '../helpers/Modal/ModalProvider';
 import { useUserSession } from '../User/UserSessionState';
 import './SearchUser.css';
@@ -6,8 +6,10 @@ import { SearchUserList } from './SearchUserList';
 
 export function SearchUser() {
   const { retrieving, currentUser } = useUserSession();
-  const { open } = useModal();
-  const searchInput = useRef<HTMLInputElement>(null);
+  const { open, isClosed } = useModal();
+  const [searchText, setSearchText] = useState('');
+
+  useEffect(cleanSearchTextWhenModalClosed, [isClosed]);
 
   if (!currentUser || retrieving) {
     return <></>
@@ -16,19 +18,28 @@ export function SearchUser() {
   return (
     <fieldset className="search-user" role="group">
       <input
-        ref={searchInput}
         type="text"
         name="search-user"
+        value={searchText}
+        onChange={e => setSearchText(e.target.value)}
         placeholder="Search user"
       />
-      <button type="submit" aria-label='Search' onClick={openUsersModal}>
+      <button type="submit" aria-label='Search' disabled={searchText.length === 0} onClick={openUsersModal}>
         <i className="fa fa-search"></i>
       </button>
     </fieldset>
   );
 
   function openUsersModal() {
-    const searchText = searchInput.current!.value;
-    open(`Users found for "${searchText}"`, <SearchUserList search={searchText} />);
+    open({
+      title: `Users found for "${searchText}"`,
+      content: <SearchUserList search={searchText} />
+    });
+  }
+
+  function cleanSearchTextWhenModalClosed() {
+    if (isClosed) {
+      setSearchText('');
+    }
   }
 }

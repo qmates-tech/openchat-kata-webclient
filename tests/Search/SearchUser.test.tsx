@@ -1,4 +1,4 @@
-import { render, screen } from '@testing-library/react';
+import { render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { SearchUser } from '../../src/Search/SearchUser';
 import { mockUserSession } from '../utils/MockUserSession';
@@ -43,6 +43,28 @@ describe('SearchUser', () => {
 
     expect(screen.getByText('Users found for "text-to-search"')).toBeVisible();
     expect(mockedSearchUserList).toHaveBeenCalledWith({ search: 'text-to-search' });
+  });
+
+  it('disable the Search button when no text is present', async () => {
+    mockUserSession({ currentUser: anUser });
+    render(<SearchUser />, wrapWithModal());
+    expect(screen.getByLabelText("Search")).toBeDisabled();
+
+    await userEvent.type(searchUserInput(), 'text-to-search');
+
+    expect(screen.getByLabelText("Search")).toBeEnabled();
+  });
+
+  it('cleanup search text when the modal is closed', async () => {
+    mockUserSession({ currentUser: anUser });
+    mockSearchUserList();
+    render(<SearchUser />, wrapWithModal());
+    await userEvent.type(searchUserInput(), 'text-to-search');
+    await userEvent.click(screen.getByLabelText("Search"));
+
+    await userEvent.click(screen.getByLabelText("Close Modal"));
+
+    await waitFor(() => expect(searchUserInput()).toHaveValue(''));
   });
 });
 

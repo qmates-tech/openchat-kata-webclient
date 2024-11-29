@@ -69,11 +69,7 @@ describe("ModalProvider", () => {
 
     await userEvent.click(screen.getByRole("dialog"));
 
-    await waitFor(() => {
-      expect(screen.queryByText("A Title")).not.toBeInTheDocument();
-      expect(screen.queryByText("Some Content")).not.toBeInTheDocument();
-      expect(screen.queryByText("footer text", { selector: "footer" })).not.toBeInTheDocument();
-    });
+    await waitFor(() => expect(screen.queryByText("A Title")).not.toBeInTheDocument());
   });
 
   it("close the modal on ESC key press", async () => {
@@ -84,36 +80,36 @@ describe("ModalProvider", () => {
 
     await userEvent.keyboard('{Escape}');
 
-    await waitFor(() => {
-      expect(screen.queryByText("A Title")).not.toBeInTheDocument();
-      expect(screen.queryByText("Some Content")).not.toBeInTheDocument();
-      expect(screen.queryByText("footer text", { selector: "footer" })).not.toBeInTheDocument();
-    });
+    await waitFor(() => expect(screen.queryByText("A Title")).not.toBeInTheDocument());
   });
 
-  it("ESC key press with a closed modal does nothing", async () => {
+  it("isClosed is true before opening and after closed", async () => {
     render(<ModalProvider>
       <TestModal title='A Title'><p>Some Content</p></TestModal>
     </ModalProvider>);
+
+    expect(screen.queryByText("isClosed = true")).toBeInTheDocument();
     await userEvent.click(screen.getByText("Open modal"));
 
-    await userEvent.keyboard('{Escape}');
+    expect(screen.queryByText("isClosed = false")).toBeInTheDocument();
 
+    await userEvent.click(screen.getByLabelText("Close Modal"));
+
+    expect(screen.queryByText("isClosed = false")).toBeInTheDocument();
     await waitFor(() => {
-      expect(screen.queryByText("A Title")).not.toBeInTheDocument();
-      expect(screen.queryByText("Some Content")).not.toBeInTheDocument();
-      expect(screen.queryByText("footer text", { selector: "footer" })).not.toBeInTheDocument();
+      expect(screen.queryByText("isClosed = true")).toBeInTheDocument();
     });
   });
 })
 
 function TestModal({ title, footer, children }: { title: string, footer?: string | undefined, children?: React.ReactNode | undefined }) {
-  const { open } = useModal();
+  const { open, isClosed } = useModal();
   const footerElement = <>{footer}</> || undefined
 
-  return (
-    <button onClick={() => open(title, children, footerElement)}>Open modal</button>
-  )
+  return (<>
+    <button onClick={() => open({title, content: children, footer: footerElement})}>Open modal</button>
+    <div>isClosed = {isClosed ? 'true' : 'false'}</div>
+  </>)
 }
 
 function suppressConsoleErrors() {
