@@ -45,6 +45,26 @@ describe('SearchUser', () => {
     expect(mockedSearchUserList).toHaveBeenCalledWith({ search: 'text-to-search' });
   });
 
+  it('open the user search modal when enter is typed', async () => {
+    mockUserSession({ currentUser: anUser });
+    mockSearchUserList();
+    render(<SearchUser />, wrapWithModal());
+
+    await userEvent.type(searchUserInput(), 'text-to-search[enter]');
+
+    expect(screen.getByText('Users found for "text-to-search"')).toBeVisible();
+  });
+
+  it('do not open the user search modal when enter is typed but the text is empty', async () => {
+    mockUserSession({ currentUser: anUser });
+    mockSearchUserList();
+    render(<SearchUser />, wrapWithModal());
+
+    await userEvent.type(searchUserInput(), '[enter]');
+
+    expect(screen.queryByText(/Users found for/i)).not.toBeInTheDocument();
+  });
+
   it('disable the Search button when no text is present', async () => {
     mockUserSession({ currentUser: anUser });
     render(<SearchUser />, wrapWithModal());

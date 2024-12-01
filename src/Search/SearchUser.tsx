@@ -21,7 +21,8 @@ export function SearchUser() {
         type="text"
         name="search-user"
         value={searchText}
-        onChange={e => setSearchText(e.target.value)}
+        onChange={updateSearchText}
+        onKeyDown={openModalOnEnter}
         placeholder="Search user"
       />
       <button type="submit" aria-label='Search' disabled={searchText.length === 0} onClick={openUsersModal}>
@@ -35,6 +36,17 @@ export function SearchUser() {
       title: `Users found for "${searchText}"`,
       content: <SearchUserList search={searchText} />
     });
+  }
+
+  function openModalOnEnter(event: React.KeyboardEvent<HTMLInputElement>) {
+    if (event.key === 'Enter' && searchText.length > 0) {
+      event.preventDefault();
+      openUsersModal();
+    }
+  }
+
+  function updateSearchText(event: React.ChangeEvent<HTMLInputElement>) {
+    setSearchText(event.target.value);
   }
 
   function cleanSearchTextWhenModalClosed() {
