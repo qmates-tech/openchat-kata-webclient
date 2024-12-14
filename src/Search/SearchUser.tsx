@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import { useModal } from '../helpers/Modal/ModalProvider';
 import { useUserSession } from '../User/UserSessionState';
 import './SearchUser.css';
-import { SearchUserList } from './SearchUserList';
+import { SearchUserModalContent } from './SearchUserModalContent';
 
 export function SearchUser() {
   const { retrieving, currentUser } = useUserSession();
@@ -34,7 +34,7 @@ export function SearchUser() {
   function openUsersModal() {
     open({
       title: `Users found for "${searchText}"`,
-      content: <SearchUserList search={searchText} />
+      content: <SearchUserModalContent search={searchText} />
     });
   }
 

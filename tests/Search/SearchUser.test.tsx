@@ -3,8 +3,8 @@ import userEvent from '@testing-library/user-event';
 import { SearchUser } from '../../src/Search/SearchUser';
 import { mockUserSession } from '../utils/MockUserSession';
 import { wrapWithModal } from '../utils/renderHelpers';
-import * as SearchUserListToMock from "../../src/Search/SearchUserList";
-import { SearchUserListProps } from "../../src/Search/SearchUserList";
+import * as SearchUserModalContentToMock from "../../src/Search/SearchUserModalContent";
+import { SearchUserModalContentProps } from "../../src/Search/SearchUserModalContent";
 
 describe('SearchUser', () => {
   const anUser = { id: '123', username: 'alessio', about: 'About Alessio' };
@@ -35,19 +35,19 @@ describe('SearchUser', () => {
 
   it('open the user search modal', async () => {
     mockUserSession({ currentUser: anUser });
-    const mockedSearchUserList = mockSearchUserList();
+    const mockedSearchUserModalContent = mockSearchUserModalContent();
     render(<SearchUser />, wrapWithModal());
 
     await userEvent.type(searchUserInput(), 'text-to-search');
     await userEvent.click(screen.getByLabelText("Search"));
 
     expect(screen.getByText('Users found for "text-to-search"')).toBeVisible();
-    expect(mockedSearchUserList).toHaveBeenCalledWith({ search: 'text-to-search' });
+    expect(mockedSearchUserModalContent).toHaveBeenCalledWith({ search: 'text-to-search' });
   });
 
   it('open the user search modal when enter is typed', async () => {
     mockUserSession({ currentUser: anUser });
-    mockSearchUserList();
+    mockSearchUserModalContent();
     render(<SearchUser />, wrapWithModal());
 
     await userEvent.type(searchUserInput(), 'text-to-search[enter]');
@@ -57,7 +57,7 @@ describe('SearchUser', () => {
 
   it('do not open the user search modal when enter is typed but the text is empty', async () => {
     mockUserSession({ currentUser: anUser });
-    mockSearchUserList();
+    mockSearchUserModalContent();
     render(<SearchUser />, wrapWithModal());
 
     await userEvent.type(searchUserInput(), '[enter]');
@@ -77,7 +77,7 @@ describe('SearchUser', () => {
 
   it('cleanup search text when the modal is closed', async () => {
     mockUserSession({ currentUser: anUser });
-    mockSearchUserList();
+    mockSearchUserModalContent();
     render(<SearchUser />, wrapWithModal());
     await userEvent.type(searchUserInput(), 'text-to-search');
     await userEvent.click(screen.getByLabelText("Search"));
@@ -96,8 +96,8 @@ function querySearchUserInput() {
   return screen.queryByPlaceholderText('Search user');
 }
 
-function mockSearchUserList() {
-  const spy = vi.fn((_: SearchUserListProps) => <></>)
-  vi.spyOn(SearchUserListToMock, "SearchUserList").mockImplementation((props) => spy(props));
+function mockSearchUserModalContent() {
+  const spy = vi.fn((_: SearchUserModalContentProps) => <></>)
+  vi.spyOn(SearchUserModalContentToMock, "SearchUserModalContent").mockImplementation((props) => spy(props));
   return spy;
 }
