@@ -7,4 +7,11 @@ describe('SearchUserList', () => {
 
     expect(screen.getByText('No users found.')).toBeInTheDocument();
   });
+
+  it('show a spinner when is retrieving the data', async () => {
+    render(<SearchUserList users={[]} retrieving={true} error={undefined} />);
+
+    expect(screen.getByTestId('spinner')).toHaveAttribute('aria-busy', 'true');
+    expect(screen.queryByText('No users found.')).not.toBeInTheDocument();
+  });
 });
