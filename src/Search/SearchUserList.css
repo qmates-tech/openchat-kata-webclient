@@ -1,0 +1,9 @@
+.search-user-list {
+  margin: auto;
+}
+
+.search-user-list .not-found > i {
+  background-size: 30px;
+  width: 30px;
+  height: 30px;
+}
