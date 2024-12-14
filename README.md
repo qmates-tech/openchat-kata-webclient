@@ -11,6 +11,30 @@ It consumes API specification in `APIs.yaml`:
 -> [browse API specification online](https://editor.swagger.io/?url=https://raw.githubusercontent.com/qmates-tech/openchat-kata-webclient/main/APIs.yaml)
 
 
+## Setup
+- `node.js`
+- `npm install`
+
+## Run Development mode
+```
+npm run dev
+```
+
+## Run Tests
+```
+npm test
+```
+
+## Run Test with coverage
+```
+npm run coverage
+```
+
+## Build
+```
+npm run dev
+```
+
 ## About this Kata
 
 This is part of a backend + frontend kata, check here the backend part: [qmates-tech/openchat-kata](https://github.com/qmates-tech/openchat-kata)
