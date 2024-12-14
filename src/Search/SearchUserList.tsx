@@ -3,10 +3,13 @@ import './SearchUserList.css';
 
 export type SearchUserListProps = SearchUsersState;
 
-export function SearchUserList({ retrieving }: SearchUserListProps) {
+export function SearchUserList({ users, retrieving }: SearchUserListProps) {
+  const hasUsers = users.length > 0;
+
   return (<div className="search-user-list">
     <div data-testid="spinner" aria-busy={retrieving}></div>
-    {!retrieving && <NotFound />}
+    {!retrieving && hasUsers && <></>}
+    {!retrieving && !hasUsers && <NotFound />}
   </div>);
 }
 

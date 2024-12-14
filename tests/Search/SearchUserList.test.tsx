@@ -14,4 +14,12 @@ describe('SearchUserList', () => {
     expect(screen.getByTestId('spinner')).toHaveAttribute('aria-busy', 'true');
     expect(screen.queryByText('No users found.')).not.toBeInTheDocument();
   });
+
+  it('ignore the error message and show user not found when an error is thrown', async () => {
+    render(<SearchUserList users={[]} retrieving={false} error={'Generic error'} />);
+
+    expect(screen.getByTestId('spinner')).toHaveAttribute('aria-busy', 'false');
+    expect(screen.queryByText('No users found.')).toBeInTheDocument();
+    expect(screen.queryByText('Generic error')).not.toBeInTheDocument();
+  });
 });
