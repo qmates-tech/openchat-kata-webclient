@@ -1,6 +1,6 @@
 import { render, screen } from "@testing-library/react";
 import userEvent from '@testing-library/user-event';
-import { App } from "../../src/App/App.tsx";
+import { App } from "../../src/App.tsx";
 import * as LoginFormToMock from "../../src/Login/LoginForm.tsx";
 import { LoginState } from "../../src/Login/LoginState.ts";
 import { User } from "../../src/User/User.ts";

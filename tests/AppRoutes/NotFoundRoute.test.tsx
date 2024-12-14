@@ -1,5 +1,5 @@
 import { render, screen } from "@testing-library/react";
-import { App } from "../../src/App/App";
+import { App } from "../../src/App";
 import { User } from "../../src/User/User";
 import { mockUserSession } from '../utils/MockUserSession';
 import { wrapWithRouter } from '../utils/renderHelpers';

@@ -1,6 +1,6 @@
 import { render, screen } from "@testing-library/react";
 import userEvent from '@testing-library/user-event';
-import { App } from "../../src/App/App";
+import { App } from "../../src/App";
 import * as RegistrationFormToMock from "../../src/Registration/RegistrationForm";
 import { RegistrationState } from "../../src/Registration/RegistrationState";
 import { User } from "../../src/User/User";

@@ -1,5 +1,5 @@
 import { render, screen } from '@testing-library/react';
-import { App } from '../../src/App/App.tsx';
+import { App } from '../../src/App.tsx';
 import * as TimelineToMock from "../../src/Timeline/Timeline.tsx";
 import { TimelineProps } from "../../src/Timeline/Timeline.tsx";
 import { mockUserSession } from '../utils/MockUserSession.ts';

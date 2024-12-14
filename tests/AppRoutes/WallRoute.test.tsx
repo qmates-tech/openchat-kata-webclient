@@ -1,5 +1,5 @@
 import { render, screen } from '@testing-library/react';
-import { App } from '../../src/App/App.tsx';
+import { App } from '../../src/App.tsx';
 import { User } from "../../src/User/User.ts";
 import * as WallToMock from "../../src/Wall/Wall.tsx";
 import { mockUserSession } from '../utils/MockUserSession.ts';
