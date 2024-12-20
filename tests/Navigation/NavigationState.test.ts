@@ -1,4 +1,4 @@
-import { renderHook } from '@testing-library/react';
+import { act, renderHook } from '@testing-library/react';
 import { useNavigationState } from '../../src/Navigation/NavigationState';
 import { wrapWithRouter } from '../utils/renderHelpers';
 
@@ -20,5 +20,13 @@ describe('NavigationState', () => {
     const { result } = renderHook(useNavigationState, wrapWithRouter({ path: '/current', from: '/previous' }));
 
     expect(result.current.previousPath).toBe('/previous');
+  });
+
+  it('redirect to a route with a path parameter', async () => {
+    const { result } = renderHook(useNavigationState, wrapWithRouter({ path: '/original', from: '/' }));
+
+    act(() => result.current.navigateTo({ to: 'userTimeline', pathParams: { userId: 'an-user-id' } }));
+
+    expect(result.current.currentPath).toBe('/users/an-user-id/timeline');
   });
 });
