@@ -12,7 +12,7 @@ export function Navigation() {
       <ul>
         <li><LinkTo to={"wall"}>Wall</LinkTo></li>
         <li><LinkTo to={"timeline"}>Timeline</LinkTo></li>
-        {/* <li><SearchUser /></li> */}
+        <li><SearchUser /></li>
         <li><LogoutButton /></li>
       </ul>
     </nav>
