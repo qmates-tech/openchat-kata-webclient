@@ -1,5 +1,6 @@
+import { useEffect, useState } from "react";
 import { User } from "./User";
-import { createUsersAPI, UsersAPI } from "./UsersAPI";
+import { AllUsersByNameAPIException, createUsersAPI, UsersAPI } from "./UsersAPI";
 
 const searchUserAPI = createUsersAPI();
 
@@ -11,11 +12,32 @@ export type SearchUsersState = {
   users: User[];
 }
 
-// TODO: Implement useUsersByName
 export function useUsersByName(userName: string, API: UsersAPI = searchUserAPI): SearchUsersState {
+  const [users, setUsers] = useState<User[]>([]);
+  const [retrieving, setRetrieving] = useState<boolean>(true);
+  const [error, setError] = useState<UsersByNameError | undefined>();
+
+  useEffect(() => {
+    API.allUsersByName(userName!)
+      .then(setUsers)
+      .catch((e) => {
+        setError(parseGetUserAPIError(e));
+      })
+      .finally(() => setRetrieving(false))
+  }, [userName, API]);
+
   return {
-    retrieving: false,
-    error: 'Generic error',
-    users: []
+    retrieving,
+    error,
+    users
   };
+}
+
+function parseGetUserAPIError(error: AllUsersByNameAPIException): UsersByNameError {
+  switch (error) {
+    case "NETWORK_ERROR":
+      return "Network error";
+    default:
+      return "Generic error";
+  }
 }

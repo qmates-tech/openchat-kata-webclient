@@ -3,8 +3,10 @@ import { getRequest } from "../helpers/http";
 import { User } from "./User";
 
 export type GetUserAPIException = "USER_NOT_FOUND" | "NETWORK_ERROR";
+export type AllUsersByNameAPIException = "NETWORK_ERROR";
 export type UsersAPI = {
   getUser(userId: User["id"]): Promise<User>;
+  allUsersByName(username: User["username"]): Promise<User[]>;
 }
 
 export function createUsersAPI(baseUrl: string = Env.loginUrl): UsersAPI {
@@ -15,7 +17,11 @@ export function createUsersAPI(baseUrl: string = Env.loginUrl): UsersAPI {
 
       if (!found) throw "USER_NOT_FOUND";
       return found;
-    }
+    },
+    async allUsersByName(username: User["username"]): Promise<User[]> {
+      const users = await allUsers()
+      return users.filter(user => user.username.includes(username));
+    },
   }
 
   async function allUsers(): Promise<User[]> {

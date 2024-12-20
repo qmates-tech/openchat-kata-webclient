@@ -37,4 +37,39 @@ describe('UsersAPI', () => {
       }).rejects.toThrow("NETWORK_ERROR");
     });
   });
+
+  describe("allUsersByName", () => {
+    it('should return the users data matching the name provided', async () => {
+      mockServer.interceptGet('/users', HttpResponse.json([
+         { "id": "1", "username": "first-name", "about": "About 1." },
+         { "id": "2", "username": "name-second", "about": "About 2." },
+         { "id": "3", "username": "third", "about": "About 3." },
+      ]));
+
+      const retrievedUsers = await usersAPI.allUsersByName('name');
+
+      expect(retrievedUsers).toStrictEqual([
+        { id: '1', username: 'first-name', about: 'About 1.' },
+        { id: '2', username: 'name-second', about: 'About 2.' }
+      ]);
+    });
+
+    it('should return empty list when the given name does not match any user', async () => {
+      mockServer.interceptGet('/users', HttpResponse.json([
+        { "id": "3", "username": "an-user", "about": "About 3." }
+      ]));
+
+      const retrievedUsers = await usersAPI.allUsersByName('not-matching');
+
+      await expect(retrievedUsers).toHaveLength(0);
+    });
+
+    it('should return NETWORK_ERROR when the HTTP request fails', async () => {
+      mockServer.interceptGet('/users', HttpResponse.error());
+
+      await expect(async () => {
+        await usersAPI.allUsersByName('any-name');
+      }).rejects.toThrow("NETWORK_ERROR");
+    });
+  });
 });
