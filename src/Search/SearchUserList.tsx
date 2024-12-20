@@ -1,10 +1,10 @@
-import { LinkTo } from "../Navigation/LinkTo";
+import { User } from "../User/User";
 import { SearchUsersState } from "../User/UsersByNameState";
 import './SearchUserList.css';
 
-export type SearchUserListProps = SearchUsersState;
+export type SearchUserListProps = SearchUsersState & { onUserSelected: (userId: User["id"]) => void };
 
-export function SearchUserList({ users, retrieving }: SearchUserListProps) {
+export function SearchUserList({ users, retrieving, onUserSelected }: SearchUserListProps) {
   const hasUsers = users.length > 0;
 
   return (<div className="search-user-list">
@@ -23,7 +23,7 @@ export function SearchUserList({ users, retrieving }: SearchUserListProps) {
           {users.map(user => (
             <tr key={user.id}>
               <td>
-                <LinkTo to="userTimeline" pathParams={{ userId: user.id }} newWindow>{user.username}</LinkTo>
+                <a href="#" onClick={userNameLinkClickedFor(user.id)}>{user.username}</a>
               </td>
               <td>{trimmedText(user.about, 25)}</td>
             </tr>
@@ -32,6 +32,13 @@ export function SearchUserList({ users, retrieving }: SearchUserListProps) {
       </table>
     )}
   </div>);
+
+  function userNameLinkClickedFor(userId: User["id"]) {
+    return (e: React.MouseEvent<HTMLAnchorElement>) => {
+      e.preventDefault();
+      onUserSelected(userId);
+    }
+  }
 }
 
 function trimmedText(text: string, maxLength: number) {

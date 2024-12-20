@@ -5,6 +5,8 @@ import { mockUserSession } from '../utils/MockUserSession';
 import { wrapWithModal } from '../utils/renderHelpers';
 import * as SearchUserModalContentToMock from "../../src/Search/SearchUserModalContent";
 import { SearchUserModalContentProps } from "../../src/Search/SearchUserModalContent";
+import * as UseModalToMock from '../../src/helpers/Modal/ModalProvider';
+import { ModalActions } from '../../src/helpers/Modal/ModalProvider';
 
 describe('SearchUser', () => {
   const anUser = { id: '123', username: 'alessio', about: 'About Alessio' };
@@ -42,7 +44,7 @@ describe('SearchUser', () => {
     await userEvent.click(screen.getByLabelText("Search"));
 
     expect(screen.getByText('Users found for "text-to-search"')).toBeVisible();
-    expect(mockedSearchUserModalContent).toHaveBeenCalledWith({ search: 'text-to-search' });
+    expect(mockedSearchUserModalContent).toHaveBeenCalledWith({ search: 'text-to-search', pauseModal: expect.any(Function) });
   });
 
   it('open the user search modal when enter is typed', async () => {
@@ -86,6 +88,16 @@ describe('SearchUser', () => {
 
     await waitFor(() => expect(searchUserInput()).toHaveValue(''));
   });
+
+  it('when the modal isPaused show the button to restore the search', async () => {
+    mockUserSession({ currentUser: anUser });
+    mockUseModal({ isPaused: true });
+    mockSearchUserModalContent();
+    render(<SearchUser />);
+
+    expect(screen.getByText('Resume search')).toBeInTheDocument();
+    expect(screen.queryByPlaceholderText('Search user')).not.toBeInTheDocument();
+  });
 });
 
 function searchUserInput() {
@@ -94,6 +106,21 @@ function searchUserInput() {
 
 function querySearchUserInput() {
   return screen.queryByPlaceholderText('Search user');
+}
+
+
+export function mockUseModal(obj: Partial<ModalActions> = {}): ModalActions {
+  const mocked = {
+    open: () => {},
+    close: () => {},
+    pause: () => {},
+    resume: () => {},
+    isClosed: true,
+    isPaused: false,
+    ...obj
+  };
+  vi.spyOn(UseModalToMock, "useModal").mockImplementation(() => mocked);
+  return mocked;
 }
 
 function mockSearchUserModalContent() {

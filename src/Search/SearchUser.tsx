@@ -6,13 +6,26 @@ import { SearchUserModalContent } from './SearchUserModalContent';
 
 export function SearchUser() {
   const { retrieving, currentUser } = useUserSession();
-  const { open, isClosed } = useModal();
+  const { open, resume, pause, isClosed, isPaused } = useModal();
   const [searchText, setSearchText] = useState('');
+  const searchIcon = isPaused ? 'fa-search-plus' : isClosed ? 'fa-search' : 'fa-search-minus';
 
   useEffect(cleanSearchTextWhenModalClosed, [isClosed]);
 
   if (!currentUser || retrieving) {
     return <></>
+  }
+
+  if (isPaused) {
+    return <button
+      type="button"
+      aria-label='Search'
+      disabled={searchText.length === 0}
+      onClick={resume}
+    >
+      <i className={`fa fa-search-plus`}></i>
+      &nbsp; <span>Resume search</span>
+    </button>
   }
 
   return (
@@ -25,8 +38,13 @@ export function SearchUser() {
         onKeyDown={openModalOnEnter}
         placeholder="Search user"
       />
-      <button type="submit" aria-label='Search' disabled={searchText.length === 0} onClick={openUsersModal}>
-        <i className="fa fa-search"></i>
+      <button
+        type="submit"
+        aria-label='Search'
+        disabled={searchText.length === 0}
+        onClick={openUsersModal}
+      >
+        <i className={`fa ${searchIcon}`}></i>
       </button>
     </fieldset>
   );
@@ -34,7 +52,7 @@ export function SearchUser() {
   function openUsersModal() {
     open({
       title: `Users found for "${searchText}"`,
-      content: <SearchUserModalContent search={searchText} />
+      content: <SearchUserModalContent search={searchText} pauseModal={pause} />
     });
   }
 
