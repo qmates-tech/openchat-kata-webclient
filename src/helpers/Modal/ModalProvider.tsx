@@ -1,10 +1,14 @@
-import { createContext, ReactNode, useContext, useState } from "react";
+import { createContext, ReactNode, useContext, useMemo, useState } from "react";
 import { Modal, ModalStatus } from "./Modal";
 
+export type OpenModalActionParams = { title: string, content: ReactNode, footer?: ReactNode | undefined };
 export type ModalActions = {
-  open: (params: { title: string, content: ReactNode, footer?: ReactNode | undefined }) => void;
+  open: (params: OpenModalActionParams) => void;
   close: () => void;
+  pause: () => void;
+  resume: () => void;
   isClosed: boolean;
+  isPaused: boolean;
 };
 const ModalContext = createContext<ModalActions | undefined>(undefined);
 
@@ -17,31 +21,30 @@ export const useModal = () => {
 };
 
 export function ModalProvider({ children }: { children: ReactNode }): ReactNode {
-  const [status, setStatus] = useState<ModalStatus>();
+  const [status, setStatus] = useState<ModalStatus>("closed");
   const [title, setTitle] = useState("");
   const [content, setContent] = useState<ReactNode | undefined>();
   const [footer, setFooter] = useState<ReactNode | undefined>();
-  const [isClosed, setIsClosed] = useState(true);
 
   const modal: ModalActions = {
     open: ({ title, content, footer }) => {
-      setIsClosed(false);
+      setStatus("open");
       setTitle(title);
       setContent(content);
       setFooter(footer);
-      setStatus("open");
     },
-    close: () => {
-      setStatus("close");
-    },
-    isClosed
-  }
+    pause: () => setStatus("pause"),
+    resume: () => setStatus("open"),
+    close: () => setStatus("close"),
+    isClosed: status === "closed",
+    isPaused: status === "pause"
+  };
 
   const onClosed = () => {
     setTitle("");
     setContent(<></>);
     setFooter(undefined);
-    setIsClosed(true);
+    setStatus("closed");
   }
 
   return (<>

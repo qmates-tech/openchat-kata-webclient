@@ -1,9 +1,9 @@
 import { ReactNode, useEffect, useMemo, useState } from "react";
 import "./Modal.css";
 
-export type ModalStatus = "open" | "close" | undefined;
-type ModalInternalStatus = "opening" | "open" | "closing" | "closed";
-type ModalProps = {
+export type ModalStatus = "open" | "close" | "pause" | "closed" | undefined;
+type ModalInternalStatus = "opening" | "open" | "pausing" | "paused" | "closing" | "closed";
+export type ModalProps = {
   status: ModalStatus,
   title: string,
   close: () => void,
@@ -15,8 +15,11 @@ export function Modal({ status, title, close, onClosed, footer, children }: Moda
   const modalAnimationDuration = 400;
   const htmlTag = document.querySelector("html")!;
   const [internalStatus, setInternalStatus] = useState<ModalInternalStatus>("closed");
-  const isOpen = useMemo<boolean>(() => internalStatus !== "closed", [internalStatus]);
-  const isActive = useMemo<boolean>(() => internalStatus !== "closing" && internalStatus !== "closed", [internalStatus]);
+  const isOpen = useMemo<boolean>(() => internalStatus !== "closed" && internalStatus !== "paused", [internalStatus]);
+  const isActive = useMemo<boolean>(() => {
+    return internalStatus !== "closing" && internalStatus !== "closed" &&
+      internalStatus !== "pausing" && internalStatus !== "paused"
+  }, [internalStatus]);
 
   useEffect(syncInternalStatus, [status]);
   useEffect(handleAnimationOnStatusChange, [internalStatus]);
@@ -47,8 +50,11 @@ export function Modal({ status, title, close, onClosed, footer, children }: Moda
     if (status === "open") {
       setInternalStatus("opening");
     }
-    if(status === "close") {
+    if (status === "close") {
       setInternalStatus("closing");
+    }
+    if (status === "pause") {
+      setInternalStatus("pausing");
     }
   }
 
@@ -65,14 +71,21 @@ export function Modal({ status, title, close, onClosed, footer, children }: Moda
       htmlTag.classList.add("modal-is-closing");
       setTimeout(() => setInternalStatus("closed"), modalAnimationDuration);
     }
-    if(internalStatus == "closed") {
+    if (internalStatus == "closed") {
       htmlTag.classList.remove("modal-is-open", "modal-is-closing");
       onClosed();
+    }
+    if (internalStatus == "pausing") {
+      htmlTag.classList.add("modal-is-closing");
+      setTimeout(() => setInternalStatus("paused"), modalAnimationDuration);
+    }
+    if (internalStatus == "paused") {
+      htmlTag.classList.remove("modal-is-open", "modal-is-closing");
     }
   }
 
   function handleEscapeKey() {
-    function onKeyDown (event: KeyboardEvent) {
+    function onKeyDown(event: KeyboardEvent) {
       if (event.key === "Escape") {
         event.preventDefault();
         close();

@@ -28,8 +28,8 @@ describe("ModalProvider", () => {
     await userEvent.click(screen.getByText("Open modal"));
 
     screen.logTestingPlaygroundURL();
-    expect(screen.getByText("A Title", { selector: 'dialog header *'})).toBeVisible();
-    expect(screen.getByText("Some Content", { selector: 'dialog p'})).toBeVisible();
+    expect(screen.getByText("A Title", { selector: 'dialog header *' })).toBeVisible();
+    expect(screen.getByText("Some Content", { selector: 'dialog p' })).toBeVisible();
     expect(screen.queryByText("footer text", { selector: "footer" })).not.toBeInTheDocument();
   });
 
@@ -40,9 +40,8 @@ describe("ModalProvider", () => {
 
     await userEvent.click(screen.getByText("Open modal"));
 
-    screen.logTestingPlaygroundURL();
-    expect(screen.getByText("A Title", { selector: 'dialog header *'})).toBeVisible();
-    expect(screen.getByText("Some Content", { selector: 'dialog p'})).toBeVisible();
+    expect(screen.getByText("A Title", { selector: 'dialog header *' })).toBeVisible();
+    expect(screen.getByText("Some Content", { selector: 'dialog p' })).toBeVisible();
     expect(screen.getByText("footer text", { selector: "footer" })).toBeVisible();
   });
 
@@ -100,15 +99,32 @@ describe("ModalProvider", () => {
       expect(screen.queryByText("isClosed = true")).toBeInTheDocument();
     });
   });
+
+  it("pause the modal and resume it should keep the content", async () => {
+    render(<ModalProvider>
+      <TestModal title='A Title' footer="footer text"><p>Some Content</p></TestModal>
+    </ModalProvider>);
+    await userEvent.click(screen.getByText("Open modal"));
+
+    await userEvent.click(screen.getByText("Pause modal"));
+    await waitFor(() => expect(screen.getByText("A Title", { selector: 'dialog header *' })).not.toBeVisible());
+    expect(screen.queryByText("isPaused = true")).toBeInTheDocument();
+
+    await userEvent.click(screen.getByText("Resume modal"));
+    await waitFor(() => expect(screen.getByText("A Title", { selector: 'dialog header *' })).toBeVisible());
+  });
 })
 
 function TestModal({ title, footer, children }: { title: string, footer?: string | undefined, children?: React.ReactNode | undefined }) {
-  const { open, isClosed } = useModal();
+  const { open, pause, resume, isPaused, isClosed } = useModal();
   const footerElement = <>{footer}</> || undefined
 
   return (<>
-    <button onClick={() => open({title, content: children, footer: footerElement})}>Open modal</button>
+    <button onClick={() => open({ title, content: children, footer: footerElement })}>Open modal</button>
+    <button onClick={pause}>Pause modal</button>
+    <button onClick={resume}>Resume modal</button>
     <div>isClosed = {isClosed ? 'true' : 'false'}</div>
+    <div>isPaused = {isPaused ? 'true' : 'false'}</div>
   </>)
 }
 
