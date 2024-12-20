@@ -1,3 +1,4 @@
+import { LinkTo } from "../Navigation/LinkTo";
 import { SearchUsersState } from "../User/UsersByNameState";
 import './SearchUserList.css';
 
@@ -21,7 +22,9 @@ export function SearchUserList({ users, retrieving }: SearchUserListProps) {
         <tbody>
           {users.map(user => (
             <tr key={user.id}>
-              <td>{user.username}</td>
+              <td>
+                <LinkTo to="userTimeline" pathParams={{ userId: user.id }} newWindow>{user.username}</LinkTo>
+              </td>
               <td>{trimmedText(user.about, 25)}</td>
             </tr>
           ))}
