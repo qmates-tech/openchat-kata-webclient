@@ -54,6 +54,21 @@ describe('UsersAPI', () => {
       ]);
     });
 
+    it('should match the names ignoring the case', async () => {
+      mockServer.interceptGet('/users', HttpResponse.json([
+         { "id": "1", "username": "first-namE", "about": "About 1." },
+         { "id": "2", "username": "nAme-second", "about": "About 2." },
+         { "id": "3", "username": "third", "about": "About 3." },
+      ]));
+
+      const retrievedUsers = await usersAPI.allUsersByName('Name');
+
+      expect(retrievedUsers).toStrictEqual([
+        { id: '1', username: 'first-namE', about: 'About 1.' },
+        { id: '2', username: 'nAme-second', about: 'About 2.' }
+      ]);
+    });
+
     it('should return empty list when the given name does not match any user', async () => {
       mockServer.interceptGet('/users', HttpResponse.json([
         { "id": "3", "username": "an-user", "about": "About 3." }

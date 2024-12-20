@@ -20,7 +20,7 @@ export function createUsersAPI(baseUrl: string = Env.loginUrl): UsersAPI {
     },
     async allUsersByName(username: User["username"]): Promise<User[]> {
       const users = await allUsers()
-      return users.filter(user => user.username.includes(username));
+      return users.filter(user => user.username.toLowerCase().includes(username.toLowerCase()));
     },
   }
 
