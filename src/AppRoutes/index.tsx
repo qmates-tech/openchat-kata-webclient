@@ -1,4 +1,4 @@
-import { Route, RouteProps, Routes } from "react-router-dom";
+import { Route, Routes } from "react-router-dom";
 import { PageNotFound } from "../NotFound/PageNotFound.tsx";
 import { LoginRoute } from "./routes/LoginRoute.tsx";
 import { RegistrationRoute } from "./routes/RegistrationRoute.tsx";
@@ -6,15 +6,15 @@ import { UserTimelineRoute } from "./routes/UserTimelineRoute.tsx";
 import { WallRoute } from "./routes/WallRoute.tsx";
 import { YourTimelineRoute } from "./routes/YourTimelineRoute.tsx";
 
-export type RouteName = 'login' | 'registration' | 'wall' | 'timeline' | 'userTimeline';
-
-const routes: Record<RouteName, RouteProps> = {
+const routes = {
   login: { path: '/login', element: <LoginRoute /> },
   wall: { path: '/', element: <WallRoute /> },
   registration: { path: '/register', element: <RegistrationRoute /> },
   timeline: { path: '/timeline', element: <YourTimelineRoute /> },
   userTimeline: { path: '/users/:userId/timeline', element: <UserTimelineRoute /> },
-}
+} as const;
+
+export type RouteName = keyof typeof routes;
 
 export function AppRoutes() {
   return <Routes>
